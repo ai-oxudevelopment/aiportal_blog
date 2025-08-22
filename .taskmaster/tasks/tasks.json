@@ -46,7 +46,7 @@
             "title": "Configure Tailwind CSS with OpenAI Design System",
             "description": "Set up Tailwind CSS with custom theme matching OpenAI design system and dark theme",
             "details": "**ДО СТАРТА:**\n- Автотесты: Tailwind CSS loads, custom theme applies, dark mode works\n- Базовые тесты: CSS compiles, no build errors, styles apply correctly\n- Mock API: Планировать тестовые компоненты с новыми стилями\n\n**ПЛАН РАБОТЫ:**\n1. Install and configure Tailwind CSS\n2. Create custom theme matching OpenAI design system\n3. Set up dark mode configuration\n4. Create gradient utilities and custom components\n5. Test responsive design breakpoints\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure Tailwind CSS with OpenAI design system\"",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
             "parentTaskId": 1
           },
@@ -765,7 +765,7 @@
       "description": "Main task list for AI Portal Blog project with comprehensive testing workflow",
       "created": "2024-12-19T10:00:00.000Z",
       "lastModified": "2024-12-19T12:00:00.000Z",
-      "updated": "2025-08-22T08:44:58.804Z"
+      "updated": "2025-08-22T10:16:34.482Z"
     }
   }
 }

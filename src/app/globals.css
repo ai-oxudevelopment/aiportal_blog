@@ -1,26 +1,195 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* OpenAI Design System Colors */
+  --openai-gray-50: #f7f7f8;
+  --openai-gray-100: #ececf1;
+  --openai-gray-200: #d9d9e3;
+  --openai-gray-300: #c5c5d2;
+  --openai-gray-400: #acacbe;
+  --openai-gray-500: #8e8ea0;
+  --openai-gray-600: #565869;
+  --openai-gray-700: #40414f;
+  --openai-gray-800: #343541;
+  --openai-gray-900: #202123;
+  
+  /* OpenAI Brand Colors */
+  --openai-green: #10a37f;
+  --openai-green-hover: #0d8c6d;
+  --openai-blue: #0077ff;
+  --openai-purple: #8b5cf6;
+  
+  /* Light Theme */
+  --background: var(--openai-gray-50);
+  --foreground: var(--openai-gray-900);
+  --card: #ffffff;
+  --card-foreground: var(--openai-gray-900);
+  --popover: #ffffff;
+  --popover-foreground: var(--openai-gray-900);
+  --primary: var(--openai-green);
+  --primary-foreground: #ffffff;
+  --secondary: var(--openai-gray-100);
+  --secondary-foreground: var(--openai-gray-900);
+  --muted: var(--openai-gray-100);
+  --muted-foreground: var(--openai-gray-600);
+  --accent: var(--openai-gray-100);
+  --accent-foreground: var(--openai-gray-900);
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: var(--openai-gray-200);
+  --input: var(--openai-gray-200);
+  --ring: var(--openai-green);
+  --radius: 0.5rem;
 }
 
 @theme inline {
+  /* Color Palette */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  /* OpenAI Colors */
+  --color-openai-gray-50: var(--openai-gray-50);
+  --color-openai-gray-100: var(--openai-gray-100);
+  --color-openai-gray-200: var(--openai-gray-200);
+  --color-openai-gray-300: var(--openai-gray-300);
+  --color-openai-gray-400: var(--openai-gray-400);
+  --color-openai-gray-500: var(--openai-gray-500);
+  --color-openai-gray-600: var(--openai-gray-600);
+  --color-openai-gray-700: var(--openai-gray-700);
+  --color-openai-gray-800: var(--openai-gray-800);
+  --color-openai-gray-900: var(--openai-gray-900);
+  --color-openai-green: var(--openai-green);
+  --color-openai-green-hover: var(--openai-green-hover);
+  --color-openai-blue: var(--openai-blue);
+  --color-openai-purple: var(--openai-purple);
+  
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  
+  /* Border Radius */
+  --radius: var(--radius);
 }
 
+/* Dark Theme */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--openai-gray-900);
+    --foreground: var(--openai-gray-50);
+    --card: var(--openai-gray-800);
+    --card-foreground: var(--openai-gray-50);
+    --popover: var(--openai-gray-800);
+    --popover-foreground: var(--openai-gray-50);
+    --primary: var(--openai-green);
+    --primary-foreground: #ffffff;
+    --secondary: var(--openai-gray-700);
+    --secondary-foreground: var(--openai-gray-50);
+    --muted: var(--openai-gray-700);
+    --muted-foreground: var(--openai-gray-400);
+    --accent: var(--openai-gray-700);
+    --accent-foreground: var(--openai-gray-50);
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: var(--openai-gray-700);
+    --input: var(--openai-gray-700);
+    --ring: var(--openai-green);
   }
+}
+
+/* Custom Gradients */
+.gradient-openai {
+  background: linear-gradient(135deg, var(--openai-green) 0%, var(--openai-blue) 100%);
+}
+
+.gradient-openai-reverse {
+  background: linear-gradient(135deg, var(--openai-blue) 0%, var(--openai-green) 100%);
+}
+
+.gradient-purple-blue {
+  background: linear-gradient(135deg, var(--openai-purple) 0%, var(--openai-blue) 100%);
+}
+
+.gradient-gray-dark {
+  background: linear-gradient(135deg, var(--openai-gray-800) 0%, var(--openai-gray-900) 100%);
+}
+
+.gradient-gray-light {
+  background: linear-gradient(135deg, var(--openai-gray-100) 0%, var(--openai-gray-200) 100%);
+}
+
+/* Base Styles */
+* {
+  border-color: var(--border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
+
+/* Focus Styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+}
+
+/* Animation Utilities */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

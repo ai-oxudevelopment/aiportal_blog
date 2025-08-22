@@ -10,19 +10,21 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className={`min-h-screen bg-gray-900 text-white ${inter.className}`}>
-      <header className="border-b border-gray-800">
+    <div className={`min-h-screen bg-background text-foreground ${inter.className}`}>
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center justify-between">
-            <div className="text-xl font-bold">AI Portal Blog</div>
+            <Link href="/" className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+              AI Portal Blog
+            </Link>
             <div className="hidden md:flex space-x-6">
-              <Link href="/" className="hover:text-blue-400 transition-colors">
+              <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors">
                 Home
               </Link>
-              <Link href="/articles" className="hover:text-blue-400 transition-colors">
+              <Link href="/articles" className="text-foreground/80 hover:text-foreground transition-colors">
                 Articles
               </Link>
-              <Link href="/about" className="hover:text-blue-400 transition-colors">
+              <Link href="/about" className="text-foreground/80 hover:text-foreground transition-colors">
                 About
               </Link>
             </div>
@@ -34,9 +36,9 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
       
-      <footer className="border-t border-gray-800 mt-auto">
+      <footer className="border-t border-border bg-card/50 mt-auto">
         <div className="container mx-auto px-4 py-6">
-          <div className="text-center text-gray-400">
+          <div className="text-center text-muted-foreground">
             <p>&copy; 2024 AI Portal Blog. All rights reserved.</p>
           </div>
         </div>
