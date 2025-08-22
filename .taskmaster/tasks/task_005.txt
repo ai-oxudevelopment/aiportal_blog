@@ -1,0 +1,113 @@
+# Task ID: 5
+# Title: Article Detail Page
+# Status: pending
+# Dependencies: 3, 4
+# Priority: high
+# Description: Create article detail pages with Writer.com-inspired layout and table of contents
+# Details:
+Implement article page with hero section, sticky table of contents, two-column layout, rich text formatting, and related articles. Create an excellent reading experience.
+
+# Test Strategy:
+Test table of contents functionality, verify responsive design, check content rendering, validate SEO elements
+
+# Subtasks:
+## 1. Create Article Detail Page Layout [pending]
+### Dependencies: None
+### Description: Implement article detail page with Writer.com-inspired two-column layout
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Article page loads, two-column layout displays, content renders
+- Базовые тесты: Page renders, layout works, no console errors
+- Mock API: Использовать тестовые статьи из Strapi
+
+**ПЛАН РАБОТЫ:**
+1. Create ArticleDetailPage component
+2. Implement two-column layout (70% content, 30% sidebar)
+3. Set up dynamic routing for articles
+4. Connect to Strapi API for article data
+5. Test page functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Create article detail page layout"
+
+## 2. Implement Hero Section with Featured Image [pending]
+### Dependencies: None
+### Description: Create hero section with featured image and article metadata
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Hero section displays, featured image loads, metadata shows
+- Базовые тесты: Component renders, image loads, no layout errors
+- Mock API: Использовать тестовые изображения и метаданные
+
+**ПЛАН РАБОТЫ:**
+1. Create HeroSection component
+2. Implement featured image handling
+3. Add article metadata display
+4. Create responsive hero layout
+5. Test hero functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Implement hero section with featured image"
+
+## 3. Create Sticky Table of Contents [pending]
+### Dependencies: None
+### Description: Implement sticky table of contents with smooth scrolling navigation
+### Details:
+**ДО СТАРТА:**
+- Автотесты: TOC displays, sticky positioning works, smooth scrolling functions
+- Базовые тесты: Component renders, scroll events work, no positioning errors
+- Mock API: Планировать автоматическое извлечение заголовков из контента
+
+**ПЛАН РАБОТЫ:**
+1. Create TableOfContents component
+2. Implement sticky positioning
+3. Add smooth scrolling functionality
+4. Auto-generate TOC from headings
+5. Test TOC functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Create sticky table of contents"
+
+## 4. Add Rich Text Formatting and Code Highlighting [pending]
+### Dependencies: None
+### Description: Implement rich text rendering with syntax highlighting for code blocks
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Rich text renders, code highlighting works, formatting displays
+- Базовые тесты: Content renders, syntax highlighting works, no parsing errors
+- Mock API: Использовать тестовый контент с разными форматами
+
+**ПЛАН РАБОТЫ:**
+1. Set up rich text rendering library
+2. Implement code syntax highlighting
+3. Add markdown support
+4. Create custom formatting components
+5. Test content rendering
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Add rich text formatting and code highlighting"
+
+## 5. Create Related Articles Section [pending]
+### Dependencies: None
+### Description: Implement related articles section with article recommendations
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Related articles display, recommendations work, links function
+- Базовые тесты: Section renders, data loads, no navigation errors
+- Mock API: Использовать алгоритм рекомендаций на основе тегов/категорий
+
+**ПЛАН РАБОТЫ:**
+1. Create RelatedArticles component
+2. Implement recommendation algorithm
+3. Add article cards for related content
+4. Connect to mock API for recommendations
+5. Test recommendation functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Create related articles section"
+

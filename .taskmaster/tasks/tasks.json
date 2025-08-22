@@ -1,0 +1,771 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Project Setup and Configuration",
+        "description": "Initialize the Next.js project with TypeScript, Tailwind CSS, and basic project structure",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [],
+        "details": "Set up Next.js 14 with TypeScript, configure Tailwind CSS, establish project structure, and configure development environment. Create a modern, scalable foundation for the AI Portal Blog.",
+        "testStrategy": "Verify Next.js app runs, TypeScript compilation works, and Tailwind CSS is properly configured",
+        "implementationRequirements": [
+          "Initialize Next.js 14 project with TypeScript",
+          "Configure Tailwind CSS with custom theme matching OpenAI design system",
+          "Set up ESLint and Prettier for code quality",
+          "Configure Jest and React Testing Library for testing",
+          "Set up project structure (components, pages, utils, types, etc.)",
+          "Configure environment variables and .env files",
+          "Set up Git hooks and commit message standards",
+          "Configure build and development scripts"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: Next.js app starts successfully, TypeScript compilation works, Tailwind CSS loads properly, ESLint passes, Jest runs without errors",
+            "Write basic autotests: page loads without errors, components render correctly, no console errors, no build errors",
+            "Basic tests: npm run dev starts successfully, npm run build completes without errors, curl requests to localhost:3000 return 200 status"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Next.js 14 Project with TypeScript",
+            "description": "Create new Next.js 14 project with TypeScript configuration and basic project structure",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Next.js app starts, TypeScript compilation works, basic page loads\n- Базовые тесты: npm run dev start, curl localhost:3000 returns 200, npm run build succeeds\n- Mock API: Планировать Strapi для тестовых данных\n\n**ПЛАН РАБОТЫ:**\n1. Create new Next.js 14 project with TypeScript\n2. Configure TypeScript settings (strict mode, paths, etc.)\n3. Set up basic project structure (components, pages, utils, types)\n4. Create basic layout and home page\n5. Configure development scripts\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Initialize Next.js 14 project with TypeScript\"",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 2,
+            "title": "Configure Tailwind CSS with OpenAI Design System",
+            "description": "Set up Tailwind CSS with custom theme matching OpenAI design system and dark theme",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Tailwind CSS loads, custom theme applies, dark mode works\n- Базовые тесты: CSS compiles, no build errors, styles apply correctly\n- Mock API: Планировать тестовые компоненты с новыми стилями\n\n**ПЛАН РАБОТЫ:**\n1. Install and configure Tailwind CSS\n2. Create custom theme matching OpenAI design system\n3. Set up dark mode configuration\n4. Create gradient utilities and custom components\n5. Test responsive design breakpoints\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure Tailwind CSS with OpenAI design system\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 3,
+            "title": "Set up ESLint and Prettier Configuration",
+            "description": "Configure code quality tools with strict rules and formatting standards",
+            "details": "**ДО СТАРТА:**\n- Автотесты: ESLint passes, Prettier formats correctly, no linting errors\n- Базовые тесты: npm run lint passes, npm run format works, no build errors\n- Mock API: Планировать тестовые файлы для проверки линтера\n\n**ПЛАН РАБОТЫ:**\n1. Install ESLint and Prettier dependencies\n2. Configure ESLint with TypeScript and React rules\n3. Set up Prettier configuration\n4. Create pre-commit hooks for linting\n5. Test with sample code files\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure ESLint and Prettier for code quality\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 4,
+            "title": "Configure Jest and React Testing Library",
+            "description": "Set up comprehensive testing framework with component and integration tests",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Jest runs, React Testing Library works, test coverage reports\n- Базовые тесты: npm test passes, coverage >80%, no test failures\n- Mock API: Планировать тестовые компоненты и mock данные\n\n**ПЛАН РАБОТЫ:**\n1. Install Jest and React Testing Library\n2. Configure Jest for Next.js and TypeScript\n3. Set up test utilities and mock providers\n4. Create sample component tests\n5. Configure test coverage reporting\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure Jest and React Testing Library\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 5,
+            "title": "Set up Project Structure and Folder Organization",
+            "description": "Create organized folder structure for components, pages, utils, types, and other project files",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Folder structure exists, imports work correctly, no path errors\n- Базовые тесты: npm run dev starts, no import errors, build succeeds\n- Mock API: Планировать структуру для mock данных и API клиентов\n\n**ПЛАН РАБОТЫ:**\n1. Create folder structure (components, pages, utils, types, hooks, etc.)\n2. Set up TypeScript path aliases\n3. Create index files for clean imports\n4. Set up barrel exports\n5. Test import/export functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Set up organized project structure\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 6,
+            "title": "Configure Environment Variables and .env Files",
+            "description": "Set up environment configuration for development, staging, and production",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Environment variables load correctly, no undefined values\n- Базовые тесты: npm run dev starts, env vars accessible, no build errors\n- Mock API: Планировать env vars для Strapi и других сервисов\n\n**ПЛАН РАБОТЫ:**\n1. Create .env.example with all required variables\n2. Set up environment validation\n3. Configure Next.js environment handling\n4. Set up different env files for dev/staging/prod\n5. Test environment variable loading\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure environment variables and .env files\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 7,
+            "title": "Set up Git Hooks and Commit Message Standards",
+            "description": "Configure pre-commit hooks, commit message validation, and Git workflow standards",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Git hooks work, commit validation passes, no bypassing\n- Базовые тесты: Pre-commit hooks run, commit messages validate, no errors\n- Mock API: Планировать тестовые коммиты для проверки hooks\n\n**ПЛАН РАБОТЫ:**\n1. Install and configure Husky for Git hooks\n2. Set up lint-staged for pre-commit checks\n3. Configure commit message validation\n4. Set up conventional commits\n5. Test Git workflow\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure Git hooks and commit standards\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 8,
+            "title": "Configure Build and Development Scripts",
+            "description": "Set up comprehensive npm scripts for development, building, testing, and deployment",
+            "details": "**ДО СТАРТА:**\n- Автотесты: All scripts work, build succeeds, development server starts\n- Базовые тесты: npm run dev, npm run build, npm run test all work\n- Mock API: Планировать скрипты для mock данных и тестирования\n\n**ПЛАН РАБОТЫ:**\n1. Configure package.json scripts\n2. Set up development server configuration\n3. Configure build optimization\n4. Set up testing scripts\n5. Create deployment scripts\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure build and development scripts\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Strapi CMS Setup",
+        "description": "Configure Strapi CMS backend with PostgreSQL database and content types",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [],
+        "details": "Install and configure Strapi CMS, set up PostgreSQL database, create content types for articles, categories, and tags. Establish the backend foundation for content management.",
+        "testStrategy": "Verify Strapi admin panel is accessible, content types are created, and database connection works",
+        "implementationRequirements": [
+          "Install Strapi CMS with PostgreSQL adapter",
+          "Configure database connection and environment variables",
+          "Create content types: Article, Category, Tag, User, Media",
+          "Set up user roles and permissions",
+          "Configure API endpoints and CORS settings",
+          "Set up media library and file upload",
+          "Configure email settings for notifications",
+          "Set up backup and monitoring"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: Strapi admin panel loads, database connection established, content types created, API endpoints respond correctly",
+            "Write basic autotests: admin panel accessible, content types functional, database operations work, no server errors",
+            "Basic tests: npm run develop starts Strapi, database migrations run successfully, curl requests to API return proper responses"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Install and Configure Strapi CMS",
+            "description": "Set up Strapi CMS with PostgreSQL adapter and basic configuration",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Strapi installs, admin panel loads, database connects\n- Базовые тесты: npm run develop starts Strapi, admin panel accessible, no errors\n- Mock API: Планировать локальную PostgreSQL или Docker setup\n\n**ПЛАН РАБОТЫ:**\n1. Install Strapi CMS with PostgreSQL adapter\n2. Configure database connection settings\n3. Set up initial admin user\n4. Configure basic Strapi settings\n5. Test admin panel functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Install and configure Strapi CMS\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 2,
+            "title": "Set up PostgreSQL Database and Connection",
+            "description": "Configure PostgreSQL database and establish connection with Strapi",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Database connects, migrations run, no connection errors\n- Базовые тесты: Database accessible, Strapi connects, no timeout errors\n- Mock API: Планировать Docker PostgreSQL или локальную установку\n\n**ПЛАН РАБОТЫ:**\n1. Set up PostgreSQL database (local or Docker)\n2. Configure database connection in Strapi\n3. Test database connectivity\n4. Set up database backup strategy\n5. Configure environment variables for database\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Set up PostgreSQL database and connection\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 3,
+            "title": "Create Content Types: Article, Category, Tag",
+            "description": "Design and implement content types for blog articles, categories, and tags",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Content types created, fields work, relationships function\n- Базовые тесты: Admin panel shows content types, CRUD operations work\n- Mock API: Планировать тестовые данные для каждого content type\n\n**ПЛАН РАБОТЫ:**\n1. Create Article content type with all required fields\n2. Create Category content type with relationships\n3. Create Tag content type with relationships\n4. Set up field validations and constraints\n5. Test content type functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create content types for Article, Category, Tag\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 4,
+            "title": "Set up User Roles and Permissions",
+            "description": "Configure user roles (Admin, Editor, Author, Reader) with appropriate permissions",
+            "details": "**ДО СТАРТА:**\n- Автотесты: User roles work, permissions apply correctly, access control functions\n- Базовые тесты: Admin can access all, Editor can edit, Author can create, Reader can view\n- Mock API: Планировать тестовых пользователей для каждой роли\n\n**ПЛАН РАБОТЫ:**\n1. Create user roles: Admin, Editor, Author, Reader\n2. Configure permissions for each role\n3. Set up content access controls\n4. Test role-based access\n5. Create test users for each role\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Set up user roles and permissions\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 5,
+            "title": "Configure API Endpoints and CORS Settings",
+            "description": "Set up REST and GraphQL API endpoints with proper CORS configuration",
+            "details": "**ДО СТАРТА:**\n- Автотесты: API endpoints respond, CORS works, no cross-origin errors\n- Базовые тесты: curl requests work, API accessible, no CORS errors\n- Mock API: Планировать тестовые API calls для проверки endpoints\n\n**ПЛАН РАБОТЫ:**\n1. Configure REST API endpoints\n2. Set up GraphQL API (optional)\n3. Configure CORS settings for frontend\n4. Set up API rate limiting\n5. Test API endpoints functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Configure API endpoints and CORS settings\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 2
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Database Schema Design",
+        "description": "Design and implement the database schema for articles, categories, tags, and users",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "details": "Create database schema with proper relationships, implement content types in Strapi, set up user roles and permissions. Design a scalable data structure for the blog.",
+        "testStrategy": "Test database relationships, verify content creation and retrieval, check user permissions",
+        "implementationRequirements": [
+          "Design normalized database schema",
+          "Create content type relationships (Article-Category, Article-Tag, etc.)",
+          "Implement user roles: Admin, Editor, Author, Reader",
+          "Set up field validations and constraints",
+          "Create database indexes for performance",
+          "Implement soft delete functionality",
+          "Set up audit logging for content changes",
+          "Create database migration scripts"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: database relationships work correctly, content creation/retrieval functions, user permissions enforced, data integrity maintained",
+            "Write basic autotests: CRUD operations work, relationships function, permissions apply correctly, no database errors",
+            "Basic tests: database migrations run, content types function, API endpoints work with new schema, no constraint violations"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Homepage Implementation",
+        "description": "Create the homepage with OpenAI News-inspired design and article grid layout",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "details": "Implement dark theme homepage with gradient backgrounds, featured article card, secondary article cards, navigation sidebar, and filter bar. Create an engaging, modern homepage experience.",
+        "testStrategy": "Verify responsive design, test hover effects, check accessibility, validate performance metrics",
+        "implementationRequirements": [
+          "Create dark theme with gradient backgrounds",
+          "Implement featured article card (2/3 width) with gradient overlay",
+          "Create secondary article cards (1/3 width) with different gradients",
+          "Build fixed navigation sidebar with categories",
+          "Implement filter bar with category options",
+          "Add responsive design for mobile/tablet",
+          "Implement smooth hover effects and transitions",
+          "Create loading states and skeleton components"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: homepage loads with correct layout, featured article displays, secondary articles show, navigation works, filters function, responsive design works",
+            "Write basic autotests: page renders without errors, components display correctly, no console errors, responsive breakpoints work",
+            "Basic tests: npm run dev starts, homepage loads at /, curl requests return 200, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": [
+          {
+            "id": 2,
+            "title": "Create Dark Theme Layout with Gradient Backgrounds",
+            "description": "Implement dark theme layout with OpenAI-inspired gradient backgrounds",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Dark theme applies, gradients render, layout responsive\n- Базовые тесты: Page loads with dark theme, gradients display, no CSS errors\n- Mock API: Планировать тестовые компоненты с градиентами\n\n**ПЛАН РАБОТЫ:**\n1. Create dark theme color palette\n2. Implement gradient background components\n3. Set up theme provider and context\n4. Create responsive layout structure\n5. Test theme switching functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create dark theme layout with gradient backgrounds\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 3,
+            "title": "Implement Featured Article Card Component",
+            "description": "Create featured article card with 2/3 width and gradient overlay",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Featured card displays, gradient overlay works, responsive design\n- Базовые тесты: Component renders, data loads, no console errors\n- Mock API: Использовать тестовые данные из Strapi\n\n**ПЛАН РАБОТЫ:**\n1. Create FeaturedArticleCard component\n2. Implement gradient overlay effects\n3. Add responsive design (2/3 width)\n4. Connect to Strapi API data\n5. Test component functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Implement featured article card component\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 4,
+            "title": "Create Secondary Article Cards Component",
+            "description": "Implement secondary article cards with 1/3 width and different gradients",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Secondary cards display, different gradients work, responsive layout\n- Базовые тесты: Components render, data loads, no layout errors\n- Mock API: Использовать тестовые данные из Strapi\n\n**ПЛАН РАБОТЫ:**\n1. Create SecondaryArticleCard component\n2. Implement different gradient variations\n3. Add responsive design (1/3 width)\n4. Create grid layout for multiple cards\n5. Test component functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create secondary article cards component\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 5,
+            "title": "Build Fixed Navigation Sidebar",
+            "description": "Create fixed navigation sidebar with categories and smooth interactions",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Sidebar fixed, categories display, navigation works\n- Базовые тесты: Sidebar renders, links work, no layout issues\n- Mock API: Использовать категории из Strapi\n\n**ПЛАН РАБОТЫ:**\n1. Create NavigationSidebar component\n2. Implement fixed positioning\n3. Add category menu with Strapi data\n4. Create smooth hover effects\n5. Test navigation functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Build fixed navigation sidebar\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 6,
+            "title": "Implement Filter Bar with Category Options",
+            "description": "Create filter bar component with category filtering functionality",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Filter bar displays, category options work, filtering functions\n- Базовые тесты: Component renders, filters apply, no state errors\n- Mock API: Использовать категории и фильтрацию через Strapi\n\n**ПЛАН РАБОТЫ:**\n1. Create FilterBar component\n2. Implement category filter options\n3. Add filter state management\n4. Connect to Strapi API filtering\n5. Test filtering functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Implement filter bar with category options\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 7,
+            "title": "Add Responsive Design for Mobile/Tablet",
+            "description": "Implement responsive design breakpoints and mobile navigation",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Responsive breakpoints work, mobile layout displays, navigation adapts\n- Базовые тесты: Mobile view renders, tablet view works, no overflow errors\n- Mock API: Планировать тестирование на разных устройствах\n\n**ПЛАН РАБОТЫ:**\n1. Implement responsive breakpoints\n2. Create mobile navigation drawer\n3. Adapt layout for tablet view\n4. Test touch interactions\n5. Optimize for mobile performance\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Add responsive design for mobile/tablet\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 8,
+            "title": "Create Loading States and Skeleton Components",
+            "description": "Implement loading states and skeleton components for better UX",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Loading states display, skeletons animate, transitions smooth\n- Базовые тесты: Loading components render, animations work, no layout shifts\n- Mock API: Планировать искусственные задержки для тестирования\n\n**ПЛАН РАБОТЫ:**\n1. Create skeleton components for articles\n2. Implement loading states for data fetching\n3. Add smooth transitions\n4. Test loading scenarios\n5. Optimize loading performance\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create loading states and skeleton components\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 9,
+            "title": "Set up Strapi API Client for Development",
+            "description": "Configure Strapi API client in Next.js for development and testing",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Strapi API connects, mock data loads, API calls work\n- Базовые тесты: Strapi client works, data fetches, no connection errors\n- Mock API: Создать тестовые данные в Strapi для статей, категорий, тегов\n\n**ПЛАН РАБОТЫ:**\n1. Set up Strapi API client in Next.js\n2. Create test data in Strapi for articles, categories, tags\n3. Generate mock data for development\n4. Configure Strapi client in Next.js\n5. Test API integration\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Set up Strapi API client for development\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 4
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Article Detail Page",
+        "description": "Create article detail pages with Writer.com-inspired layout and table of contents",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          3,
+          4
+        ],
+        "details": "Implement article page with hero section, sticky table of contents, two-column layout, rich text formatting, and related articles. Create an excellent reading experience.",
+        "testStrategy": "Test table of contents functionality, verify responsive design, check content rendering, validate SEO elements",
+        "implementationRequirements": [
+          "Create hero section with featured image and article metadata",
+          "Implement sticky table of contents with smooth scrolling",
+          "Build two-column layout (content 70%, sidebar 30%)",
+          "Add rich text formatting and code syntax highlighting",
+          "Create related articles section",
+          "Implement social sharing buttons",
+          "Add reading progress indicator",
+          "Create responsive design for mobile reading"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: article page loads with content, table of contents works, navigation functions, related articles display, social sharing works",
+            "Write basic autotests: page renders correctly, content displays, no console errors, responsive design works, links function",
+            "Basic tests: article pages load at /articles/[slug], table of contents scrolls, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Article Detail Page Layout",
+            "description": "Implement article detail page with Writer.com-inspired two-column layout",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Article page loads, two-column layout displays, content renders\n- Базовые тесты: Page renders, layout works, no console errors\n- Mock API: Использовать тестовые статьи из Strapi\n\n**ПЛАН РАБОТЫ:**\n1. Create ArticleDetailPage component\n2. Implement two-column layout (70% content, 30% sidebar)\n3. Set up dynamic routing for articles\n4. Connect to Strapi API for article data\n5. Test page functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create article detail page layout\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 5
+          },
+          {
+            "id": 2,
+            "title": "Implement Hero Section with Featured Image",
+            "description": "Create hero section with featured image and article metadata",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Hero section displays, featured image loads, metadata shows\n- Базовые тесты: Component renders, image loads, no layout errors\n- Mock API: Использовать тестовые изображения и метаданные\n\n**ПЛАН РАБОТЫ:**\n1. Create HeroSection component\n2. Implement featured image handling\n3. Add article metadata display\n4. Create responsive hero layout\n5. Test hero functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Implement hero section with featured image\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 5
+          },
+          {
+            "id": 3,
+            "title": "Create Sticky Table of Contents",
+            "description": "Implement sticky table of contents with smooth scrolling navigation",
+            "details": "**ДО СТАРТА:**\n- Автотесты: TOC displays, sticky positioning works, smooth scrolling functions\n- Базовые тесты: Component renders, scroll events work, no positioning errors\n- Mock API: Планировать автоматическое извлечение заголовков из контента\n\n**ПЛАН РАБОТЫ:**\n1. Create TableOfContents component\n2. Implement sticky positioning\n3. Add smooth scrolling functionality\n4. Auto-generate TOC from headings\n5. Test TOC functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create sticky table of contents\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 5
+          },
+          {
+            "id": 4,
+            "title": "Add Rich Text Formatting and Code Highlighting",
+            "description": "Implement rich text rendering with syntax highlighting for code blocks",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Rich text renders, code highlighting works, formatting displays\n- Базовые тесты: Content renders, syntax highlighting works, no parsing errors\n- Mock API: Использовать тестовый контент с разными форматами\n\n**ПЛАН РАБОТЫ:**\n1. Set up rich text rendering library\n2. Implement code syntax highlighting\n3. Add markdown support\n4. Create custom formatting components\n5. Test content rendering\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Add rich text formatting and code highlighting\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 5
+          },
+          {
+            "id": 5,
+            "title": "Create Related Articles Section",
+            "description": "Implement related articles section with article recommendations",
+            "details": "**ДО СТАРТА:**\n- Автотесты: Related articles display, recommendations work, links function\n- Базовые тесты: Section renders, data loads, no navigation errors\n- Mock API: Использовать алгоритм рекомендаций на основе тегов/категорий\n\n**ПЛАН РАБОТЫ:**\n1. Create RelatedArticles component\n2. Implement recommendation algorithm\n3. Add article cards for related content\n4. Connect to mock API for recommendations\n5. Test recommendation functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create related articles section\"",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 5
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Navigation and Search",
+        "description": "Implement navigation sidebar, global search, and category/tag filtering",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "details": "Create fixed navigation sidebar, implement real-time search with debouncing, add category and tag filtering functionality. Provide intuitive content discovery.",
+        "testStrategy": "Test search functionality, verify filter behavior, check navigation responsiveness, validate keyboard navigation",
+        "implementationRequirements": [
+          "Build fixed navigation sidebar with category menu",
+          "Implement global search with debouncing",
+          "Create search results page with snippets",
+          "Add category and tag filtering",
+          "Implement keyboard navigation support",
+          "Create mobile navigation drawer",
+          "Add search history and suggestions",
+          "Implement search analytics tracking"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: search returns results, filters work correctly, navigation functions, keyboard navigation works, mobile menu operates",
+            "Write basic autotests: search input works, filters apply, navigation responds, no console errors, responsive design functions",
+            "Basic tests: search endpoint responds, filter API works, navigation loads, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "SEO Implementation",
+        "description": "Implement comprehensive SEO features including meta tags, structured data, and sitemap",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          4,
+          5
+        ],
+        "details": "Add meta tags, implement JSON-LD structured data, create XML sitemap, configure robots.txt, optimize for Core Web Vitals. Ensure maximum search engine visibility.",
+        "testStrategy": "Run SEO audits, verify structured data, check sitemap generation, validate meta tags",
+        "implementationRequirements": [
+          "Implement dynamic meta tags for all pages",
+          "Add JSON-LD structured data for articles and organization",
+          "Create automatic XML sitemap generation",
+          "Configure robots.txt file",
+          "Implement Open Graph and Twitter Card meta tags",
+          "Add canonical URLs and hreflang tags",
+          "Optimize for Core Web Vitals",
+          "Set up Google Analytics and Search Console"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: meta tags are present, structured data validates, sitemap generates, robots.txt accessible, SEO scores improve",
+            "Write basic autotests: meta tags render, structured data loads, sitemap exists, no SEO errors in console",
+            "Basic tests: sitemap.xml accessible, robots.txt loads, meta tags present in HTML, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Performance Optimization",
+        "description": "Optimize performance for fast loading times and excellent user experience",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          5
+        ],
+        "details": "Implement image optimization, lazy loading, code splitting, caching strategies, and CDN integration. Achieve excellent performance metrics.",
+        "testStrategy": "Run Lighthouse audits, verify Core Web Vitals, test loading performance, check caching effectiveness",
+        "implementationRequirements": [
+          "Implement Next.js Image optimization",
+          "Add lazy loading for images and components",
+          "Configure code splitting and dynamic imports",
+          "Set up caching strategies (browser and CDN)",
+          "Optimize bundle size and tree shaking",
+          "Implement service worker for offline support",
+          "Add performance monitoring and analytics",
+          "Configure CDN for static assets"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: Lighthouse score >90, Core Web Vitals in green, images load optimized, caching works, bundle size reduced",
+            "Write basic autotests: page loads fast, images optimize, no performance errors, caching headers present",
+            "Basic tests: Lighthouse audit passes, build size acceptable, images load correctly, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Admin Panel Content Management",
+        "description": "Set up Strapi admin panel for content management with rich text editor",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          3
+        ],
+        "details": "Configure rich text editor, set up media library, implement draft/publish workflow, add scheduled publishing. Create an intuitive content management experience.",
+        "testStrategy": "Test content creation, verify media upload, check workflow functionality, validate scheduled publishing",
+        "implementationRequirements": [
+          "Configure rich text editor with markdown support",
+          "Set up media library with image optimization",
+          "Implement draft/publish workflow",
+          "Add scheduled publishing functionality",
+          "Create content versioning system",
+          "Set up user collaboration features",
+          "Add content analytics and insights",
+          "Implement content approval workflow"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: content creation works, media uploads function, workflow operates, scheduling works, permissions apply",
+            "Write basic autotests: admin panel loads, content saves, media uploads, no console errors, workflow functions",
+            "Basic tests: admin panel accessible, content API works, media uploads succeed, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Newsletter Integration",
+        "description": "Implement newsletter signup functionality and email management",
+        "status": "pending",
+        "priority": "low",
+        "dependencies": [
+          4
+        ],
+        "details": "Add newsletter signup forms, integrate with email service provider, implement subscription management. Build audience engagement features.",
+        "testStrategy": "Test signup process, verify email delivery, check subscription management, validate unsubscribe functionality",
+        "implementationRequirements": [
+          "Create newsletter signup forms",
+          "Integrate with email service provider (Mailchimp/SendGrid)",
+          "Implement subscription management",
+          "Add email templates and branding",
+          "Create unsubscribe functionality",
+          "Set up email analytics and tracking",
+          "Implement double opt-in process",
+          "Add GDPR compliance features"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: signup forms work, emails send, subscription management functions, unsubscribe works, GDPR compliance met",
+            "Write basic autotests: forms submit, emails deliver, no console errors, subscription status updates",
+            "Basic tests: signup API responds, email service connects, forms function, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "Social Sharing",
+        "description": "Add social sharing functionality for articles",
+        "status": "pending",
+        "priority": "low",
+        "dependencies": [
+          5
+        ],
+        "details": "Implement social sharing buttons, add Open Graph and Twitter Card meta tags, create share tracking. Enable content distribution across social platforms.",
+        "testStrategy": "Test sharing functionality, verify meta tags, check tracking implementation, validate social media previews",
+        "implementationRequirements": [
+          "Add social sharing buttons (Twitter, Facebook, LinkedIn)",
+          "Implement Open Graph meta tags",
+          "Add Twitter Card meta tags",
+          "Create share tracking and analytics",
+          "Implement copy link functionality",
+          "Add social media preview testing",
+          "Create share count display",
+          "Implement social login integration"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: sharing buttons work, meta tags render, tracking functions, social previews display correctly",
+            "Write basic autotests: buttons click, meta tags present, no console errors, sharing functions",
+            "Basic tests: sharing API responds, meta tags load, buttons function, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "Accessibility Implementation",
+        "description": "Ensure WCAG 2.1 AA compliance and full accessibility support",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          5
+        ],
+        "details": "Implement keyboard navigation, add ARIA labels, ensure color contrast compliance, add screen reader support. Create an inclusive user experience.",
+        "testStrategy": "Run accessibility audits, test keyboard navigation, verify screen reader compatibility, check color contrast",
+        "implementationRequirements": [
+          "Implement full keyboard navigation",
+          "Add ARIA labels and roles",
+          "Ensure color contrast compliance (4.5:1 ratio)",
+          "Add screen reader support",
+          "Implement focus management",
+          "Create skip navigation links",
+          "Add alt text for all images",
+          "Test with accessibility tools"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: keyboard navigation works, ARIA labels present, color contrast passes, screen reader compatible, focus management functions",
+            "Write basic autotests: keyboard navigation works, no accessibility errors, focus indicators visible, no console errors",
+            "Basic tests: accessibility audit passes, keyboard navigation functions, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 13,
+        "title": "Security Implementation",
+        "description": "Implement security best practices and protection measures",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "details": "Configure HTTPS, implement Content Security Policy, add input validation, set up rate limiting. Ensure robust security measures.",
+        "testStrategy": "Run security audits, test input validation, verify HTTPS configuration, check CSP headers",
+        "implementationRequirements": [
+          "Configure HTTPS and SSL certificates",
+          "Implement Content Security Policy (CSP)",
+          "Add input validation and sanitization",
+          "Set up rate limiting and DDoS protection",
+          "Implement authentication and authorization",
+          "Add security headers (HSTS, X-Frame-Options)",
+          "Set up security monitoring and logging",
+          "Implement regular security updates"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: HTTPS works, CSP headers present, input validation functions, rate limiting operates, security headers set",
+            "Write basic autotests: HTTPS redirects, CSP loads, validation works, no security errors, headers present",
+            "Basic tests: HTTPS accessible, security headers present, validation functions, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 14,
+        "title": "Testing and Quality Assurance",
+        "description": "Comprehensive testing of all features and functionality",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "details": "Perform unit testing, integration testing, end-to-end testing, performance testing, and security testing. Ensure high quality and reliability.",
+        "testStrategy": "Run all test suites, verify test coverage, perform manual testing, validate all user flows",
+        "implementationRequirements": [
+          "Write comprehensive unit tests",
+          "Implement integration tests",
+          "Create end-to-end tests with Playwright",
+          "Perform performance testing",
+          "Conduct security testing and audits",
+          "Set up automated testing pipeline",
+          "Implement test coverage reporting",
+          "Create user acceptance testing"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: all test suites pass, coverage >80%, E2E tests work, performance tests pass, security tests clear",
+            "Write basic autotests: tests run without errors, coverage reports generate, no test failures, CI pipeline works",
+            "Basic tests: npm test passes, coverage >80%, E2E tests run, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      },
+      {
+        "id": 15,
+        "title": "Production Deployment",
+        "description": "Deploy the application to production with proper configuration",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [
+          14
+        ],
+        "details": "Deploy Next.js frontend to Vercel, deploy Strapi backend to Railway/Heroku, configure CDN, set up monitoring. Launch the application to production.",
+        "testStrategy": "Verify production deployment, test all functionality in production, check monitoring and logging",
+        "implementationRequirements": [
+          "Deploy Next.js frontend to Vercel",
+          "Deploy Strapi backend to Railway/Heroku",
+          "Configure custom domain and SSL",
+          "Set up CDN for static assets",
+          "Configure environment variables",
+          "Set up monitoring and alerting",
+          "Implement backup strategies",
+          "Create deployment documentation"
+        ],
+        "testingWorkflow": {
+          "beforeStarting": [
+            "Formulate autotests: production deployment successful, all features work, monitoring functions, backups operate, SSL configured",
+            "Write basic autotests: production site loads, all pages accessible, no errors, monitoring works, backups run",
+            "Basic tests: production deployment succeeds, site accessible, SSL works, monitoring active, build completes successfully"
+          ],
+          "afterCompletion": [
+            "All autotests for this stage must be green",
+            "Commit changes with descriptive message"
+          ]
+        },
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "name": "master",
+      "description": "Main task list for AI Portal Blog project with comprehensive testing workflow",
+      "created": "2024-12-19T10:00:00.000Z",
+      "lastModified": "2024-12-19T12:00:00.000Z",
+      "updated": "2025-08-22T08:44:58.804Z"
+    }
+  }
+}

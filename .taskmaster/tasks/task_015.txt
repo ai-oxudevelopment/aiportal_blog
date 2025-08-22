@@ -1,0 +1,11 @@
+# Task ID: 15
+# Title: Production Deployment
+# Status: pending
+# Dependencies: 14
+# Priority: high
+# Description: Deploy the application to production with proper configuration
+# Details:
+Deploy Next.js frontend to Vercel, deploy Strapi backend to Railway/Heroku, configure CDN, set up monitoring. Launch the application to production.
+
+# Test Strategy:
+Verify production deployment, test all functionality in production, check monitoring and logging

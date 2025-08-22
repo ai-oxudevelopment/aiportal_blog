@@ -1,0 +1,173 @@
+# Task ID: 4
+# Title: Homepage Implementation
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Create the homepage with OpenAI News-inspired design and article grid layout
+# Details:
+Implement dark theme homepage with gradient backgrounds, featured article card, secondary article cards, navigation sidebar, and filter bar. Create an engaging, modern homepage experience.
+
+# Test Strategy:
+Verify responsive design, test hover effects, check accessibility, validate performance metrics
+
+# Subtasks:
+## 2. Create Dark Theme Layout with Gradient Backgrounds [pending]
+### Dependencies: None
+### Description: Implement dark theme layout with OpenAI-inspired gradient backgrounds
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Dark theme applies, gradients render, layout responsive
+- Базовые тесты: Page loads with dark theme, gradients display, no CSS errors
+- Mock API: Планировать тестовые компоненты с градиентами
+
+**ПЛАН РАБОТЫ:**
+1. Create dark theme color palette
+2. Implement gradient background components
+3. Set up theme provider and context
+4. Create responsive layout structure
+5. Test theme switching functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Create dark theme layout with gradient backgrounds"
+
+## 3. Implement Featured Article Card Component [pending]
+### Dependencies: None
+### Description: Create featured article card with 2/3 width and gradient overlay
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Featured card displays, gradient overlay works, responsive design
+- Базовые тесты: Component renders, data loads, no console errors
+- Mock API: Использовать тестовые данные из Strapi
+
+**ПЛАН РАБОТЫ:**
+1. Create FeaturedArticleCard component
+2. Implement gradient overlay effects
+3. Add responsive design (2/3 width)
+4. Connect to Strapi API data
+5. Test component functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Implement featured article card component"
+
+## 4. Create Secondary Article Cards Component [pending]
+### Dependencies: None
+### Description: Implement secondary article cards with 1/3 width and different gradients
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Secondary cards display, different gradients work, responsive layout
+- Базовые тесты: Components render, data loads, no layout errors
+- Mock API: Использовать тестовые данные из Strapi
+
+**ПЛАН РАБОТЫ:**
+1. Create SecondaryArticleCard component
+2. Implement different gradient variations
+3. Add responsive design (1/3 width)
+4. Create grid layout for multiple cards
+5. Test component functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Create secondary article cards component"
+
+## 5. Build Fixed Navigation Sidebar [pending]
+### Dependencies: None
+### Description: Create fixed navigation sidebar with categories and smooth interactions
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Sidebar fixed, categories display, navigation works
+- Базовые тесты: Sidebar renders, links work, no layout issues
+- Mock API: Использовать категории из Strapi
+
+**ПЛАН РАБОТЫ:**
+1. Create NavigationSidebar component
+2. Implement fixed positioning
+3. Add category menu with Strapi data
+4. Create smooth hover effects
+5. Test navigation functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Build fixed navigation sidebar"
+
+## 6. Implement Filter Bar with Category Options [pending]
+### Dependencies: None
+### Description: Create filter bar component with category filtering functionality
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Filter bar displays, category options work, filtering functions
+- Базовые тесты: Component renders, filters apply, no state errors
+- Mock API: Использовать категории и фильтрацию через Strapi
+
+**ПЛАН РАБОТЫ:**
+1. Create FilterBar component
+2. Implement category filter options
+3. Add filter state management
+4. Connect to Strapi API filtering
+5. Test filtering functionality
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Implement filter bar with category options"
+
+## 7. Add Responsive Design for Mobile/Tablet [pending]
+### Dependencies: None
+### Description: Implement responsive design breakpoints and mobile navigation
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Responsive breakpoints work, mobile layout displays, navigation adapts
+- Базовые тесты: Mobile view renders, tablet view works, no overflow errors
+- Mock API: Планировать тестирование на разных устройствах
+
+**ПЛАН РАБОТЫ:**
+1. Implement responsive breakpoints
+2. Create mobile navigation drawer
+3. Adapt layout for tablet view
+4. Test touch interactions
+5. Optimize for mobile performance
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Add responsive design for mobile/tablet"
+
+## 8. Create Loading States and Skeleton Components [pending]
+### Dependencies: None
+### Description: Implement loading states and skeleton components for better UX
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Loading states display, skeletons animate, transitions smooth
+- Базовые тесты: Loading components render, animations work, no layout shifts
+- Mock API: Планировать искусственные задержки для тестирования
+
+**ПЛАН РАБОТЫ:**
+1. Create skeleton components for articles
+2. Implement loading states for data fetching
+3. Add smooth transitions
+4. Test loading scenarios
+5. Optimize loading performance
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Create loading states and skeleton components"
+
+## 9. Set up Strapi API Client for Development [pending]
+### Dependencies: None
+### Description: Configure Strapi API client in Next.js for development and testing
+### Details:
+**ДО СТАРТА:**
+- Автотесты: Strapi API connects, mock data loads, API calls work
+- Базовые тесты: Strapi client works, data fetches, no connection errors
+- Mock API: Создать тестовые данные в Strapi для статей, категорий, тегов
+
+**ПЛАН РАБОТЫ:**
+1. Set up Strapi API client in Next.js
+2. Create test data in Strapi for articles, categories, tags
+3. Generate mock data for development
+4. Configure Strapi client in Next.js
+5. Test API integration
+
+**ПОСЛЕ ЗАВЕРШЕНИЯ:**
+- Все автотесты зеленые
+- Commit: "feat: Set up Strapi API client for development"
+
