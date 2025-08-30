@@ -110,7 +110,7 @@
         "id": 2,
         "title": "Strapi CMS Setup",
         "description": "Configure Strapi CMS backend with PostgreSQL database and content types",
-        "status": "pending",
+        "status": "deferred",
         "priority": "high",
         "dependencies": [],
         "details": "Install and configure Strapi CMS, set up PostgreSQL database, create content types for articles, categories, and tags. Establish the backend foundation for content management.",
@@ -188,7 +188,7 @@
         "id": 3,
         "title": "Database Schema Design",
         "description": "Design and implement the database schema for articles, categories, tags, and users",
-        "status": "pending",
+        "status": "deferred",
         "priority": "high",
         "dependencies": [
           2
@@ -222,7 +222,7 @@
         "id": 4,
         "title": "Homepage Implementation",
         "description": "Create the homepage with OpenAI News-inspired design and article grid layout",
-        "status": "pending",
+        "status": "in-progress",
         "priority": "high",
         "dependencies": [
           1
@@ -256,7 +256,7 @@
             "title": "Create Dark Theme Layout with Gradient Backgrounds",
             "description": "Implement dark theme layout with OpenAI-inspired gradient backgrounds",
             "details": "**ДО СТАРТА:**\n- Автотесты: Dark theme applies, gradients render, layout responsive\n- Базовые тесты: Page loads with dark theme, gradients display, no CSS errors\n- Mock API: Планировать тестовые компоненты с градиентами\n\n**ПЛАН РАБОТЫ:**\n1. Create dark theme color palette\n2. Implement gradient background components\n3. Set up theme provider and context\n4. Create responsive layout structure\n5. Test theme switching functionality\n\n**ПОСЛЕ ЗАВЕРШЕНИЯ:**\n- Все автотесты зеленые\n- Commit: \"feat: Create dark theme layout with gradient backgrounds\"",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
             "parentTaskId": 4
           },
@@ -329,7 +329,7 @@
         "id": 5,
         "title": "Article Detail Page",
         "description": "Create article detail pages with Writer.com-inspired layout and table of contents",
-        "status": "pending",
+        "status": "deferred",
         "priority": "high",
         "dependencies": [
           3,
@@ -765,7 +765,7 @@
       "description": "Main task list for AI Portal Blog project with comprehensive testing workflow",
       "created": "2024-12-19T10:00:00.000Z",
       "lastModified": "2024-12-19T12:00:00.000Z",
-      "updated": "2025-08-22T10:16:34.482Z"
+      "updated": "2025-08-23T15:38:57.459Z"
     }
   }
 }
