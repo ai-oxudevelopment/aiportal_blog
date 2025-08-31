@@ -88,7 +88,7 @@
         "id": 8,
         "title": "Data Fetching Implementation",
         "description": "Implement data fetching strategies (SSR/SSG) for content from Strapi",
-        "status": "pending",
+        "status": "done",
         "priority": "high",
         "dependencies": [
           7
@@ -187,7 +187,7 @@
     ],
     "metadata": {
       "created": "2025-08-30T20:33:08.112Z",
-      "updated": "2025-08-31T19:32:14.310Z",
+      "updated": "2025-08-31T19:36:30.147Z",
       "description": "Tasks for master context"
     }
   }
