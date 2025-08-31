@@ -100,7 +100,7 @@
         "id": 9,
         "title": "Dynamic Pages Creation",
         "description": "Create dynamic pages for articles, categories, sections, and authors",
-        "status": "pending",
+        "status": "done",
         "priority": "high",
         "dependencies": [
           8
@@ -187,7 +187,7 @@
     ],
     "metadata": {
       "created": "2025-08-30T20:33:08.112Z",
-      "updated": "2025-08-31T19:36:30.147Z",
+      "updated": "2025-08-31T19:40:17.896Z",
       "description": "Tasks for master context"
     }
   }

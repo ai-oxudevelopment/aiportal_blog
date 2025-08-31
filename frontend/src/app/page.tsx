@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import WriterActionAgent from "../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../components/ChatGPTBusinessSection";
+import { getCategories } from "../lib/api";
+import type { Category } from "../lib/types";
 
 // src/app/page.tsx
 function Brand() {
@@ -121,31 +123,78 @@ function Sidebar({ isMenuOpen }: {isMenuOpen: boolean;}) {
 }
 
 function Tabs() {
-  const cats = [
-  "All",
-  "Company",
-  "Research",
-  "Product",
-  "Safety",
-  "Security",
-  "Global Affairs"];
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const fetchedCategories = await getCategories();
+        setCategories(fetchedCategories);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch categories');
+        console.error('Error fetching categories:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Fallback к hardcoded категориям если Strapi недоступен
+  const fallbackCategories = [
+    { name: "All", slug: "all" },
+    { name: "Company", slug: "company" },
+    { name: "Research", slug: "research" },
+    { name: "Product", slug: "product" },
+    { name: "Safety", slug: "safety" },
+    { name: "Security", slug: "security" },
+    { name: "Global Affairs", slug: "global-affairs" }
+  ];
+
+  const allCategories = error 
+    ? fallbackCategories 
+    : [
+        { name: "All", slug: "all" },
+        ...categories.map(cat => ({
+          name: cat.attributes.name,
+          slug: cat.attributes.slug
+        }))
+      ];
+
+  if (loading) {
+    return (
+      <div className="flex flex-wrap gap-2 text-sm" data-oid="i469ghu">
+        <div className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
+        <div className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
+        <div className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-wrap gap-2 text-sm" data-oid="i469ghu">
-      {cats.map((c, i) =>
-      <button
-        key={c}
-        className={`px-3 h-8 rounded-full border transition-colors text-gray-300 hover:text-white hover:border-white/30 ${
-        i === 0 ? "border-white/30 text-white" : "border-white/10"}`
-        }
-        data-oid="8jr82o9">
-
-          {c}
+      {allCategories.map((category, i) =>
+        <button
+          key={category.slug}
+          className={`px-3 h-8 rounded-full border transition-colors text-gray-300 hover:text-white hover:border-white/30 ${
+            i === 0 ? "border-white/30 text-white" : "border-white/10"
+          }`}
+          data-oid="8jr82o9"
+        >
+          {category.name}
         </button>
       )}
-    </div>);
-
+      {error && (
+        <span className="px-3 h-8 flex items-center text-yellow-400 text-xs">
+          Using fallback categories
+        </span>
+      )}
+    </div>
+  );
 }
 
 function Pill({ title, subtitle }: {title: string;subtitle?: string;}) {
