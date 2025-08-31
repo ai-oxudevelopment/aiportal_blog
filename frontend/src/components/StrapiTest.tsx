@@ -51,14 +51,32 @@ export default function StrapiTest() {
   }
 
   if (error) {
+    const isAuthError = error.includes('401') || error.includes('403') || error.includes('Unauthorized') || error.includes('Forbidden');
+    
     return (
       <div className="p-4">
         <h2 className="text-xl font-bold mb-4 text-red-600">Strapi SDK Connection Failed</h2>
         <div className="bg-red-50 border border-red-200 rounded p-3">
           <p className="text-red-800">{error}</p>
-          <p className="text-sm text-red-600 mt-2">
-            Make sure the Strapi backend is running on http://localhost:1337
-          </p>
+          <div className="text-sm text-red-600 mt-4 space-y-2">
+            {isAuthError ? (
+              <>
+                <p className="font-semibold">Authentication Required:</p>
+                <ol className="list-decimal list-inside space-y-1 ml-2">
+                  <li>Open <a href="http://localhost:1337/admin" target="_blank" rel="noopener noreferrer" className="underline">Strapi Admin Panel</a></li>
+                  <li>Go to Settings → API Tokens</li>
+                  <li>Create a new API token with "Full access" or "Read-only" permissions</li>
+                  <li>Copy the token and add it to your .env.local file:</li>
+                </ol>
+                <div className="bg-gray-100 p-2 rounded text-xs font-mono mt-2">
+                  NEXT_PUBLIC_STRAPI_API_TOKEN=your_token_here
+                </div>
+                <p className="mt-2">Alternatively, configure public access in Strapi admin under Settings → Users & Permissions Plugin → Roles → Public</p>
+              </>
+            ) : (
+              <p>Make sure the Strapi backend is running on http://localhost:1337</p>
+            )}
+          </div>
         </div>
       </div>
     );
