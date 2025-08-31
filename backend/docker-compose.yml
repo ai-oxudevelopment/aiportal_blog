@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: aiportal-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aiportal-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strapi -d strapi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  strapi:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.dev
+      platforms:
+        - linux/arm64/v8
+    container_name: aiportal-strapi
+    restart: unless-stopped
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi123
+      DATABASE_SSL: false
+      NODE_ENV: development
+      JWT_SECRET: your-jwt-secret-change-this-in-production
+      ADMIN_JWT_SECRET: your-admin-jwt-secret-change-this-in-production
+      APP_KEYS: your-app-keys-1,your-app-keys-2,your-app-keys-3,your-app-keys-4
+      API_TOKEN_SALT: your-api-token-salt-change-this-in-production
+      TRANSFER_TOKEN_SALT: your-transfer-token-salt-change-this-in-production
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./app:/srv/app
+      - strapi_node_modules:/srv/app/node_modules
+      - /srv/app/.tmp
+    working_dir: /srv/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - aiportal-network
+
+volumes:
+  postgres_data:
+  strapi_node_modules:
+
+networks:
+  aiportal-network:
+    driver: bridge

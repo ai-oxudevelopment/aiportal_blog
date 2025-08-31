@@ -1,0 +1,11 @@
+# Task ID: 3
+# Title: Content Types Design
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Create content types in Strapi for Articles, Categories, Sections, Collections, Authors, and Tags
+# Details:
+Design and implement all content types in Strapi with proper relationships. Include SEO fields, media handling, and content management features. Use Strapi's content type builder to create the structure.
+
+# Test Strategy:
+Verify all content types are created and relationships are properly configured

@@ -1,0 +1,85 @@
+{
+  "autoTestConfig": {
+    "enabled": true,
+    "triggerConditions": {
+      "taskCompletion": {
+        "enabled": true,
+        "minTasksCompleted": 3,
+        "taskTypes": ["major", "milestone", "epic"]
+      },
+      "timeBased": {
+        "enabled": true,
+        "maxTimeWithoutTests": "2h"
+      },
+      "manualTrigger": {
+        "enabled": true,
+        "keywords": ["test", "verify", "check", "validate"]
+      }
+    },
+    "testSuites": {
+      "workProgress": {
+        "enabled": true,
+        "command": "bun run test:work-progress:bun",
+        "fallbackCommand": "npm run test:work-progress",
+        "required": true,
+        "description": "Work progress tests - verify task completion"
+      },
+      "e2e": {
+        "enabled": true,
+        "command": "bun run test:e2e",
+        "fallbackCommand": "npm run test:e2e",
+        "required": true,
+        "description": "End-to-end tests - verify application functionality"
+      },
+      "accessibility": {
+        "enabled": true,
+        "command": "bun run test:accessibility",
+        "fallbackCommand": "npm run test:accessibility",
+        "required": true,
+        "description": "Accessibility tests - verify WCAG compliance"
+      }
+    },
+    "notifications": {
+      "onStart": true,
+      "onSuccess": true,
+      "onFailure": true,
+      "onCompletion": true
+    },
+    "reporting": {
+      "generateReport": true,
+      "saveResults": true,
+      "outputFormat": "json",
+      "outputPath": ".taskmaster/test-results/"
+    }
+  },
+  "taskCategories": {
+    "major": [
+      "project-structure-setup",
+      "strapi-backend-initialization",
+      "frontend-integration",
+      "database-setup",
+      "authentication-system",
+      "content-management",
+      "deployment-setup"
+    ],
+    "milestone": [
+      "mvp-completion",
+      "beta-release",
+      "production-ready",
+      "feature-complete"
+    ],
+    "epic": [
+      "user-authentication",
+      "content-management-system",
+      "admin-dashboard",
+      "api-development",
+      "frontend-development"
+    ]
+  },
+  "testExecution": {
+    "parallel": false,
+    "timeout": 300000,
+    "retryOnFailure": 1,
+    "stopOnFirstFailure": false
+  }
+}

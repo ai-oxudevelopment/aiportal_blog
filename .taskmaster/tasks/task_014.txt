@@ -1,0 +1,11 @@
+# Task ID: 14
+# Title: Security Hardening
+# Status: pending
+# Dependencies: 4, 7
+# Priority: medium
+# Description: Implement security best practices for both frontend and backend
+# Details:
+Configure proper authentication and authorization in Strapi. Implement security headers in Next.js. Set up rate limiting and input validation. Configure HTTPS and secure cookies.
+
+# Test Strategy:
+Verify security measures are properly implemented and tested

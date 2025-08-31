@@ -1,0 +1,53 @@
+{
+  "expectedFolders": {
+    "root": ["frontend", "backend"],
+    "frontend": [
+      "package.json",
+      "next.config.ts",
+      "tsconfig.json",
+      "tailwind.config.ts",
+      "src",
+      "public",
+      "cypress.config.ts",
+      "cypress",
+      ".gitignore",
+      "README.md"
+    ],
+    "backend": [
+      "package.json",
+      "config",
+      "src",
+      ".env",
+      ".env.example",
+      "database",
+      "api"
+    ]
+  },
+  "expectedPorts": {
+    "frontend": 3000,
+    "backend": 1337
+  },
+  "expectedUrls": {
+    "frontend": "http://localhost:3000",
+    "backend": "http://localhost:1337",
+    "strapiAdmin": "http://localhost:1337/admin"
+  },
+  "expectedScripts": {
+    "frontend": ["dev", "build", "start", "lint"],
+    "backend": ["develop", "build", "start", "strapi"]
+  },
+  "checklistItems": [
+    "Folder structure created (frontend/backend)",
+    "Next.js template moved to frontend folder",
+    "Frontend application starts without errors",
+    "Strapi CMS initialized in backend folder",
+    "Backend application starts without errors",
+    "Admin panel accessible at http://localhost:1337/admin",
+    "Environment configuration files created",
+    "README.md updated with project structure",
+    "Package.json scripts configured",
+    "Gitignore properly configured",
+    "No port conflicts between applications",
+    "SQLite database configured for development"
+  ]
+}

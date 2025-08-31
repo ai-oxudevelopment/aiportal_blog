@@ -1,0 +1,11 @@
+# Task ID: 7
+# Title: Frontend Strapi SDK Integration
+# Status: pending
+# Dependencies: 1, 4
+# Priority: high
+# Description: Install and configure Strapi SDK for Next.js in the frontend folder
+# Details:
+Install the official Strapi SDK for Next.js. Configure the SDK with backend API endpoints. Set up environment variables for API configuration. Test basic connectivity.
+
+# Test Strategy:
+Verify SDK can connect to Strapi backend and fetch data

@@ -1,0 +1,39 @@
+{
+  "name": "aiportal-strapi",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application for AI Portal Blog",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "setup": "strapi setup",
+    "deploy": "strapi deploy"
+  },
+  "dependencies": {
+    "@strapi/plugin-i18n": "4.15.5",
+    "@strapi/plugin-users-permissions": "4.15.5",
+    "@strapi/strapi": "4.15.5",
+    "axios": "^1.11.0",
+    "pg": "8.11.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^5.3.4",
+    "styled-components": "^5.3.11"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "author": {
+    "name": "AI Portal Team"
+  },
+  "strapi": {
+    "uuid": "aiportal-strapi"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

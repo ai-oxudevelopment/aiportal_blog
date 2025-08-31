@@ -1,23 +1,65 @@
-# Onlook Template
+# AI Portal Blog
 
-<p align="center">
-  <img src="src/app/favicon.ico" />
-</p>
+AI Portal Blog с Next.js frontend и Strapi CMS backend.
 
-This is an [Onlook](https://onlook.dev/) project set up with [Next.js](https://nextjs.org/), and [TailwindCSS](https://tailwindcss.com/).
+## Структура проекта
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+aiportal_blog/
+├── frontend/          # Next.js приложение
+├── backend/           # Strapi CMS
+├── docs/             # Документация
+└── scripts/          # Скрипты
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in Onlook to see the result.
+## Требования
+
+- Node.js 18+ (для frontend)
+- Docker (для backend Strapi)
+- npm или yarn
+
+## Установка и запуск
+
+### 1. Установка зависимостей
+
+```bash
+npm run install:all
+```
+
+### 2. Запуск в режиме разработки
+
+```bash
+# Запуск обоих приложений одновременно
+npm run dev
+
+# Или по отдельности:
+npm run dev:frontend  # Frontend на http://localhost:3000
+npm run dev:backend   # Backend на http://localhost:1337
+```
+
+### 3. Запуск в продакшн режиме
+
+```bash
+npm run build
+npm run start
+```
+
+## Доступ к приложениям
+
+- **Frontend**: http://localhost:3000
+- **Backend Strapi**: http://localhost:1337
+- **Strapi Admin**: http://localhost:1337/admin
+
+## Полезные команды
+
+```bash
+npm run clean          # Очистка кэша
+npm run test           # Запуск тестов
+npm run logs           # Просмотр логов backend
+```
+
+## Разработка
+
+- Frontend: Next.js с TypeScript и Tailwind CSS
+- Backend: Strapi CMS с SQLite базой данных
+- База данных: SQLite (для разработки)

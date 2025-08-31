@@ -1,0 +1,46 @@
+{
+    "name": "starter-15",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "format": "prettier --write .",
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run",
+        "test:e2e": "cypress run --spec 'cypress/e2e/**/*.cy.ts'",
+        "test:accessibility": "cypress run --spec 'cypress/e2e/accessibility.cy.ts'",
+        "test:work-progress": "cypress run --spec 'cypress/work-progress-tests/**/*.cy.ts'",
+        "test:work-progress-open": "cypress open --config specPattern='cypress/work-progress-tests/**/*.cy.ts'",
+        "test:task-001": "cypress run --spec 'cypress/work-progress-tests/task-001-project-structure-simple.cy.ts'",
+        "test:task-001-full": "cypress run --spec 'cypress/work-progress-tests/task-001-project-structure.cy.ts'",
+        "test:task-001-open": "cypress open --config specPattern='cypress/work-progress-tests/task-001-*.cy.ts'",
+        "test:work-progress:bun": "bun run cypress run --spec 'cypress/work-progress-tests/**/*.cy.ts'",
+        "test:task-001:bun": "bun run cypress run --spec 'cypress/work-progress-tests/task-001-project-structure-simple.cy.ts'",
+        "test:task-001-full:bun": "bun run cypress run --spec 'cypress/work-progress-tests/task-001-project-structure.cy.ts'",
+        "test:all": "bun run test:work-progress:bun && bun run test:e2e && bun run test:accessibility",
+        "test:all:npm": "npm run test:work-progress && npm run test:e2e && npm run test:accessibility"
+    },
+    "dependencies": {
+        "@strapi/client": "^1.5.0",
+        "next": "15.3.5",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "cypress": "^13.6.0",
+        "cypress-axe": "^1.5.0",
+        "eslint": "^8",
+        "eslint-config-next": "15.0.3",
+        "postcss": "^8",
+        "prettier": "^3.3.3",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5",
+        "wick-a11y": "^1.0.0"
+    }
+}

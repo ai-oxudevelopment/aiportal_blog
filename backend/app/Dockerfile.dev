@@ -1,0 +1,24 @@
+FROM --platform=linux/arm64/v8 node:20-alpine
+
+# Install dependencies for native modules and networking tools
+RUN apk add --no-cache python3 make g++ curl netcat-openbsd
+
+WORKDIR /srv/app
+
+# Copy package files first for better caching
+COPY package*.json ./
+
+# Install all dependencies (including dev) for development
+RUN npm install --no-audit --no-fund
+
+# Copy source code
+COPY . .
+
+# Make startup script executable
+RUN chmod +x start.sh
+
+# Expose port
+EXPOSE 1337
+
+# Start Strapi in development mode with auto-install
+CMD ["sh", "-c", "echo 'Y' | npm run develop"]

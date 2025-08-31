@@ -1,0 +1,52 @@
+# Task ID: 1
+# Title: Project Structure Setup
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Create the two-folder structure (frontend/backend) and move existing Next.js template to frontend folder
+# Details:
+Set up the project architecture with separate frontend and backend folders. Move the existing Next.js SEO portal template to the frontend folder and prepare the backend folder for Strapi CMS installation.
+
+## Чек-лист выполнения задачи:
+
+### 1. Создание структуры папок
+- [ ] Создана папка `frontend` в корне проекта
+- [ ] Создана папка `backend` в корне проекта
+- [ ] Структура папок соответствует архитектуре проекта
+
+### 2. Перемещение существующего Next.js шаблона
+- [ ] Все файлы текущего Next.js шаблона перемещены в папку `frontend`
+- [ ] Сохранена целостность файловой структуры шаблона
+- [ ] Приложение в папке `frontend` запускается без ошибок
+- [ ] Все зависимости и конфигурации перенесены корректно
+- [ ] Проверена работоспособность всех компонентов шаблона
+
+### 3. Подготовка backend для Strapi
+- [ ] В папке `backend` инициализирован новый проект Strapi
+- [ ] Установлены все необходимые зависимости для Strapi
+- [ ] Настроена база данных (SQLite для разработки)
+- [ ] Создан файл конфигурации `.env` для backend
+- [ ] Strapi запускается без ошибок
+- [ ] Admin панель Strapi доступна по адресу http://localhost:1337/admin
+
+### 4. Документация и конфигурация
+- [ ] Создан/обновлен `README.md` с описанием структуры проекта
+- [ ] Добавлены инструкции по запуску frontend и backend
+- [ ] Настроены скрипты в `package.json` для удобного запуска
+- [ ] Создан `.gitignore` для исключения ненужных файлов
+- [ ] Документированы порты и URL для доступа к приложениям
+
+### 5. Проверка интеграции
+- [ ] Frontend и backend могут работать независимо
+- [ ] Нет конфликтов в портах между приложениями
+- [ ] Структура проекта готова для дальнейшей разработки
+- [ ] Все файлы добавлены в систему контроля версий
+
+### Критерии приемки:
+- Все пункты чек-листа выполнены
+- Проект запускается без ошибок
+- Структура соответствует требованиям PRD
+- Готовность к переходу к следующей задаче (Strapi CMS Backend Initialization)
+
+# Test Strategy:
+Verify folder structure exists and Next.js template is accessible in frontend folder. Complete all checklist items and ensure both frontend and backend applications start without errors.

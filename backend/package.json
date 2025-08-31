@@ -1,0 +1,22 @@
+{
+  "name": "aiportal-backend",
+  "version": "1.0.0",
+  "description": "Strapi CMS backend for AI Portal Blog",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "restart": "docker-compose restart",
+    "logs": "docker-compose logs -f",
+    "build": "docker-compose build",
+    "build:prod": "docker-compose -f docker-compose.prod.yml build",
+    "dev": "docker-compose up",
+    "dev:build": "docker-compose build --no-cache",
+    "prod": "docker-compose -f docker-compose.prod.yml up -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["strapi", "cms", "backend"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
