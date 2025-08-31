@@ -217,6 +217,41 @@ export const getServerAuthorBySlug = async (slug: string, params?: any): Promise
   }
 };
 
+export const getServerCollections = async (params?: any): Promise<Collection[]> => {
+  try {
+    const queryParams = new URLSearchParams();
+    queryParams.append('publicationState', 'live');
+    
+    if (params?.populate) {
+      queryParams.append('populate', JSON.stringify(params.populate));
+    }
+
+    const response = await makeServerRequest(`/collections?${queryParams.toString()}`);
+    return response.data || [];
+  } catch (error) {
+    console.error('Error fetching collections on server:', error);
+    return [];
+  }
+};
+
+export const getServerCollectionBySlug = async (slug: string, params?: any): Promise<Collection | null> => {
+  try {
+    const queryParams = new URLSearchParams();
+    queryParams.append('publicationState', 'live');
+    queryParams.append('filters[slug][$eq]', slug);
+    
+    if (params?.populate) {
+      queryParams.append('populate', JSON.stringify(params.populate));
+    }
+
+    const response = await makeServerRequest(`/collections?${queryParams.toString()}`);
+    return response.data?.[0] || null;
+  } catch (error) {
+    console.error(`Error fetching collection by slug ${slug} on server:`, error);
+    return null;
+  }
+};
+
 export const getServerTags = async (params?: any): Promise<Tag[]> => {
   try {
     const queryParams = new URLSearchParams();
@@ -231,6 +266,24 @@ export const getServerTags = async (params?: any): Promise<Tag[]> => {
   } catch (error) {
     console.error('Error fetching tags on server:', error);
     return [];
+  }
+};
+
+export const getServerTagBySlug = async (slug: string, params?: any): Promise<Tag | null> => {
+  try {
+    const queryParams = new URLSearchParams();
+    queryParams.append('publicationState', 'live');
+    queryParams.append('filters[slug][$eq]', slug);
+    
+    if (params?.populate) {
+      queryParams.append('populate', JSON.stringify(params.populate));
+    }
+
+    const response = await makeServerRequest(`/tags?${queryParams.toString()}`);
+    return response.data?.[0] || null;
+  } catch (error) {
+    console.error(`Error fetching tag by slug ${slug} on server:`, error);
+    return null;
   }
 };
 
