@@ -1,0 +1,90 @@
+{
+  "kind": "collectionType",
+  "collectionName": "files",
+  "info": {
+    "singularName": "file",
+    "pluralName": "files",
+    "displayName": "File",
+    "description": "Media files with enhanced metadata"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "alternativeText": {
+      "type": "string",
+      "required": false
+    },
+    "caption": {
+      "type": "string",
+      "required": false
+    },
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "formats": {
+      "type": "json"
+    },
+    "hash": {
+      "type": "string",
+      "required": true
+    },
+    "ext": {
+      "type": "string"
+    },
+    "mime": {
+      "type": "string",
+      "required": true
+    },
+    "size": {
+      "type": "decimal",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "previewUrl": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string",
+      "required": true
+    },
+    "provider_metadata": {
+      "type": "json"
+    },
+    "related": {
+      "type": "relation",
+      "relation": "morphToMany"
+    },
+    "createdAt": {
+      "type": "datetime"
+    },
+    "updatedAt": {
+      "type": "datetime"
+    },
+    "createdBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "updatedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

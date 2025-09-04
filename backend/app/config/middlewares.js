@@ -29,4 +29,8 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  {
+    name: 'global::image-optimization',
+    config: {},
+  },
 ];

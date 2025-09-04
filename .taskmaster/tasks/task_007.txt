@@ -1,11 +1,11 @@
 # Task ID: 7
-# Title: Frontend Strapi SDK Integration
-# Status: pending
-# Dependencies: 1, 4
-# Priority: high
-# Description: Install and configure Strapi SDK for Next.js in the frontend folder
+# Title: Implement Search and Filtering
+# Status: done
+# Dependencies: 4
+# Priority: medium
+# Description: Add search functionality and advanced filtering options for content
 # Details:
-Install the official Strapi SDK for Next.js. Configure the SDK with backend API endpoints. Set up environment variables for API configuration. Test basic connectivity.
+Implement full-text search across articles, categories, and tags. Add filtering by date, category, tags. Implement pagination and sorting options. Create search API endpoints.
 
 # Test Strategy:
-Verify SDK can connect to Strapi backend and fetch data
+Test search functionality with various queries, verify filtering works correctly, and ensure performance is acceptable.

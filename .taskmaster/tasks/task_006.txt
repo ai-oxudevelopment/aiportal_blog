@@ -1,11 +1,11 @@
 # Task ID: 6
-# Title: Media Management Setup
-# Status: pending
-# Dependencies: 2
+# Title: Configure Database and Migrations
+# Status: done
+# Dependencies: 1
 # Priority: medium
-# Description: Configure media handling with image optimization and file upload management
+# Description: Set up database configuration, migrations, and seed data
 # Details:
-Configure Strapi's media library for image optimization and resizing. Set up file upload handling with proper validation. Implement alt text management for SEO.
+Configure database connection (PostgreSQL/MySQL), set up migration system, create initial seed data for categories, tags, and sample content. Implement backup and restore procedures.
 
 # Test Strategy:
-Verify image upload, optimization, and retrieval works correctly
+Verify database connections, test migrations, and ensure seed data is properly loaded.

@@ -1,11 +1,11 @@
 # Task ID: 14
-# Title: Security Hardening
+# Title: Implement SEO and Meta Tags
 # Status: pending
-# Dependencies: 4, 7
+# Dependencies: 11
 # Priority: medium
-# Description: Implement security best practices for both frontend and backend
+# Description: Add SEO optimization and dynamic meta tags for all pages
 # Details:
-Configure proper authentication and authorization in Strapi. Implement security headers in Next.js. Set up rate limiting and input validation. Configure HTTPS and secure cookies.
+Implement dynamic meta tags for articles, categories, and pages. Add Open Graph tags, Twitter cards, structured data (JSON-LD), and sitemap generation. Configure robots.txt and meta robots.
 
 # Test Strategy:
-Verify security measures are properly implemented and tested
+Verify meta tags are generated correctly, check structured data validation, and test social media previews.

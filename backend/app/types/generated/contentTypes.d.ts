@@ -697,40 +697,18 @@ export interface ApiArticleArticle extends Schema.CollectionType {
       }>;
     slug: Attribute.UID<'api::article.article', 'title'> & Attribute.Required;
     content: Attribute.RichText & Attribute.Required;
-    excerpt: Attribute.Text &
+    metaDescription: Attribute.Text &
       Attribute.SetMinMaxLength<{
         maxLength: 500;
       }>;
-    featuredImage: Attribute.Media;
-    publishedAt: Attribute.DateTime;
-    seoTitle: Attribute.String &
-      Attribute.SetMinMaxLength<{
-        maxLength: 60;
-      }>;
-    seoDescription: Attribute.Text &
-      Attribute.SetMinMaxLength<{
-        maxLength: 160;
-      }>;
-    seoKeywords: Attribute.Text;
+    publishDate: Attribute.DateTime;
+    status: Attribute.Enumeration<['draft', 'published', 'archived']> &
+      Attribute.DefaultTo<'draft'>;
+    featured: Attribute.Boolean & Attribute.DefaultTo<false>;
     readingTime: Attribute.Integer &
       Attribute.SetMinMax<{
         min: 1;
       }>;
-    views: Attribute.Integer &
-      Attribute.SetMinMax<{
-        min: 0;
-      }> &
-      Attribute.DefaultTo<0>;
-    likes: Attribute.Integer &
-      Attribute.SetMinMax<{
-        min: 0;
-      }> &
-      Attribute.DefaultTo<0>;
-    author: Attribute.Relation<
-      'api::article.article',
-      'manyToOne',
-      'api::author.author'
-    >;
     categories: Attribute.Relation<
       'api::article.article',
       'manyToMany',
@@ -746,67 +724,22 @@ export interface ApiArticleArticle extends Schema.CollectionType {
       'manyToOne',
       'api::section.section'
     >;
-    collection: Attribute.Relation<
+    collections: Attribute.Relation<
       'api::article.article',
-      'manyToOne',
+      'manyToMany',
       'api::collection.collection'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::article.article',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::article.article',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiAuthorAuthor extends Schema.CollectionType {
-  collectionName: 'authors';
-  info: {
-    singularName: 'author';
-    pluralName: 'authors';
-    displayName: 'Author';
-    description: 'Article authors and contributors';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        maxLength: 255;
-      }>;
-    slug: Attribute.UID<'api::author.author', 'name'> & Attribute.Required;
-    email: Attribute.Email & Attribute.Required & Attribute.Unique;
-    bio: Attribute.RichText;
-    avatar: Attribute.Media;
-    socialLinks: Attribute.JSON;
-    expertise: Attribute.Text;
-    articles: Attribute.Relation<
-      'api::author.author',
-      'oneToMany',
-      'api::article.article'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::author.author',
+      'api::article.article',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::author.author',
+      'api::article.article',
       'oneToOne',
       'admin::user'
     > &
@@ -831,14 +764,28 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 255;
       }>;
-    slug: Attribute.UID<'api::category.category', 'name'> & Attribute.Required;
     description: Attribute.Text;
-    icon: Attribute.String;
-    color: Attribute.String;
+    slug: Attribute.UID<'api::category.category', 'name'> & Attribute.Required;
+    parent: Attribute.Relation<
+      'api::category.category',
+      'manyToOne',
+      'api::category.category'
+    >;
+    children: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::category.category'
+    >;
+    order: Attribute.Integer & Attribute.DefaultTo<0>;
     articles: Attribute.Relation<
       'api::category.category',
       'manyToMany',
       'api::article.article'
+    >;
+    sections: Attribute.Relation<
+      'api::category.category',
+      'manyToMany',
+      'api::section.section'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -864,7 +811,7 @@ export interface ApiCollectionCollection extends Schema.CollectionType {
     singularName: 'collection';
     pluralName: 'collections';
     displayName: 'Collection';
-    description: 'Article collections for special content organization';
+    description: 'Article collections for organizing content';
   };
   options: {
     draftAndPublish: true;
@@ -878,14 +825,15 @@ export interface ApiCollectionCollection extends Schema.CollectionType {
     slug: Attribute.UID<'api::collection.collection', 'name'> &
       Attribute.Required;
     description: Attribute.Text;
-    coverImage: Attribute.Media;
-    isFeatured: Attribute.Boolean & Attribute.DefaultTo<false>;
-    order: Attribute.Integer & Attribute.DefaultTo<0>;
+    featuredImage: Attribute.Media;
     articles: Attribute.Relation<
       'api::collection.collection',
-      'oneToMany',
+      'manyToMany',
       'api::article.article'
     >;
+    featured: Attribute.Boolean & Attribute.DefaultTo<false>;
+    publishDate: Attribute.DateTime;
+    order: Attribute.Integer & Attribute.DefaultTo<0>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -897,6 +845,47 @@ export interface ApiCollectionCollection extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::collection.collection',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPlaybookPlaybook extends Schema.CollectionType {
+  collectionName: 'playbooks';
+  info: {
+    singularName: 'playbook';
+    pluralName: 'playbooks';
+    displayName: 'Playbook';
+    description: 'AI playbooks and guides';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
+    slug: Attribute.UID<'api::playbook.playbook', 'title'> & Attribute.Required;
+    shortDescription: Attribute.Text &
+      Attribute.SetMinMaxLength<{
+        maxLength: 500;
+      }>;
+    text: Attribute.Blocks & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::playbook.playbook',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::playbook.playbook',
       'oneToOne',
       'admin::user'
     > &
@@ -925,10 +914,16 @@ export interface ApiSectionSection extends Schema.CollectionType {
     description: Attribute.Text;
     icon: Attribute.String;
     order: Attribute.Integer & Attribute.DefaultTo<0>;
+    featured: Attribute.Boolean & Attribute.DefaultTo<false>;
     articles: Attribute.Relation<
       'api::section.section',
       'oneToMany',
       'api::article.article'
+    >;
+    categories: Attribute.Relation<
+      'api::section.section',
+      'manyToMany',
+      'api::category.category'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -967,6 +962,11 @@ export interface ApiTagTag extends Schema.CollectionType {
       }>;
     slug: Attribute.UID<'api::tag.tag', 'name'> & Attribute.Required;
     description: Attribute.Text;
+    color: Attribute.String &
+      Attribute.SetMinMaxLength<{
+        maxLength: 7;
+      }>;
+    featured: Attribute.Boolean & Attribute.DefaultTo<false>;
     articles: Attribute.Relation<
       'api::tag.tag',
       'manyToMany',
@@ -999,9 +999,9 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::article.article': ApiArticleArticle;
-      'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
       'api::collection.collection': ApiCollectionCollection;
+      'api::playbook.playbook': ApiPlaybookPlaybook;
       'api::section.section': ApiSectionSection;
       'api::tag.tag': ApiTagTag;
     }

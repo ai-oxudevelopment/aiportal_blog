@@ -1,11 +1,11 @@
 # Task ID: 11
-# Title: SEO Optimization Implementation
+# Title: Create Article Display Components
 # Status: pending
-# Dependencies: 9
-# Priority: medium
-# Description: Implement dynamic meta tags, structured data, and image optimization
+# Dependencies: 10
+# Priority: high
+# Description: Build components for displaying articles, categories, and related content
 # Details:
-Implement dynamic meta tags from Strapi content. Add structured data (JSON-LD) for articles and other content types. Optimize images using Next.js Image component. Implement Open Graph tags.
+Create article card, article detail, category list, and tag cloud components. Implement article preview, reading time calculation, and social sharing. Add related articles functionality.
 
 # Test Strategy:
-Verify SEO tags are properly generated and images are optimized
+Test article display on different devices, verify responsive design, and check content rendering.

@@ -1,52 +1,43 @@
 # Task ID: 1
-# Title: Project Structure Setup
-# Status: pending
+# Title: Initialize Strapi Backend Project
+# Status: done
 # Dependencies: None
 # Priority: high
-# Description: Create the two-folder structure (frontend/backend) and move existing Next.js template to frontend folder
+# Description: Set up Strapi CMS in the backend folder with proper configuration and content types
 # Details:
-Set up the project architecture with separate frontend and backend folders. Move the existing Next.js SEO portal template to the frontend folder and prepare the backend folder for Strapi CMS installation.
-
-## Чек-лист выполнения задачи:
-
-### 1. Создание структуры папок
-- [ ] Создана папка `frontend` в корне проекта
-- [ ] Создана папка `backend` в корне проекта
-- [ ] Структура папок соответствует архитектуре проекта
-
-### 2. Перемещение существующего Next.js шаблона
-- [ ] Все файлы текущего Next.js шаблона перемещены в папку `frontend`
-- [ ] Сохранена целостность файловой структуры шаблона
-- [ ] Приложение в папке `frontend` запускается без ошибок
-- [ ] Все зависимости и конфигурации перенесены корректно
-- [ ] Проверена работоспособность всех компонентов шаблона
-
-### 3. Подготовка backend для Strapi
-- [ ] В папке `backend` инициализирован новый проект Strapi
-- [ ] Установлены все необходимые зависимости для Strapi
-- [ ] Настроена база данных (SQLite для разработки)
-- [ ] Создан файл конфигурации `.env` для backend
-- [ ] Strapi запускается без ошибок
-- [ ] Admin панель Strapi доступна по адресу http://localhost:1337/admin
-
-### 4. Документация и конфигурация
-- [ ] Создан/обновлен `README.md` с описанием структуры проекта
-- [ ] Добавлены инструкции по запуску frontend и backend
-- [ ] Настроены скрипты в `package.json` для удобного запуска
-- [ ] Создан `.gitignore` для исключения ненужных файлов
-- [ ] Документированы порты и URL для доступа к приложениям
-
-### 5. Проверка интеграции
-- [ ] Frontend и backend могут работать независимо
-- [ ] Нет конфликтов в портах между приложениями
-- [ ] Структура проекта готова для дальнейшей разработки
-- [ ] Все файлы добавлены в систему контроля версий
-
-### Критерии приемки:
-- Все пункты чек-листа выполнены
-- Проект запускается без ошибок
-- Структура соответствует требованиям PRD
-- Готовность к переходу к следующей задаче (Strapi CMS Backend Initialization)
+Create Strapi project in backend folder, configure database, set up content types for articles, categories, sections, collections, and tags. Configure media handling and API endpoints.
 
 # Test Strategy:
-Verify folder structure exists and Next.js template is accessible in frontend folder. Complete all checklist items and ensure both frontend and backend applications start without errors.
+Verify Strapi admin panel is accessible, content types are created, and API endpoints respond correctly
+
+# Subtasks:
+## 1. Install and Initialize Strapi Project [done]
+### Dependencies: None
+### Description: Create new Strapi project in backend folder with proper configuration
+### Details:
+Run 'npx create-strapi-app@latest backend --quickstart --no-run', configure package.json, set up project structure, install dependencies, and verify Strapi installation.
+
+## 2. Configure Database Connection [done]
+### Dependencies: 1.1
+### Description: Set up database configuration for development and production environments
+### Details:
+Configure database.js with PostgreSQL/MySQL settings, set up environment variables for database credentials, test database connection, and configure connection pooling.
+
+## 3. Set Up Basic Content Types Structure [done]
+### Dependencies: 1.2
+### Description: Create initial content type definitions for core entities
+### Details:
+Create basic content types: Article, Category, Section, Collection, Tag. Set up basic fields (name, description, slug) without relationships initially.
+
+## 4. Configure Media Library and File Handling [done]
+### Dependencies: 1.3
+### Description: Set up media management with proper file upload configuration
+### Details:
+Configure media library settings, set up file upload limits, configure allowed file types, implement basic image optimization, and set up file storage paths.
+
+## 5. Set Up Basic API Configuration [done]
+### Dependencies: 1.4
+### Description: Configure API settings and basic middleware
+### Details:
+Configure API prefix, set up CORS settings, configure basic middleware (body parser, security headers), set up API rate limiting, and configure response formatting.
+

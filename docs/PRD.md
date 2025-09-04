@@ -1,826 +1,1042 @@
-# Product Requirements Document (PRD)
+# Product Requirements Document (PRD) - AI Portal Blog Integration
 
-## Next.js Blog with Strapi Backend
+## Project Overview
 
-### 1. Project Overview
-
-**Project Name:** AI Portal Blog  
+**Project Name:** AI Portal Blog Integration  
 **Version:** 1.0  
 **Date:** December 2024  
 **Status:** Planning Phase
 
-#### 1.1 Project Vision
-
-Create a modern, user-friendly, and SEO-optimized blog platform that provides an exceptional reading experience with intuitive navigation and beautiful content presentation.
-
-#### 1.2 Project Goals
-
-- Build a performant blog with excellent user experience
-- Implement SEO best practices for maximum discoverability
-- Create an intuitive content management system
-- Establish a scalable architecture for future growth
-
-#### 1.3 Success Metrics
-
-- Page load time < 2 seconds
-- SEO score > 90/100
-- Mobile responsiveness score > 95/100
-- User engagement time > 3 minutes per session
-
-### 2. Technical Architecture
-
-#### 2.1 Technology Stack
-
-- **Frontend:** Next.js 14 with TypeScript
-- **Backend:** Strapi CMS
-- **Database:** PostgreSQL
-- **Styling:** Tailwind CSS
-- **Deployment:** Vercel (Frontend), Railway/Heroku (Backend)
-- **CDN:** Cloudflare
-
-#### 2.2 System Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Next.js App   │◄──►│   Strapi CMS    │◄──►│   PostgreSQL    │
-│   (Frontend)    │    │   (Backend)     │    │   (Database)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │
-         ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐
-│   Vercel CDN    │    │   Cloudflare    │
-│   (Deployment)  │    │   (CDN)         │
-└─────────────────┘    └─────────────────┘
-```
-
-### 3. Functional Requirements
-
-#### 3.1 Public Blog Features
-
-##### 3.1.1 Homepage (Inspired by OpenAI News) - Detailed Specification
-
-**Visual Design Requirements:**
-
-**Color Palette:**
-
-- **Primary Background:** Dark theme gradient (#000000 to #1a1a1a)
-- **Secondary Background:** Dark grey (#2a2a2a) for cards and sections
-- **Text Primary:** White (#ffffff) for headings and important text
-- **Text Secondary:** Light grey (#a0a0a0) for metadata and descriptions
-- **Accent Gradients:**
-  - Featured: Pink-to-orange-to-blue gradient
-  - Secondary: Blue-to-purple gradient
-  - Tertiary: Green-to-teal gradient
-- **Interactive Elements:** Subtle opacity changes and hover states
-
-**Typography System:**
-
-- **Primary Font:** Inter or similar modern sans-serif
-- **Page Title:** 48px, Bold (700), white text, centered
-- **Article Titles:** 32px (featured), 20px (secondary), Semi-bold (600)
-- **Article Excerpts:** 16px, Regular (400), light grey, 1.6 line height
-- **Metadata:** 14px, Regular (400), light grey
-- **Navigation:** 16px, Medium (500), white text
-
-**Layout Structure:**
-
-**Header Section (Fixed, 64px height):**
-
-- **Logo:** Left-aligned, white text with small square icon
-- **Search:** Right-aligned magnifying glass icon with hover effect
-- **Login Button:** Dark background (#333333), white text, rounded corners
-- **Sticky Behavior:** Remains fixed on scroll with smooth transition
-
-**Navigation Sidebar (Fixed, 240px width):**
-
-- **Background:** Dark theme matching main background
-- **Menu Items:** 48px height each, white text, 16px font
-- **Active State:** Dark grey background (#333333) for current page
-- **Hover Effects:** Subtle background color change
-- **Categories:** "All", "Company", "Research", "Product", "Safety", "Security", "Global Affairs"
-
-**Main Content Area:**
-
-**Page Title Section:**
-
-- **Title:** "Blog" or "News" centered, 48px, bold white text
-- **Spacing:** 32px margin top and bottom
-- **Positioning:** Below header, above filter bar
-
-**Filter Bar (48px height):**
-
-- **Filter Options:** Horizontal row of category filters
-- **Active State:** White text, subtle underline
-- **Inactive State:** Light grey text (#a0a0a0)
-- **Hover Effects:** Opacity change on hover
-- **Right Controls:** Filter dropdown, Sort dropdown, Grid/List toggle icons
-- **Spacing:** 16px between filter options
-
-**Article Grid Layout:**
-
-**Featured Article (Large Card - 2/3 width):**
-
-- **Size:** 2/3 of main content width, full height
-- **Background:** Vibrant gradient with abstract geometric shapes
-- **Content Overlay:** White rounded rectangle (16px radius) in center
-- **Typography:** Large bold title (32px), subtitle (18px)
-- **Positioning:** Left side of main grid area
-- **Hover Effects:** Scale transform (1.02x) with 0.3s ease-in-out transition
-- **Border Radius:** 12px
-- **Padding:** 24px internal padding
-- **Shadow:** Subtle drop shadow for depth
-
-**Secondary Articles (Small Cards - 1/3 width each):**
-
-- **Size:** 1/3 width, stacked vertically on right side
-- **Background:** Different gradient themes for each card
-- **Content:** Centered white text with abstract background shapes
-- **Typography:** Medium titles (20px), dates (14px)
-- **Spacing:** 16px gap between cards
-- **Hover Effects:** Same scale transform as featured article
-- **Border Radius:** 12px
-- **Padding:** 20px internal padding
-
-**Card Design Specifications:**
-
-- **Border Radius:** 12px for all cards
-- **Padding:** 24px (featured), 20px (secondary)
-- **Shadows:** Subtle drop shadow (0 4px 12px rgba(0,0,0,0.15))
-- **Transitions:** 0.3s ease-in-out for all hover effects
-- **Image Integration:** Background gradients with abstract geometric shapes
-- **Text Contrast:** High contrast white text on gradient backgrounds
-- **Content Structure:** Title, excerpt, author, date, reading time
-
-**Responsive Behavior:**
-
-**Desktop (1200px+):**
-
-- Full layout with sidebar (240px) and main content
-- Featured article: 2/3 width, secondary articles: 1/3 width stacked
-- All interactive elements visible
-
-**Tablet (768px-1199px):**
-
-- Collapsed sidebar (hamburger menu)
-- Full-width main content
-- Featured article: full width, secondary articles: 2 columns
-- Simplified filter bar
-
-**Mobile (320px-767px):**
-
-- Single column layout
-- Hidden sidebar (drawer menu)
-- All cards full width, stacked vertically
-- Simplified navigation and filters
-
-**Interactive Elements:**
-
-**Hover States:**
-
-- **Cards:** Scale transform (1.02x) with smooth transition
-- **Buttons:** Background color change with transition
-- **Links:** Underline animation on hover
-- **Menu Items:** Background color change with opacity transition
-- **Filter Options:** Opacity change and subtle underline
-
-**Loading States:**
-
-- **Skeleton Loading:** Card-shaped placeholders with subtle animation
-- **Image Loading:** Progressive loading with blur-to-sharp transition
-- **Content Loading:** Smooth fade-in animation for text content
-- **Page Transitions:** Smooth fade transitions between pages
-
-**Micro-interactions:**
-
-- **Filter Changes:** Instant content updates with subtle animation
-- **Search Results:** Smooth expansion of search results
-- **Scroll Behavior:** Smooth scrolling with subtle parallax effects
-- **Menu Toggle:** Smooth slide animation for mobile menu
-
-**Content Requirements:**
-
-**Featured Article:**
-
-- High-quality featured image (1200x600px minimum)
-- Compelling headline with clear value proposition
-- Brief excerpt (2-3 sentences)
-- Author information and publication date
-- Reading time estimate
-- Category tag
-
-**Secondary Articles:**
-
-- Thumbnail image (400x300px)
-- Clear, descriptive titles
-- Brief excerpts (1-2 sentences)
-- Publication date and reading time
-- Category tags
-
-**Metadata Display:**
-
-- **Author:** Name and avatar (if available)
-- **Date:** Publication date in readable format
-- **Reading Time:** Estimated reading time in minutes
-- **Category:** Color-coded category tags
-- **Tags:** Relevant topic tags
-
-**Performance Requirements:**
-
-- **Page Load Time:** < 2 seconds
-- **Image Optimization:** WebP format with fallbacks
-- **Lazy Loading:** Images load as they enter viewport
-- **Caching:** Aggressive caching for static assets
-- **Critical CSS:** Inlined for above-the-fold content
-
-**Accessibility Features:**
-
-- **Color Contrast:** WCAG AA compliant ratios
-- **Focus States:** Clear focus indicators for keyboard navigation
-- **Screen Reader Support:** Proper ARIA labels and semantic HTML
-- **Keyboard Navigation:** Full keyboard accessibility
-- **Alt Text:** Descriptive alt text for all images
-
-**SEO Requirements:**
-
-- **Structured Data:** JSON-LD for articles and organization
-- **Meta Tags:** Complete meta title, description, keywords
-- **Open Graph:** Title, description, image for social sharing
-- **Twitter Cards:** Optimized for Twitter sharing
-- **Sitemap:** Automatic inclusion in XML sitemap
-
-##### 3.1.2 Article Page (Inspired by Writer.com Guides)
-
-- **Hero Block**
-  - Full-width featured image (1200x600px minimum)
-  - Article title and subtitle
-  - Author information and publication date
-  - Reading time estimate
-- **Content Layout**
-  - Two-column layout: content (70%) + sidebar (30%)
-  - Sticky table of contents on the left
-  - Well-typographed content with proper spacing
-- **Table of Contents**
-  - Sticky positioning on scroll
-  - Auto-generated from H2, H3 headings
-  - Active section highlighting
-  - Smooth scroll to sections
-- **Content Features**
-  - Rich text formatting (bold, italic, lists, code blocks)
-  - Image galleries with lightbox
-  - Video embeds (YouTube, Vimeo)
-  - Code syntax highlighting
-  - Social sharing buttons
-- **Related Articles**
-  - Similar articles based on tags/categories
-  - Previous/Next article navigation
-
-##### 3.1.3 Search & Discovery
-
-- **Global Search**
-  - Real-time search with debouncing
-  - Search results with snippets
-  - Filter by date, category, tags
-- **Category Pages**
-  - Category description and featured image
-  - Article grid with category-specific styling
-- **Tag Pages**
-  - Tag cloud visualization
-  - Related tags suggestions
-
-#### 3.2 Admin Panel (Strapi)
-
-##### 3.2.1 Content Management
-
-- **Article Management**
-  - Rich text editor with markdown support
-  - SEO fields (meta title, description, keywords)
-  - Featured image upload and optimization
-  - Draft/publish workflow
-  - Scheduled publishing
-- **Media Library**
-  - Image upload and optimization
-  - Alt text and caption management
-  - Image cropping and resizing
-- **Category & Tag Management**
-  - Hierarchical categories
-  - Tag creation and management
-  - SEO settings for taxonomies
-
-##### 3.2.2 SEO Management
-
-- **Meta Tags**
-  - Automatic generation with manual override
-  - Open Graph and Twitter Card support
-  - Structured data (JSON-LD)
-- **Sitemap Generation**
-  - Automatic XML sitemap
-  - Robots.txt configuration
-- **Analytics Integration**
-  - Google Analytics 4
-  - Search Console integration
-
-### 4. UX/UI Analysis
-
-#### 4.1 OpenAI News Analysis - Comprehensive UX/UI Specification
-
-**Visual Design Analysis:**
-
-**Color Scheme & Theme:**
-
-- **Primary Background:** Dark theme (#000000 to #1a1a1a gradient)
-- **Secondary Background:** Dark grey (#2a2a2a) for cards and sections
-- **Text Colors:** White (#ffffff) for primary text, light grey (#a0a0a0) for secondary
-- **Accent Colors:** Soft gradients (pink-to-orange-to-blue) for featured content
-- **Interactive Elements:** Subtle hover states with opacity changes
-
-**Typography System:**
-
-- **Primary Font:** Clean, modern sans-serif (Inter or similar)
-- **Heading Hierarchy:** Clear size progression (H1: 48px, H2: 32px, H3: 24px, H4: 20px)
-- **Body Text:** 16px with 1.6 line height for optimal readability
-- **Font Weights:** Regular (400), Medium (500), Semi-bold (600), Bold (700)
-- **Letter Spacing:** -0.02em for headings, 0 for body text
-
-**Layout Structure:**
-
-**Header Section:**
-
-- **Height:** 64px fixed header with logo on left, search and login on right
-- **Logo:** White text with small square icon, positioned left-aligned
-- **Search:** Magnifying glass icon with subtle hover effect
-- **Login Button:** Dark background (#333333) with white text, rounded corners
-- **Sticky Behavior:** Header remains fixed on scroll
-
-**Navigation Sidebar:**
-
-- **Width:** 240px fixed sidebar on left side
-- **Background:** Dark theme matching main background
-- **Menu Items:** White text with 16px font size, 48px height per item
-- **Active State:** Dark grey background (#333333) for current page
-- **Hover Effects:** Subtle background color change on hover
-- **Icon Integration:** Small icons next to menu items where appropriate
-
-**Main Content Area:**
-
-**Page Title Section:**
-
-- **Title:** "News" centered, 48px font size, white text
-- **Spacing:** 32px margin top and bottom
-- **Typography:** Bold weight, clean sans-serif
-
-**Filter Bar:**
-
-- **Height:** 48px horizontal bar below title
-- **Filter Options:** "All", "Company", "Research", "Product", "Safety", "Security", "Global Affairs"
-- **Active State:** White text for selected filter
-- **Inactive State:** Light grey text (#a0a0a0)
-- **Hover Effects:** Subtle opacity change on hover
-- **Right Side Controls:** Filter dropdown, Sort dropdown, Grid/List view toggle icons
-
-**Article Grid Layout:**
-
-**Featured Article (Large Card):**
-
-- **Size:** 2/3 width of main content area, full height
-- **Background:** Vibrant gradient (pink-to-orange-to-blue) with abstract shapes
-- **Content Overlay:** White rounded rectangle in center
-- **Typography:** Large bold title (32px), subtitle (18px)
-- **Positioning:** Left side of main grid area
-- **Hover Effects:** Subtle scale transform (1.02x) with smooth transition
-
-**Secondary Articles (Small Cards):**
-
-- **Size:** 1/3 width, stacked vertically on right side
-- **Background:** Different gradient themes for each card
-- **Content:** Centered white text with abstract background shapes
-- **Typography:** Medium size titles (20px), dates (14px)
-- **Spacing:** 16px gap between cards
-- **Hover Effects:** Same subtle scale transform as featured article
-
-**Card Design Specifications:**
-
-- **Border Radius:** 12px for all cards
-- **Padding:** 24px internal padding
-- **Shadows:** Subtle drop shadow for depth
-- **Transitions:** 0.3s ease-in-out for all hover effects
-- **Image Integration:** Background gradients with abstract geometric shapes
-- **Text Contrast:** High contrast white text on gradient backgrounds
-
-**Responsive Behavior:**
-
-- **Desktop (1200px+):** Full layout with sidebar and main content
-- **Tablet (768px-1199px):** Collapsed sidebar, full-width main content
-- **Mobile (320px-767px):** Single column layout, hidden sidebar, stacked cards
-
-**Interactive Elements:**
-
-**Hover States:**
-
-- **Cards:** Subtle scale transform (1.02x) with 0.3s transition
-- **Buttons:** Background color change with smooth transition
-- **Links:** Underline animation on hover
-- **Menu Items:** Background color change with opacity transition
-
-**Loading States:**
-
-- **Skeleton Loading:** Card-shaped placeholders with subtle animation
-- **Image Loading:** Progressive image loading with blur-to-sharp transition
-- **Content Loading:** Smooth fade-in animation for text content
-
-**Micro-interactions:**
-
-- **Page Transitions:** Smooth fade transitions between pages
-- **Filter Changes:** Instant content updates with subtle animation
-- **Search Results:** Smooth expansion of search results
-- **Scroll Behavior:** Smooth scrolling with subtle parallax effects
-
-**Accessibility Features:**
-
-- **Color Contrast:** WCAG AA compliant contrast ratios
-- **Focus States:** Clear focus indicators for keyboard navigation
-- **Screen Reader Support:** Proper ARIA labels and semantic HTML
-- **Keyboard Navigation:** Full keyboard accessibility for all interactive elements
-
-**Performance Optimizations:**
-
-- **Image Optimization:** WebP format with fallbacks, lazy loading
-- **CSS Optimization:** Critical CSS inlined, non-critical CSS deferred
-- **JavaScript Optimization:** Code splitting, lazy loading of non-critical scripts
-- **Caching Strategy:** Aggressive caching for static assets
-
-**Implementation Requirements:**
-
-**CSS Framework Integration:**
-
-- **Tailwind CSS:** Custom configuration matching OpenAI design system
-- **Custom Properties:** CSS variables for consistent theming
-- **Component Library:** Reusable components for cards, buttons, navigation
-- **Responsive Utilities:** Mobile-first responsive design utilities
-
-**JavaScript Functionality:**
-
-- **Smooth Scrolling:** Native smooth scroll behavior
-- **Intersection Observer:** Lazy loading and scroll-triggered animations
-- **Event Handling:** Efficient event delegation for dynamic content
-- **State Management:** Clean state management for filters and search
-
-**Content Management:**
-
-- **Dynamic Content:** Server-side rendering for SEO, client-side hydration
-- **Image Management:** Automatic image optimization and responsive sizing
-- **Content Structure:** Structured data for articles and organization
-- **SEO Integration:** Meta tags, Open Graph, Twitter Cards
-
-#### 4.2 Writer.com Guides Analysis
-
-**Strengths:**
-
-- Compelling hero sections with large imagery
-- Excellent table of contents implementation
-- Well-structured content with clear sections
-- Professional typography and spacing
-- Effective use of white space
-
-**Key UX Patterns:**
-
-- Sticky table of contents for long articles
-- Clear content hierarchy with proper heading structure
-- Engaging hero sections that set context
-- Related content suggestions
-- Social proof elements
-
-**Implementation Notes:**
-
-- Implement sticky table of contents with smooth scrolling
-- Use large, high-quality hero images
-- Structure content with clear H2, H3 hierarchy
-- Add reading progress indicator
-- Include related articles section
-
-### 5. Customer Journey Map (CJM) - Enhanced Requirements
-
-#### 5.1 User Personas
-
-**Primary Persona: Content Seeker (Sarah)**
-
-- **Demographics:** Age 28-35, tech-savvy professional, urban location
-- **Goals:** Find relevant, high-quality content quickly, stay updated with industry trends
-- **Pain Points:** Information overload, poor search experiences, slow loading sites
-- **Behavioral Patterns:** Uses mobile and desktop equally, prefers visual content, values speed
-- **Technical Comfort:** High - comfortable with modern web interfaces
-- **Content Preferences:** Practical guides, industry insights, visual content
-
-**Secondary Persona: Industry Professional (Mike)**
-
-- **Demographics:** Age 35-45, subject matter expert, senior professional
-- **Goals:** Deep research, comprehensive understanding, professional development
-- **Pain Points:** Superficial content, poor navigation, lack of depth
-- **Behavioral Patterns:** Prefers desktop for detailed reading, methodical browsing
-- **Technical Comfort:** Medium - values functionality over aesthetics
-- **Content Preferences:** In-depth analysis, case studies, technical content
-
-**Tertiary Persona: Casual Reader (Emma)**
-
-- **Demographics:** Age 25-30, general interest, various backgrounds
-- **Goals:** Entertainment, general knowledge, discovery
-- **Pain Points:** Complex interfaces, technical jargon, poor mobile experience
-- **Behavioral Patterns:** Mobile-first, social media discovery, short attention spans
-- **Technical Comfort:** Low - prefers simple, intuitive interfaces
-- **Content Preferences:** Engaging stories, visual content, easy-to-understand explanations
-
-#### 5.2 Detailed Journey Stages
-
-##### Stage 1: Discovery (Awareness) - Zero Moment of Truth
-
-**Touchpoints & Channels:**
-
-- **Search Engines:** Google (70%), Bing (20%), DuckDuckGo (10%)
-- **Social Media:** LinkedIn (40%), Twitter (30%), Facebook (20%), Instagram (10%)
-- **Direct Traffic:** Bookmarks (15%), direct URL entry (10%)
-- **Referrals:** Industry blogs (25%), newsletters (20%), colleagues (15%)
-
-**User Actions & Behaviors:**
-
-- **Search Behavior:** 3-5 keywords, filters by date, reads snippets
-- **Social Behavior:** Clicks on trending topics, follows industry influencers
-- **Discovery Patterns:** Skims headlines, checks publication dates, evaluates source credibility
-
-**Pain Points & Friction:**
-
-- **Search Issues:** Irrelevant results, outdated content, poor snippet quality
-- **Loading Problems:** Slow page loads (>3 seconds), broken images, unresponsive design
-- **Mobile Experience:** Poor mobile optimization, difficult navigation, small text
-- **Content Quality:** Unclear value proposition, poor writing, lack of visual appeal
-
-**Solutions & Requirements:**
-
-- **SEO Optimization:** Target keyword research, meta descriptions, structured data
-- **Performance:** CDN implementation, image optimization, caching strategies
-- **Mobile-First Design:** Responsive layouts, touch-friendly navigation, readable typography
-- **Content Strategy:** Clear value propositions, quality writing, visual hierarchy
-
-**Success Metrics:**
-
-- Organic search traffic growth >25% month-over-month
-- Page load time <2 seconds on mobile
-- Bounce rate <50% from search traffic
-- Social media engagement rate >3%
-
-##### Stage 2: Exploration (Consideration) - First Moment of Truth
-
-**Touchpoints & Interactions:**
-
-- **Homepage:** First impression, content discovery, navigation exploration
-- **Category Pages:** Topic-specific browsing, content filtering
-- **Search Results:** Internal search functionality, filter options
-- **Related Content:** Cross-linking, recommendations, trending topics
-
-**User Actions & Behaviors:**
-
-- **Homepage Behavior:** 5-10 second initial scan, focuses on hero section, checks navigation
-- **Browsing Patterns:** Clicks 2-3 articles, reads excerpts, evaluates content quality
-- **Navigation Usage:** Uses main menu (60%), search (25%), category filters (15%)
-- **Engagement Depth:** Average 3-5 page views per session, 2-3 minutes per page
-
-**Pain Points & Friction:**
-
-- **Navigation Issues:** Unclear menu structure, difficult category discovery, poor search
-- **Content Organization:** Unclear categorization, poor content hierarchy, confusing layout
-- **Performance Problems:** Slow page transitions, unresponsive interactions, broken links
-- **Information Architecture:** Poor content structure, difficult content discovery
-
-**Solutions & Requirements:**
-
-- **Intuitive Navigation:** Clear menu structure, logical categorization, prominent search
-- **Content Organization:** Clear hierarchy, logical grouping, visual content cards
-- **Performance Optimization:** Fast page transitions, smooth interactions, reliable links
-- **Information Architecture:** Logical content structure, clear pathways, helpful breadcrumbs
-
-**Success Metrics:**
-
-- Average session duration >3 minutes
-- Pages per session >3
-- Search usage >20% of sessions
-- Category page engagement >40%
-
-##### Stage 3: Engagement (Decision) - Second Moment of Truth
-
-**Touchpoints & Interactions:**
-
-- **Article Pages:** Deep reading, content consumption, interaction
-- **Newsletter Signup:** Email capture, subscription management
-- **Social Sharing:** Content distribution, community engagement
-- **Comments/Feedback:** User interaction, community building
-
-**User Actions & Behaviors:**
-
-- **Reading Behavior:** 60-80% scroll depth for quality content, 2-5 minutes reading time
-- **Engagement Actions:** Shares content (15%), signs up for newsletter (8%), leaves comments (3%)
-- **Return Visits:** 30% return within 7 days, 15% become regular readers
-- **Content Preferences:** Long-form content (1500+ words), visual content, practical value
-
-**Pain Points & Friction:**
-
-- **Reading Experience:** Poor typography, distracting ads, difficult navigation
-- **Engagement Barriers:** Complex sharing process, intrusive signup forms, poor commenting
-- **Content Quality:** Superficial content, poor writing, lack of practical value
-- **Technical Issues:** Broken links, slow loading, poor mobile experience
-
-**Solutions & Requirements:**
-
-- **Optimized Reading:** Clean typography, distraction-free design, smooth scrolling
-- **Easy Engagement:** One-click sharing, simple signup forms, intuitive commenting
-- **Quality Content:** In-depth analysis, practical value, professional writing
-- **Technical Excellence:** Fast loading, mobile optimization, reliable functionality
-
-**Success Metrics:**
-
-- Average reading time >3 minutes
-- Newsletter signup rate >8%
-- Social sharing rate >15%
-- Return visitor rate >30%
-
-##### Stage 4: Retention (Loyalty) - Third Moment of Truth
-
-**Touchpoints & Interactions:**
-
-- **Email Newsletters:** Regular updates, content curation, community building
-- **Social Media:** Ongoing engagement, content sharing, community interaction
-- **Return Visits:** Regular site visits, content consumption, engagement
-- **Community Features:** Comments, discussions, user-generated content
-
-**User Actions & Behaviors:**
-
-- **Regular Engagement:** Weekly visits (40%), daily check-ins (15%), newsletter opens (60%)
-- **Community Participation:** Comments (10%), social sharing (25%), content creation (5%)
-- **Content Consumption:** Reads 80% of new content, explores archives, follows authors
-- **Loyalty Indicators:** Bookmarking, RSS subscriptions, direct traffic
-
-**Pain Points & Friction:**
-
-- **Content Consistency:** Irregular publishing, inconsistent quality, poor curation
-- **Community Issues:** Poor moderation, lack of engagement, technical problems
-- **Personalization:** Generic content, no customization, irrelevant recommendations
-- **Technical Problems:** Site downtime, slow performance, broken features
-
-**Solutions & Requirements:**
-
-- **Content Strategy:** Regular publishing schedule, consistent quality, effective curation
-- **Community Building:** Active moderation, engagement features, user recognition
-- **Personalization:** Content recommendations, user preferences, targeted content
-- **Technical Reliability:** High uptime, fast performance, reliable features
-
-**Success Metrics:**
-
-- Email open rate >60%
-- Return visitor rate >40%
-- Community engagement >15%
-- User-generated content >5%
-
-#### 5.3 CJM Implementation Requirements
-
-**Design System Requirements:**
-
-- **Visual Hierarchy:** Clear content prioritization, consistent typography scale
-- **Color Psychology:** Trust-building colors, accessibility compliance, brand consistency
-- **Typography:** Readable fonts, proper line spacing, mobile optimization
-- **Spacing System:** Consistent margins, padding, and component spacing
-
-**Interaction Design Requirements:**
-
-- **Micro-interactions:** Hover effects, loading states, transition animations
-- **Feedback Systems:** Clear success/error states, progress indicators
-- **Accessibility:** Keyboard navigation, screen reader support, focus management
-- **Performance:** Smooth animations, fast interactions, responsive feedback
-
-**Content Strategy Requirements:**
-
-- **Content Types:** Articles, guides, case studies, news updates
-- **Publishing Schedule:** Regular cadence, seasonal content, trending topics
-- **Quality Standards:** Editorial guidelines, fact-checking, professional writing
-- **SEO Integration:** Keyword optimization, meta descriptions, structured data
-
-**Technology Requirements:**
-
-- **Performance:** Fast loading, optimized images, efficient caching
-- **Analytics:** User behavior tracking, conversion monitoring, A/B testing
-- **Personalization:** Content recommendations, user preferences, targeted messaging
-- **Integration:** Email marketing, social media, analytics platforms
-
-### 6. Technical Requirements
-
-#### 6.1 Performance Requirements
-
-- **Page Load Time:** < 2 seconds (Lighthouse score > 90)
-- **First Contentful Paint:** < 1.5 seconds
-- **Largest Contentful Paint:** < 2.5 seconds
-- **Cumulative Layout Shift:** < 0.1
-- **First Input Delay:** < 100ms
-
-#### 6.2 SEO Requirements
-
-- **Meta Tags:** Complete implementation for all pages
-- **Structured Data:** JSON-LD for articles and organization
-- **Sitemap:** XML sitemap with automatic updates
-- **Robots.txt:** Proper configuration
-- **Image Optimization:** WebP format with fallbacks
-- **Core Web Vitals:** All metrics in green
-
-#### 6.3 Accessibility Requirements
-
-- **WCAG 2.1 AA Compliance**
-- **Keyboard Navigation:** Full keyboard accessibility
-- **Screen Reader Support:** Proper ARIA labels
-- **Color Contrast:** Minimum 4.5:1 ratio
-- **Focus Indicators:** Clear focus states
-
-#### 6.4 Security Requirements
-
-- **HTTPS:** SSL certificate implementation
-- **Content Security Policy:** Proper CSP headers
-- **Input Validation:** Server-side validation
-- **Rate Limiting:** API rate limiting
-- **Regular Updates:** Dependency updates
-
-### 7. Implementation Phases
-
-#### Phase 1: Foundation (Weeks 1-2)
-
-- Project setup and configuration
-- Basic Next.js app structure
-- Strapi CMS setup
-- Database schema design
-- Basic styling with Tailwind CSS
-
-#### Phase 2: Core Features (Weeks 3-4)
-
-- Article listing and detail pages
-- Basic navigation and search
-- Admin panel content management
-- Image upload and optimization
-- SEO meta tags implementation
-
-#### Phase 3: Enhanced UX (Weeks 5-6)
-
-- Sticky table of contents
-- Related articles functionality
-- Newsletter signup
-- Social sharing
-- Performance optimization
-
-#### Phase 4: Polish & Launch (Weeks 7-8)
-
-- Final design refinements
-- Testing and bug fixes
-- Performance optimization
-- SEO audit and fixes
-- Production deployment
-
-### 8. Success Criteria
-
-#### 8.1 Technical Success
-
-- All performance metrics meet requirements
-- SEO score > 90/100
-- Accessibility compliance achieved
-- Security audit passed
-
-#### 8.2 User Experience Success
-
-- User engagement time > 3 minutes
-- Bounce rate < 40%
-- Newsletter signup rate > 5%
-- Social sharing rate > 2%
-
-#### 8.3 Business Success
-
-- Organic traffic growth > 20% month-over-month
-- Search engine rankings improvement
-- User feedback score > 4.5/5
-- Content publishing workflow efficiency
-
-### 9. Risk Assessment
-
-#### 9.1 Technical Risks
-
-- **Performance Issues:** Mitigation through optimization and CDN
-- **SEO Challenges:** Mitigation through proper implementation and testing
-- **Security Vulnerabilities:** Mitigation through regular updates and audits
-
-#### 9.2 User Experience Risks
-
-- **Poor Mobile Experience:** Mitigation through mobile-first design
-- **Slow Loading:** Mitigation through optimization and caching
-- **Navigation Confusion:** Mitigation through user testing
-
-#### 9.3 Business Risks
-
-- **Content Management Complexity:** Mitigation through intuitive admin interface
-- **Scalability Issues:** Mitigation through proper architecture
-- **Maintenance Overhead:** Mitigation through automation and monitoring
-
-### 10. Conclusion
-
-This PRD provides a comprehensive roadmap for building a modern, user-friendly blog platform that combines the best UX patterns from successful examples like OpenAI News and Writer.com Guides. The focus on performance, SEO, and user experience will ensure the blog meets both technical and business objectives while providing an exceptional reading experience for users.
-
-The implementation phases are designed to deliver value incrementally while maintaining quality and performance standards throughout the development process.
+### Project Vision
+Интегрировать существующий Next.js шаблон сайта с Strapi CMS для создания полноценной системы управления контентом.
+
+### Current State (AS-IS)
+- ✅ **Отдельный Next.js шаблон сайта** - полностью функциональный frontend с современным дизайном
+- ✅ **Отдельно настроенный Strapi CMS** - backend система управления контентом
+- ❌ **Отсутствует интеграция** между frontend и backend
+- ❌ **Контент статичен** и не управляется через CMS
+
+### Main Task
+**Подключить шаблон сайта к Strapi CMS**
+
+### Target State (TO-BE)
+- ✅ **Проект полностью настраивается через Strapi API**
+- ✅ **Контент заполняется из административной панели Strapi**
+- ✅ **Frontend динамически отображает контент из CMS**
+
+---
+
+## Detailed Implementation Requirements
+
+### 1. Sidebar Navigation - Sections List
+**Requirement:** В боковое меню вывести список "Секций" из Strapi API
+**Implementation:**
+- Fetch sections from Strapi API
+- Display sections in sidebar navigation
+- Handle loading states and error handling
+- Implement active section highlighting
+
+### 2. Homepage TOP-3 Section
+**Requirement:** На главной странице в раздел ТОП-3 вывести документы из коллекции "TOP Playbooks banners"
+**Implementation:**
+- Create API endpoint for TOP Playbooks banners
+- Fetch and display top 3 documents
+- Handle empty state when no banners exist
+- Implement responsive design for banner display
+
+### 3. Dynamic Page Title
+**Requirement:** Вместо текста "News" должно выводиться название активной секции. Если секция не выбрана - выводить "Все о внедрении AI"
+**Implementation:**
+- Implement dynamic page title based on selected section
+- Default title: "Все о внедрении AI"
+- Update title when section changes
+- Handle title updates in real-time
+
+### 4. Dynamic Categories Display
+**Requirement:** На главной странице вместо "Product", "Research", "Company" и тд должны выводиться категории связанные с выбранной секцией. Если секция не выбрана - выводятся все категории на сайте.
+**Implementation:**
+- Fetch categories from Strapi API
+- Filter categories by selected section
+- Show all categories when no section is selected
+- Implement category filtering logic
+- Handle empty categories state
+
+### 5. Smart Category Display
+**Requirement:** Категории и секции выводятся из API. Если в категории нет статей - не отображать указанную категорию на странице
+**Implementation:**
+- Check article count for each category
+- Hide empty categories automatically
+- Implement category filtering based on content availability
+- Handle dynamic category updates
+
+### 6. Dynamic Articles Display
+**Requirement:** Вместо пустых квадратиков выводятся статьи в указанной секции и категории. У каждой статьи есть 2 независимых пункта секции и категории. Одна статья может принадлежать нескольким секциям и категориям
+**Implementation:**
+- Fetch articles from Strapi API
+- Implement many-to-many relationships between articles, sections, and categories
+- Display articles based on selected section/category
+- Handle article filtering and sorting
+- Implement article grid layout
+- Handle empty articles state
+
+### 7. Article Detail Page
+**Requirement:** При нажатии на детальную статью - выводятся данные по этой статье
+**Implementation:**
+- Create dynamic article detail page
+- Fetch article data from Strapi API
+- Display article content, metadata, and relationships
+- Implement SEO optimization for article pages
+- Handle article navigation (previous/next)
+- Implement related articles functionality
+
+---
+
+## Backlog of Work Items
+
+### Work Item 1: Strapi Content Types Setup
+
+**Description**
+Create and configure content types in Strapi CMS for Sections, Categories, Articles, and TOP Playbooks banners. Set up proper many-to-many relationships between content types.
+
+**Technical Context**
+Strapi needs structured content types to manage the blog content with complex relationships. Articles can belong to multiple sections and categories, requiring many-to-many relationships.
+
+**Implementation Details**
+1. Create Section content type with name, slug, description
+2. Create Category content type with name, slug, description
+3. Create Article content type with title, content, excerpt, featured image
+4. Create TOP Playbooks Banner content type with title, content, priority
+5. Set up many-to-many relationships between Articles and Sections
+6. Set up many-to-many relationships between Articles and Categories
+7. Add SEO fields to all content types
+8. Configure admin panel for content management
+
+**Acceptance Criteria**
+1. All content types are created in Strapi admin panel
+2. Many-to-many relationships are properly established
+3. Admin panel allows content creation and editing
+4. Content types support the frontend requirements
+5. SEO fields are added to relevant content types
+
+**Testing Considerations**
+- Verify content type creation in Strapi admin
+- Test many-to-many relationship functionality
+- Verify content creation workflow
+- Test relationship management
+
+**Dependencies**
+- Strapi backend must be running
+- Admin panel must be accessible
+
+**Resources**
+- Strapi content type builder documentation
+- Content modeling best practices
+
+**Estimation**
+Story Points: 8
+
+**Priority**
+High
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define clear Definition of Done criteria for content types setup
+   - Document acceptance criteria for each content type
+   - Define relationship validation rules
+
+2. **Automated Tests Creation**
+   - Write tests for content type creation
+   - Test many-to-many relationship functionality
+   - Test content validation rules
+   - Test admin panel functionality
+
+3. **Strapi Entity Requirements**
+   - Document field requirements for each content type
+   - Define validation rules and constraints
+   - Document relationship requirements
+   - Define SEO field specifications
+
+4. **Strapi Collection Configuration**
+   - Configure content types in Strapi admin
+   - Set up field validations and constraints
+   - Configure relationships between content types
+   - Set up admin panel permissions
+
+5. **Frontend Integration Setup**
+   - Create API client configuration
+   - Set up environment variables
+   - Test API connectivity
+   - Verify data fetching
+
+6. **Edge Case Testing**
+   - Test with empty content
+   - Test with maximum content length
+   - Test relationship edge cases
+   - Test validation error handling
+
+7. **Component Behavior Testing**
+   - Test content type creation workflow
+   - Test relationship management
+   - Test admin panel usability
+   - Test data validation
+
+8. **Pull Request Creation**
+   - Create feature branch
+   - Commit all changes
+   - Create pull request with detailed description
+   - Add appropriate reviewers
+
+9. **Code Review Process**
+   - Conduct thorough code review
+   - Check for best practices
+   - Verify security considerations
+   - Validate implementation approach
+
+10. **Post-Review Corrections**
+   - Address review feedback
+   - Make necessary corrections
+   - Update tests if needed
+   - Final validation
+
+---
+
+### Work Item 2: API Integration and Data Fetching
+
+**Description**
+Implement API integration between Next.js frontend and Strapi backend. Create data fetching utilities for sections, categories, articles, and banners.
+
+**Technical Context**
+The frontend needs to fetch dynamic content from Strapi API for all content types. We need to implement efficient data fetching with proper error handling and caching.
+
+**Implementation Details**
+1. Install and configure Strapi SDK for Next.js
+2. Set up environment variables for API endpoints
+3. Create API client configuration
+4. Implement data fetching utilities for sections
+5. Implement data fetching utilities for categories
+6. Implement data fetching utilities for articles
+7. Implement data fetching utilities for TOP banners
+8. Add error handling and loading states
+9. Implement basic caching strategies
+
+**Acceptance Criteria**
+1. Strapi SDK successfully installed and configured
+2. All API endpoints are accessible from frontend
+3. Data fetching works for all content types
+4. Error handling and loading states work correctly
+5. Basic caching is implemented
+6. No CORS errors during API calls
+
+**Testing Considerations**
+- Test API connectivity for all content types
+- Verify data fetching accuracy
+- Test error handling scenarios
+- Verify loading states
+- Test caching functionality
+
+**Dependencies**
+- Strapi content types must be configured
+- Backend must be running and accessible
+
+**Resources**
+- Strapi SDK documentation
+- Next.js data fetching documentation
+
+**Estimation**
+Story Points: 6
+
+**Priority**
+High
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define API integration completion criteria
+   - Document performance requirements
+   - Define error handling standards
+   - Document caching requirements
+
+2. **Automated Tests Creation**
+   - Write API connectivity tests
+   - Test data fetching for all content types
+   - Test error handling scenarios
+   - Test caching functionality
+   - Test loading states
+
+3. **Strapi Entity Requirements**
+   - Document API endpoint specifications
+   - Define response format requirements
+   - Document error response formats
+   - Define pagination requirements
+
+4. **Strapi Collection Configuration**
+   - Configure API permissions
+   - Set up CORS settings
+   - Configure rate limiting
+   - Set up authentication if needed
+
+5. **Frontend Integration Setup**
+   - Install Strapi SDK
+   - Configure API client
+   - Set up environment variables
+   - Implement data fetching utilities
+
+6. **Edge Case Testing**
+   - Test with slow network conditions
+   - Test with large data sets
+   - Test with malformed responses
+   - Test with concurrent requests
+
+7. **Component Behavior Testing**
+   - Test data fetching components
+   - Test error handling components
+   - Test loading state components
+   - Test caching behavior
+
+8. **Pull Request Creation**
+   - Create feature branch
+   - Commit API integration changes
+   - Create pull request with implementation details
+   - Add API documentation
+
+9. **Code Review Process**
+   - Review API integration approach
+   - Check error handling implementation
+   - Verify caching strategy
+   - Validate performance considerations
+
+10. **Post-Review Corrections**
+   - Address API integration feedback
+   - Optimize performance if needed
+   - Update error handling
+   - Final API testing
+
+---
+
+### Work Item 3: Sidebar Sections Navigation
+
+**Description**
+Implement dynamic sidebar navigation that displays sections from Strapi API. Handle section selection and active state management.
+
+**Technical Context**
+The sidebar needs to dynamically display sections from the CMS and allow users to select different sections. The selected section should be highlighted and affect other page content.
+
+**Implementation Details**
+1. Fetch sections list from Strapi API
+2. Display sections in sidebar navigation
+3. Implement section selection functionality
+4. Add active section highlighting
+5. Handle section selection state management
+6. Implement loading states for sections
+7. Add error handling for section fetching
+8. Update sidebar styling to match design
+
+**Acceptance Criteria**
+1. Sidebar displays all sections from Strapi API
+2. Section selection works correctly
+3. Active section is properly highlighted
+4. Loading states are displayed during fetching
+5. Error handling works for failed requests
+6. Sidebar styling matches design requirements
+
+**Testing Considerations**
+- Test section fetching and display
+- Verify section selection functionality
+- Test active state highlighting
+- Verify loading and error states
+- Test responsive behavior
+
+**Dependencies**
+- API integration must be complete
+- Content types must be configured
+
+**Resources**
+- Existing sidebar component
+- Strapi API documentation
+
+**Estimation**
+Story Points: 5
+
+**Priority**
+High
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define sidebar functionality completion criteria
+   - Document UI/UX requirements
+   - Define performance requirements
+   - Document accessibility requirements
+
+2. **Automated Tests Creation**
+   - Write component rendering tests
+   - Test section fetching functionality
+   - Test selection state management
+   - Test loading and error states
+   - Test responsive behavior
+
+3. **Strapi Entity Requirements**
+   - Document section data structure
+   - Define section display requirements
+   - Document selection state requirements
+   - Define error handling requirements
+
+4. **Strapi Collection Configuration**
+   - Verify section API endpoints
+   - Test section data retrieval
+   - Verify section permissions
+   - Test section relationships
+
+5. **Frontend Integration Setup**
+   - Update sidebar component
+   - Implement section fetching
+   - Add selection functionality
+   - Implement state management
+
+6. **Edge Case Testing**
+   - Test with empty sections list
+   - Test with very long section names
+   - Test with special characters
+   - Test with rapid section changes
+
+7. **Component Behavior Testing**
+   - Test sidebar rendering
+   - Test section selection
+   - Test active state highlighting
+   - Test responsive behavior
+   - Test accessibility features
+
+8. **Pull Request Creation**
+   - Create feature branch
+   - Commit sidebar changes
+   - Create pull request with UI changes
+   - Add screenshots if needed
+
+9. **Code Review Process**
+   - Review component implementation
+   - Check state management logic
+   - Verify UI/UX implementation
+   - Validate accessibility features
+
+10. **Post-Review Corrections**
+   - Address UI/UX feedback
+   - Fix accessibility issues
+   - Update component behavior
+   - Final UI testing
+
+---
+
+### Work Item 4: Dynamic Page Title and Categories
+
+**Description**
+Implement dynamic page title based on selected section and dynamic categories display. Show categories related to selected section or all categories if no section is selected.
+
+**Technical Context**
+The page title and categories need to change dynamically based on the selected section. When no section is selected, all categories should be displayed.
+
+**Implementation Details**
+1. Implement dynamic page title logic
+2. Set default title: "Все о внедрении AI"
+3. Update title when section changes
+4. Fetch categories from Strapi API
+5. Filter categories by selected section
+6. Show all categories when no section selected
+7. Handle empty categories state
+8. Implement category filtering logic
+
+**Acceptance Criteria**
+1. Page title changes based on selected section
+2. Default title displays when no section selected
+3. Categories are filtered by selected section
+4. All categories display when no section selected
+5. Empty categories are handled gracefully
+6. Category filtering works correctly
+
+**Testing Considerations**
+- Test title changes with different sections
+- Verify default title display
+- Test category filtering logic
+- Verify all categories display
+- Test empty state handling
+
+**Dependencies**
+- Sidebar sections navigation must be complete
+- API integration must be complete
+
+**Resources**
+- Existing page title component
+- Categories display component
+
+**Estimation**
+Story Points: 6
+
+**Priority**
+High
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define dynamic title completion criteria
+   - Document category filtering requirements
+   - Define state management requirements
+   - Document UI update requirements
+
+2. **Automated Tests Creation**
+   - Write title change tests
+   - Test category filtering logic
+   - Test state management
+   - Test UI updates
+   - Test empty state handling
+
+3. **Strapi Entity Requirements**
+   - Document category data structure
+   - Define filtering requirements
+   - Document relationship requirements
+   - Define empty state requirements
+
+4. **Strapi Collection Configuration**
+   - Verify category API endpoints
+   - Test category filtering
+   - Verify category relationships
+   - Test category permissions
+
+5. **Frontend Integration Setup**
+   - Update page title component
+   - Implement category display
+   - Add filtering logic
+   - Implement state management
+
+6. **Edge Case Testing**
+   - Test with no categories
+   - Test with single category
+   - Test with many categories
+   - Test rapid section changes
+
+7. **Component Behavior Testing**
+   - Test title updates
+   - Test category filtering
+   - Test state changes
+   - Test UI responsiveness
+   - Test empty states
+
+8. **Pull Request Creation**
+   - Create feature branch
+   - Commit title and category changes
+   - Create pull request with logic changes
+   - Add testing documentation
+
+9. **Code Review Process**
+   - Review filtering logic
+   - Check state management
+   - Verify UI updates
+   - Validate edge case handling
+
+10. **Post-Review Corrections**
+   - Address logic feedback
+   - Fix state management issues
+   - Update filtering logic
+   - Final logic testing
+
+---
+
+### Work Item 5: TOP Playbooks Banners Section
+
+**Description**
+Implement TOP-3 section on homepage that displays documents from "TOP Playbooks banners" collection. Handle responsive design and empty states.
+
+**Technical Context**
+The homepage needs a dedicated section for TOP Playbooks banners that fetches data from Strapi and displays it in an attractive layout.
+
+**Implementation Details**
+1. Create API endpoint for TOP Playbooks banners
+2. Fetch top 3 documents from collection
+3. Implement banner display component
+4. Add responsive design for different screen sizes
+5. Handle empty state when no banners exist
+6. Implement banner priority/ordering
+7. Add loading states for banner fetching
+8. Implement error handling for banner display
+
+**Acceptance Criteria**
+1. TOP-3 section displays on homepage
+2. Banners are fetched from Strapi API
+3. Responsive design works on all screen sizes
+4. Empty state is handled gracefully
+5. Loading states are displayed during fetching
+6. Error handling works for failed requests
+7. Banner ordering respects priority settings
+
+**Testing Considerations**
+- Test banner fetching and display
+- Verify responsive design
+- Test empty state handling
+- Verify loading and error states
+- Test banner ordering
+
+**Dependencies**
+- API integration must be complete
+- Content types must be configured
+
+**Resources**
+- Existing homepage layout
+- Strapi API documentation
+
+**Estimation**
+Story Points: 5
+
+**Priority**
+Medium
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define banner display completion criteria
+   - Document responsive design requirements
+   - Define loading state requirements
+   - Document error handling requirements
+
+2. **Automated Tests Creation**
+   - Write banner display tests
+   - Test responsive behavior
+   - Test loading states
+   - Test error handling
+   - Test banner ordering
+
+3. **Strapi Entity Requirements**
+   - Document banner data structure
+   - Define priority requirements
+   - Document display requirements
+   - Define ordering requirements
+
+4. **Strapi Collection Configuration**
+   - Verify banner API endpoints
+   - Test banner data retrieval
+   - Verify banner permissions
+   - Test banner ordering
+
+5. **Frontend Integration Setup**
+   - Create banner component
+   - Implement responsive design
+   - Add loading states
+   - Implement error handling
+
+6. **Edge Case Testing**
+   - Test with no banners
+   - Test with single banner
+   - Test with many banners
+   - Test with different screen sizes
+
+7. **Component Behavior Testing**
+   - Test banner rendering
+   - Test responsive behavior
+   - Test loading states
+   - Test error handling
+   - Test banner ordering
+
+8. **Pull Request Creation**
+   - Create feature branch
+   - Commit banner changes
+   - Create pull request with UI changes
+   - Add responsive design documentation
+
+9. **Code Review Process**
+   - Review banner implementation
+   - Check responsive design
+   - Verify loading states
+   - Validate error handling
+
+10. **Post-Review Corrections**
+   - Address UI feedback
+   - Fix responsive issues
+   - Update loading states
+   - Final UI testing
+
+---
+
+### Work Item 6: Dynamic Articles Grid
+
+**Description**
+Replace empty squares with dynamic articles from Strapi API. Display articles based on selected section and category, handling many-to-many relationships.
+
+**Technical Context**
+The main content area needs to display articles dynamically based on user selection. Articles can belong to multiple sections and categories, requiring complex filtering logic.
+
+**Implementation Details**
+1. Fetch articles from Strapi API
+2. Implement article filtering by section and category
+3. Handle many-to-many relationships
+4. Create article grid layout component
+5. Implement article cards with metadata
+6. Handle empty articles state
+7. Add loading states for article fetching
+8. Implement error handling for article display
+9. Add article sorting and pagination
+
+**Acceptance Criteria**
+1. Articles are fetched from Strapi API
+2. Article filtering works by section and category
+3. Many-to-many relationships are handled correctly
+4. Article grid layout matches design
+5. Empty state is handled gracefully
+6. Loading and error states work correctly
+7. Article sorting and pagination work
+
+**Testing Considerations**
+- Test article fetching and filtering
+- Verify many-to-many relationship handling
+- Test article grid layout
+- Verify empty state handling
+- Test loading and error states
+- Test sorting and pagination
+
+**Dependencies**
+- Dynamic categories display must be complete
+- API integration must be complete
+
+**Resources**
+- Existing article grid component
+- Strapi API documentation
+
+**Estimation**
+Story Points: 8
+
+**Priority**
+High
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define article grid completion criteria
+   - Document filtering requirements
+   - Define layout requirements
+   - Document performance requirements
+
+2. **Automated Tests Creation**
+   - Write article fetching tests
+   - Test filtering logic
+   - Test grid layout
+   - Test loading states
+   - Test error handling
+   - Test sorting and pagination
+
+3. **Strapi Entity Requirements**
+   - Document article data structure
+   - Define filtering requirements
+   - Document relationship requirements
+   - Define pagination requirements
+
+4. **Strapi Collection Configuration**
+   - Verify article API endpoints
+   - Test article filtering
+   - Verify article relationships
+   - Test article permissions
+
+5. **Frontend Integration Setup**
+   - Update article grid component
+   - Implement filtering logic
+   - Add loading states
+   - Implement error handling
+
+6. **Edge Case Testing**
+   - Test with no articles
+   - Test with single article
+   - Test with many articles
+   - Test complex filtering scenarios
+
+7. **Component Behavior Testing**
+   - Test grid rendering
+   - Test filtering behavior
+   - Test loading states
+   - Test error handling
+   - Test sorting and pagination
+
+8. **Pull Request Creation**
+   - Create feature branch
+   - Commit article grid changes
+   - Create pull request with grid changes
+   - Add filtering documentation
+
+9. **Code Review Process**
+   - Review grid implementation
+   - Check filtering logic
+   - Verify performance
+   - Validate error handling
+
+10. **Post-Review Corrections**
+   - Address grid feedback
+   - Fix filtering issues
+   - Optimize performance
+   - Final grid testing
+
+---
+
+### Work Item 7: Article Detail Page
+
+**Description**
+Create dynamic article detail page that displays full article content from Strapi API. Implement SEO optimization and related articles functionality.
+
+**Technical Context**
+Users need to be able to click on articles and view full content. The detail page should be SEO optimized and include navigation features.
+
+**Implementation Details**
+1. Create dynamic article detail page route
+2. Fetch article data from Strapi API
+3. Display article content and metadata
+4. Implement SEO optimization (meta tags, structured data)
+5. Add article navigation (previous/next)
+6. Implement related articles functionality
+7. Handle article relationships display
+8. Add social sharing features
+9. Implement breadcrumb navigation
+
+**Acceptance Criteria**
+1. Article detail page displays full content
+2. SEO optimization is implemented
+3. Article navigation works correctly
+4. Related articles are displayed
+5. Article relationships are shown
+6. Social sharing works
+7. Breadcrumb navigation is functional
+
+**Testing Considerations**
+- Test article detail page display
+- Verify SEO optimization
+- Test article navigation
+- Verify related articles functionality
+- Test social sharing
+- Test breadcrumb navigation
+
+**Dependencies**
+- Dynamic articles grid must be complete
+- API integration must be complete
+
+**Resources**
+- Existing article detail template
+- SEO optimization guidelines
+
+**Estimation**
+Story Points: 7
+
+**Priority**
+Medium
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define detail page completion criteria
+   - Document SEO requirements
+   - Define navigation requirements
+   - Document performance requirements
+
+2. **Automated Tests Creation**
+   - Write detail page tests
+   - Test SEO implementation
+   - Test navigation functionality
+   - Test related articles
+   - Test social sharing
+
+3. **Strapi Entity Requirements**
+   - Document article detail structure
+   - Define SEO field requirements
+   - Document relationship requirements
+   - Define metadata requirements
+
+4. **Strapi Collection Configuration**
+   - Verify article detail API
+   - Test article relationships
+   - Verify SEO fields
+   - Test article permissions
+
+5. **Frontend Integration Setup**
+   - Create detail page component
+   - Implement SEO optimization
+   - Add navigation features
+   - Implement social sharing
+
+6. **Edge Case Testing**
+   - Test with missing content
+   - Test with broken relationships
+   - Test with invalid URLs
+   - Test with large content
+
+7. **Component Behavior Testing**
+   - Test page rendering
+   - Test SEO features
+   - Test navigation
+   - Test social sharing
+   - Test responsive behavior
+
+8. **Pull Request Creation**
+   - Create feature branch
+   - Commit detail page changes
+   - Create pull request with page changes
+   - Add SEO documentation
+
+9. **Code Review Process**
+   - Review page implementation
+   - Check SEO implementation
+   - Verify navigation logic
+   - Validate performance
+
+10. **Post-Review Corrections**
+   - Address page feedback
+   - Fix SEO issues
+   - Update navigation
+   - Final page testing
+
+---
+
+### Work Item 8: Testing and Quality Assurance
+
+**Description**
+Perform comprehensive testing of all functionality including content management, API integration, dynamic content display, and user experience.
+
+**Technical Context**
+The integrated system needs comprehensive testing to ensure all functionality works correctly and meets quality standards.
+
+**Implementation Details**
+1. Test all API endpoints and data fetching
+2. Verify content management workflow
+3. Test dynamic content display
+4. Verify section and category filtering
+5. Test article detail pages
+6. Verify SEO optimization
+7. Test responsive design
+8. Conduct user experience testing
+9. Fix identified issues
+10. Perform final quality assurance
+
+**Acceptance Criteria**
+1. All functionality works correctly
+2. Content management workflow is efficient
+3. Dynamic content display works properly
+4. Section and category filtering works
+5. Article detail pages function correctly
+6. SEO optimization meets requirements
+7. Responsive design works on all devices
+8. User experience is satisfactory
+9. No critical bugs remain
+10. System is ready for production
+
+**Testing Considerations**
+- Functional testing of all features
+- API integration testing
+- Content management testing
+- SEO testing and validation
+- Responsive design testing
+- User experience testing
+- Cross-browser compatibility testing
+
+**Dependencies**
+- All previous work items must be complete
+
+**Resources**
+- Testing frameworks and tools
+- Quality assurance guidelines
+
+**Estimation**
+Story Points: 5
+
+**Priority**
+High
+
+**Mandatory Subtasks:**
+1. **DOD Criteria Definition**
+   - Define testing completion criteria
+   - Document quality standards
+   - Define bug severity levels
+   - Document performance requirements
+
+2. **Automated Tests Creation**
+   - Write comprehensive test suite
+   - Test all major functionality
+   - Test edge cases
+   - Test performance
+   - Test accessibility
+
+3. **Strapi Entity Requirements**
+   - Document testing requirements
+   - Define validation requirements
+   - Document performance requirements
+   - Define security requirements
+
+4. **Strapi Collection Configuration**
+   - Verify all API endpoints
+   - Test all content types
+   - Verify permissions
+   - Test relationships
+
+5. **Frontend Integration Setup**
+   - Set up testing environment
+   - Configure test frameworks
+   - Set up CI/CD pipeline
+   - Configure test reporting
+
+6. **Edge Case Testing**
+   - Test all edge cases
+   - Test error scenarios
+   - Test performance limits
+   - Test security scenarios
+
+7. **Component Behavior Testing**
+   - Test all components
+   - Test user interactions
+   - Test responsive behavior
+   - Test accessibility features
+
+8. **Pull Request Creation**
+   - Create testing branch
+   - Commit test results
+   - Create pull request with test report
+   - Add quality metrics
+
+9. **Code Review Process**
+   - Review test coverage
+   - Check test quality
+   - Verify test results
+   - Validate quality metrics
+
+10. **Post-Review Corrections**
+   - Address testing feedback
+   - Fix identified issues
+   - Update test coverage
+   - Final quality validation
+
+---
+
+## Backlog Summary
+
+**Total Work Items:** 8  
+**Total Story Points:** 50  
+**Priority Distribution:**
+- **High Priority:** 5 items (32 SP)
+- **Medium Priority:** 3 items (18 SP)
+
+**Dependencies Overview:**
+- Work Items 1-2: Foundation (no dependencies)
+- Work Items 3-4: Depend on 1-2
+- Work Items 5-6: Depend on 1-2
+- Work Items 7: Depend on 6
+- Work Item 8: Depend on all previous items
+
+## Success Criteria
+
+- ✅ Sidebar displays sections from Strapi API
+- ✅ TOP-3 section shows banners from "TOP Playbooks banners"
+- ✅ Page title changes dynamically based on selected section
+- ✅ Categories are filtered by selected section
+- ✅ Articles display based on section and category selection
+- ✅ Article detail pages work correctly
+- ✅ Many-to-many relationships are handled properly
+- ✅ All content is managed through Strapi CMS
+- ✅ Frontend dynamically displays content from API
+- ✅ System is ready for production
+
+## Risk Assessment
+
+**Technical Risks:**
+- Complex many-to-many relationship handling
+- Dynamic content filtering complexity
+- API performance with complex queries
+- Content synchronization between frontend and backend
+
+**Mitigation Strategies:**
+- Incremental implementation approach
+- Comprehensive testing of relationship logic
+- API performance optimization
+- Regular content synchronization checks
+- Comprehensive testing at each phase

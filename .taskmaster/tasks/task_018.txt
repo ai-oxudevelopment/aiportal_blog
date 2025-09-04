@@ -1,0 +1,11 @@
+# Task ID: 18
+# Title: Set Up Deployment and CI/CD
+# Status: pending
+# Dependencies: 17
+# Priority: medium
+# Description: Configure deployment pipeline and continuous integration
+# Details:
+Set up Docker containers for backend and frontend, configure CI/CD pipeline with GitHub Actions, implement automated testing and deployment. Configure environment variables and secrets management.
+
+# Test Strategy:
+Test deployment pipeline, verify automated testing, and check production deployment.

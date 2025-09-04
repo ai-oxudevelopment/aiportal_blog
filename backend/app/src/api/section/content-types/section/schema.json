@@ -32,11 +32,21 @@
       "type": "integer",
       "default": 0
     },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
     "articles": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::article.article",
       "mappedBy": "section"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "sections"
     }
   }
 }

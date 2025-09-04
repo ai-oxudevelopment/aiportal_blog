@@ -25,6 +25,14 @@
     "description": {
       "type": "text"
     },
+    "color": {
+      "type": "string",
+      "maxLength": 7
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
     "articles": {
       "type": "relation",
       "relation": "manyToMany",

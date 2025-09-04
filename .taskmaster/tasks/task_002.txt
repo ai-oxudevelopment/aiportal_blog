@@ -1,11 +1,46 @@
 # Task ID: 2
-# Title: Strapi CMS Backend Initialization
-# Status: pending
+# Title: Configure Content Types and Relationships
+# Status: in-progress
 # Dependencies: 1
 # Priority: high
-# Description: Initialize Strapi CMS project in the backend folder with proper configuration
+# Description: Define and implement all content types with proper relationships and validation
 # Details:
-Install and configure Strapi CMS in the backend folder. Set up database configuration, environment variables, and basic project structure. Configure CORS for frontend integration.
+Create content types: Articles (title, content, slug, meta description, tags, publish date), Categories (name, description, slug, parent category), Sections (name, description, slug, order), Collections (name, description, articles, featured image), Tags (name, slug, description). Set up proper relationships between content types.
 
 # Test Strategy:
-Verify Strapi admin panel is accessible and basic configuration is working
+Verify all content types can be created, edited, and deleted through Strapi admin panel. Test relationships work correctly.
+
+# Subtasks:
+## 1. Design Article Content Type Schema [pending]
+### Dependencies: None
+### Description: Create comprehensive Article content type with all required fields and validation
+### Details:
+Define Article fields: title (text, required), content (richtext, required), slug (uid, required), metaDescription (text), publishDate (datetime), status (enumeration: draft, published, archived), featured (boolean), readingTime (number). Add field validation and constraints.
+<info added on 2025-09-04T21:43:02.991Z>
+Article content type schema updated with all required fields: metaDescription, publishDate, status, featured. Author relation removed as requested. All articles are writing successfully with PostgreSQL via Docker Compose.
+</info added on 2025-09-04T21:43:02.991Z>
+
+## 2. Design Category and Section Content Types [pending]
+### Dependencies: 2.1
+### Description: Create Category and Section content types with hierarchical relationships
+### Details:
+Category: name (text, required), description (text), slug (uid, required), parent (relation to self), order (number). Section: name (text, required), description (text), slug (uid, required), order (number), featured (boolean). Implement self-referencing relationship for categories.
+
+## 3. Design Tag Content Type [pending]
+### Dependencies: 2.2
+### Description: Create Tag content type with proper field definitions
+### Details:
+Tag: name (text, required), description (text), slug (uid, required), color (text), featured (boolean).
+
+## 4. Design Collection Content Type [pending]
+### Dependencies: 2.3
+### Description: Create Collection content type for organizing articles
+### Details:
+Collection: name (text, required), description (text), slug (uid, required), featuredImage (media), articles (relation to Article), featured (boolean), publishDate (datetime), order (number). Implement many-to-many relationship with articles.
+
+## 5. Implement Content Type Relationships [pending]
+### Dependencies: 2.4
+### Description: Set up all relationships between content types
+### Details:
+Article -> Category (many-to-many), Article -> Tags (many-to-many), Article -> Sections (many-to-many), Collection -> Articles (many-to-many), Category -> Parent Category (many-to-one). Configure relationship display fields and populate options.
+

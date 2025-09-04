@@ -17,25 +17,41 @@
       "required": true,
       "maxLength": 255
     },
+    "description": {
+      "type": "text"
+    },
     "slug": {
       "type": "uid",
       "targetField": "name",
       "required": true
     },
-    "description": {
-      "type": "text"
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "children"
     },
-    "icon": {
-      "type": "string"
+    "children": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category",
+      "mappedBy": "parent"
     },
-    "color": {
-      "type": "string"
+    "order": {
+      "type": "integer",
+      "default": 0
     },
     "articles": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::article.article",
       "mappedBy": "categories"
+    },
+    "sections": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::section.section",
+      "inversedBy": "categories"
     }
   }
 }
