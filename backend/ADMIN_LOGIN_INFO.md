@@ -25,7 +25,7 @@ Your admin password has been reset and Strapi has been restarted.
 
 3. **Test API Access**:
    ```bash
-   cd backend && node test-api.js
+   cd backend && node scripts/admin/test-api.js
    ```
    You should see `200 OK` responses instead of `403 Forbidden`.
 
@@ -50,15 +50,19 @@ If you have any issues:
 
 4. **Reset Password Again** (if needed):
    ```bash
-   cd backend && node reset-admin-password.js
+   cd backend && node scripts/admin/reset-admin-password.js
    ```
 
-## 📁 Available Scripts
+## 📁 Available Scripts (Local Use Only)
 
-- `check-admin.js` - Check admin panel status
-- `test-api.js` - Test API endpoints
-- `reset-admin-password.js` - Reset admin password
-- `setup-public-access.js` - Configure public API access
+All scripts are now in the secure `scripts/admin/` directory:
+
+- `scripts/admin/check-admin.js` - Check admin panel status
+- `scripts/admin/test-api.js` - Test API endpoints
+- `scripts/admin/reset-admin-password.js` - Reset admin password
+- `scripts/admin/setup-public-access.js` - Configure public API access
+- `scripts/admin/create-admin.js` - Create new admin account
+- `scripts/admin/reset-admin.js` - Reset admin account via database
 
 ## ✅ Status
 

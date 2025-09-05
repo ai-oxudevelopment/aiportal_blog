@@ -1,0 +1,4 @@
+# Admin scripts - local use only
+# These scripts should not be accessible via web interface
+*
+!.gitignore
