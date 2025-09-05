@@ -5,97 +5,12 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import WriterActionAgent from "../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../components/ChatGPTBusinessSection";
-import { getCategories } from "../lib/api";
-import type { Category } from "../lib/types";
+import { getCategories, getSections } from "../lib/api";
+import type { Category, Section } from "../lib/types";
 
 // src/app/page.tsx
 
 
-function InlineSidebar({ isMenuOpen }: {isMenuOpen: boolean;}) {
-  const [sections, setSections] = useState<Section[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchSections = async () => {
-      try {
-        setLoading(true);
-        const fetchedSections = await getSections();
-        setSections(fetchedSections);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch sections');
-        console.error('Error fetching sections:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSections();
-  }, []);
-
-  // Fallback to hardcoded sections if API is unavailable
-  const fallbackSections = [
-    { name: "Research", slug: "research" },
-    { name: "Safety", slug: "safety" },
-    { name: "For Business", slug: "for-business" },
-    { name: "For Developers", slug: "for-developers" },
-    { name: "Stories", slug: "stories" },
-    { name: "Company", slug: "company" },
-    { name: "News", slug: "news" }
-  ];
-
-  const menuItems = error 
-    ? fallbackSections 
-    : sections.map(section => ({
-        name: section.attributes.name,
-        slug: section.attributes.slug
-      }));
-
-  return (
-    <aside
-      className={`fixed left-0 top-14 bottom-0 w-full md:w-64 bg-black/80 backdrop-blur-sm border-r border-white/10 z-30 transition-all duration-300 ease-in-out ${
-      isMenuOpen ? "translate-x-0" : "-translate-x-full"}`
-      }
-      data-oid="u059604">
-
-      <nav
-        className="flex flex-col h-full px-6 py-8 border-0 border-t-0 border-r-0 border-b-0 border-l-0"
-        data-oid="fcj5e9p">
-
-        {loading ? (
-          <div className="space-y-2">
-            {[...Array(7)].map((_, idx) => (
-              <div key={idx} className="h-10 bg-gray-700 animate-pulse rounded-md"></div>
-            ))}
-          </div>
-        ) : (
-          <ul className="space-y-2" data-oid="vkcbsdq">
-            {menuItems.map((item, idx) =>
-            <li key={item.slug} data-oid="emxqsu1">
-                <a
-                href={`/sections/${item.slug}`}
-                className={`flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors rounded-md ${
-                idx === menuItems.length - 1 ? "bg-white/10 text-white" : ""}`
-                }
-                data-oid="df_ei7w">
-
-                  {item.name}
-                </a>
-              </li>
-            )}
-          </ul>
-        )}
-        
-        {error && (
-          <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded-md">
-            <span className="text-yellow-400 text-xs">
-              Using fallback sections
-            </span>
-          </div>
-        )}
-      </nav>
-    </aside>);
-}
 
 function Tabs() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -193,48 +108,6 @@ function Pill({ title, subtitle }: {title: string;subtitle?: string;}) {
 
 }
 
-function HeroCard() {
-  return (
-    <a
-      href="#"
-      className="group block overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-tr from-pink-400 via-orange-300 to-indigo-200 h-[320px] md:h-[420px] relative"
-      data-oid="n:jqp9v">
-
-      <div
-        className="absolute inset-0 bg-[radial-gradient(900px_500px_at_10%_-10%,rgba(255,255,255,0.35),transparent_60%)]"
-        data-oid="3pacw2i" />
-
-
-      <div
-        className="absolute left-6 top-6 md:left-10 md:top-10"
-        data-oid="lwsg:v.">
-
-        <Pill title="GPT-5" subtitle="Flagship model" data-oid="f1:t0l-" />
-      </div>
-
-      <div
-        className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/10 to-transparent"
-        data-oid="k-foizq">
-
-        <h3
-          className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-white"
-          data-oid="zctwf6u">
-
-          Introducing GPT-5
-        </h3>
-        <div className="mt-2 text-xs text-gray-300/90" data-oid="sj5xcmg">
-          <span className="uppercase tracking-wide" data-oid="kao-5wy">
-            Release
-          </span>
-          <span className="mx-2" data-oid="dq5q:y6">
-            •
-          </span>
-          <time data-oid="ba3a_ig">Aug 7, 2025</time>
-        </div>
-      </div>
-    </a>);
-
-}
 
 type Post = {
   id: string;
