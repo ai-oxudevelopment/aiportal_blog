@@ -74,6 +74,12 @@
       "relation": "manyToMany",
       "target": "api::collection.collection",
       "inversedBy": "articles"
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "articles"
     }
   }
 }
