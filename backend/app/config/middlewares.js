@@ -17,7 +17,6 @@ module.exports = [
   {
     name: 'strapi::cors',
     config: {
-      enabled: true,
       headers: '*',
       origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:1337', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001', 'http://127.0.0.1:1337']
     }
@@ -29,10 +28,10 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
-  {
-    name: 'global::image-optimization',
-    config: {},
-  },
+  // {
+  //   name: 'global::image-optimization',
+  //   config: {},
+  // },
   {
     name: 'global::upload-security',
     config: {},

@@ -11,7 +11,6 @@ module.exports = {
       },
       provider: 'local',
       providerOptions: {
-        sizeLimit: 25 * 1024 * 1024, // 25MB max
         localServer: {
           maxage: 300000, // 5 minutes cache
         },
