@@ -2,85 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 import WriterActionAgent from "../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../components/ChatGPTBusinessSection";
-import { getCategories, getSections } from "../lib/api";
-import type { Category, Section } from "../lib/types";
+import { getCategories } from "../lib/api";
+import type { Category } from "../lib/types";
 
 // src/app/page.tsx
-function Brand() {
-  return (
-    <div className="flex items-center gap-2 text-white" data-oid="53sta31">
-      <span className="text-lg font-bold tracking-tight" data-oid="iz9_1.n">
-        AIWORKPLACE BLOG
-      </span>
-    </div>);
-
-}
-
-function Topbar({ onToggleMenu }: {onToggleMenu: () => void;}) {
-  return (
-    <header
-      className="fixed top-0 left-0 right-0 z-20 bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-black/40"
-      data-oid="6:fubws">
-
-      <div
-        className="w-full px-4 md:px-8 h-14 flex items-center justify-between"
-        data-oid="mvct1sf">
-
-        <div className="flex items-center gap-4" data-oid="qrtunnl">
-          <Brand data-oid="hib.6o:" />
-          <button
-            className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
-            title="Hide menu"
-            onClick={onToggleMenu}
-            data-oid="z73fa2:">
-
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              data-oid="q132stz">
-
-              <rect
-                x="3"
-                y="4"
-                width="18"
-                height="16"
-                rx="2"
-                strokeWidth="1.5"
-                data-oid="z2ssohr" />
 
 
-              <line
-                x1="8"
-                y1="6"
-                x2="8"
-                y2="18"
-                strokeWidth="1.5"
-                data-oid="nr:kwcw" />
-
-            </svg>
-          </button>
-        </div>
-        <div
-          className="flex items-center gap-3 text-gray-300"
-          data-oid="bw-sbz-">
-
-          <button
-            className="h-8 px-4 rounded-full bg-gradient-to-r from-pink-500 via-orange-500 to-blue-500 hover:from-pink-600 hover:via-orange-600 hover:to-blue-600 border-0 text-white text-xs font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-gradient-chaos"
-            data-oid="iux7_.4">
-
-            О продукте
-          </button>
-        </div>
-      </div>
-    </header>);
-
-}
-
-function Sidebar({ isMenuOpen }: {isMenuOpen: boolean;}) {
+function InlineSidebar({ isMenuOpen }: {isMenuOpen: boolean;}) {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -888,7 +819,7 @@ export default function Page() {
 
 
       <div className="flex" data-oid="ngvi.xv" key="olk-NeQN">
-        <Sidebar isMenuOpen={isMenuOpen} data-oid="w_n9o5-" />
+        <Sidebar isMenuOpen={isMenuOpen} />
 
         <main
           className={`pt-14 w-full transition-all duration-300 ease-in-out ${isMenuOpen ? "md:ml-64" : "ml-0"}`}
@@ -1013,12 +944,6 @@ export default function Page() {
           </div>
         </main>
       </div>
-      <Header
-        onToggleMenu={toggleMenu}
-        isMenuOpen={isMenuOpen}
-        data-oid="fflklx:"
-        key="olk-T24f" />
-
     </div>);
 
 }
