@@ -33,4 +33,8 @@ module.exports = [
     name: 'global::image-optimization',
     config: {},
   },
+  {
+    name: 'global::upload-security',
+    config: {},
+  },
 ];

@@ -1,5 +1,7 @@
 'use strict';
 
+const UploadStructureService = require('./services/upload-structure');
+
 module.exports = {
   /**
    * An asynchronous register function that runs before
@@ -17,79 +19,13 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
   async bootstrap({ strapi }) {
-    // Set up public permissions for content types
+    // Initialize upload directory structure
     try {
-      const publicRole = await strapi
-        .query('plugin::users-permissions.role')
-        .findOne({ where: { type: 'public' } });
-
-      if (publicRole) {
-        const permissions = {
-          ...publicRole.permissions,
-          'api::article.article': {
-            controllers: {
-              article: {
-                find: { enabled: true, policy: [] },
-                findOne: { enabled: true, policy: [] },
-                count: { enabled: true, policy: [] }
-              }
-            }
-          },
-          'api::author.author': {
-            controllers: {
-              author: {
-                find: { enabled: true, policy: [] },
-                findOne: { enabled: true, policy: [] },
-                count: { enabled: true, policy: [] }
-              }
-            }
-          },
-          'api::category.category': {
-            controllers: {
-              category: {
-                find: { enabled: true, policy: [] },
-                findOne: { enabled: true, policy: [] },
-                count: { enabled: true, policy: [] }
-              }
-            }
-          },
-          'api::tag.tag': {
-            controllers: {
-              tag: {
-                find: { enabled: true, policy: [] },
-                findOne: { enabled: true, policy: [] },
-                count: { enabled: true, policy: [] }
-              }
-            }
-          },
-          'api::section.section': {
-            controllers: {
-              section: {
-                find: { enabled: true, policy: [] },
-                findOne: { enabled: true, policy: [] },
-                count: { enabled: true, policy: [] }
-              }
-            }
-          },
-          'api::collection.collection': {
-            controllers: {
-              collection: {
-                find: { enabled: true, policy: [] },
-                findOne: { enabled: true, policy: [] },
-                count: { enabled: true, policy: [] }
-              }
-            }
-          }
-        };
-
-        await strapi
-          .query('plugin::users-permissions.role')
-          .update({ where: { id: publicRole.id }, data: { permissions } });
-
-        console.log('✅ Public permissions configured successfully');
-      }
+      const uploadStructureService = new UploadStructureService(strapi);
+      await uploadStructureService.initializeStructure();
+      strapi.log.info('Upload directory structure initialized successfully');
     } catch (error) {
-      console.log('⚠️ Could not configure public permissions:', error.message);
+      strapi.log.error('Failed to initialize upload structure:', error);
     }
   },
 };
