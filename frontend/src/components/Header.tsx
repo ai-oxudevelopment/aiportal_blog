@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import MobileMenu from "./MobileMenu";
-import { getSections } from "../lib/api";
-import type { Section } from "../lib/types";
 
 function Brand() {
   return (
@@ -33,25 +31,6 @@ const mainPageSections = [
 export default function Header({ onToggleMenu, isMenuOpen, showSearch = true }: HeaderProps) {
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [sections, setSections] = useState<Section[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch sections from API
-  useEffect(() => {
-    const fetchSections = async () => {
-      try {
-        setLoading(true);
-        const fetchedSections = await getSections();
-        setSections(fetchedSections);
-      } catch (err) {
-        console.error('Error fetching sections:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSections();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -166,10 +145,6 @@ export default function Header({ onToggleMenu, isMenuOpen, showSearch = true }: 
       <MobileMenu 
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        sections={sections.map(section => ({
-          name: section.attributes.name,
-          slug: section.attributes.slug
-        }))}
       />
     </header>
   );
