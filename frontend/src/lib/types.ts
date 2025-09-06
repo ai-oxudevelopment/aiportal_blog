@@ -39,6 +39,9 @@ export interface Article extends StrapiEntity {
     tags?: {
       data: Tag[];
     };
+    sections?: {
+      data: Section[];
+    };
     seo?: {
       metaTitle?: string;
       metaDescription?: string;
@@ -56,6 +59,9 @@ export interface Category extends StrapiEntity {
     articles?: {
       data: Article[];
     };
+    sections?: {
+      data: Section[];
+    };
   };
 }
 
@@ -63,6 +69,7 @@ export interface Section extends StrapiEntity {
   attributes: {
     name: string;
     slug: string;
+    description?: string;
     articles?: {
       data: Article[];
     };

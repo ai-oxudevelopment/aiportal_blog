@@ -5,182 +5,12 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
-import ToastContainer from "../../components/ToastContainer";
-import { getSectionBySlug, getCategories, getArticles } from "../../lib/api";
-import { useToast } from "../../lib/hooks/useToast";
-import type { Section, Category, Article } from "../../lib/types";
+import WriterActionAgent from "../../components/WriterActionAgent";
+import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
+import { getCategories, getSections } from "../../lib/api";
+import type { Category, Section } from "../../lib/types";
 
-// 404 Error component
-function NotFoundError({ sectionSlug }: { sectionSlug: string }) {
-  return (
-    <div className="min-h-screen bg-black text-gray-100">
-      <Header onToggleMenu={() => {}} isMenuOpen={false} />
-      <div className="flex">
-        <Sidebar isMenuOpen={false} />
-        <main className="pt-14 w-full ml-0">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10">
-            <div className="text-center py-20">
-              <div className="max-w-md mx-auto">
-                <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-gray-800 flex items-center justify-center">
-                  <svg className="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                </div>
-                <h1 className="text-6xl font-bold text-white mb-4">404</h1>
-                <h2 className="text-2xl font-semibold text-white mb-4">
-                  Раздел не найден
-                </h2>
-                <p className="text-gray-400 mb-8">
-                  Раздел "{sectionSlug}" не существует или временно недоступен. 
-                  Проверьте правильность URL или попробуйте позже.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <button 
-                    onClick={() => window.location.href = '/'}
-                    className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white transition-colors"
-                  >
-                    На главную
-                  </button>
-                  <button 
-                    onClick={() => window.history.back()}
-                    className="px-6 py-3 bg-transparent hover:bg-white/5 border border-white/20 rounded-lg text-white transition-colors"
-                  >
-                    Назад
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
-  );
-}
-
-// Article loading skeleton component
-function ArticleListSkeleton() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-      {[...Array(8)].map((_, idx) => (
-        <div key={idx} className="block">
-          <div className="aspect-square w-full rounded-xl border border-white/10 bg-gray-700 animate-pulse mb-3"></div>
-          <div className="h-4 bg-gray-700 rounded w-full mb-2 animate-pulse"></div>
-          <div className="h-3 bg-gray-700 rounded w-24 animate-pulse"></div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// No articles found placeholder component
-function NoArticlesPlaceholder({ sectionName, selectedCategory }: { sectionName: string; selectedCategory: string }) {
-  const isFiltered = selectedCategory !== 'all';
-  
-  return (
-    <section className="text-center py-16">
-      <div className="max-w-md mx-auto">
-        <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-800 flex items-center justify-center">
-          <svg className="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-        </div>
-        <h2 className="text-2xl font-semibold text-white mb-4">
-          {isFiltered ? 'Статьи не найдены' : 'Нет статей'}
-        </h2>
-        <p className="text-gray-400 mb-6">
-          {isFiltered 
-            ? `В категории "${selectedCategory}" раздела "${sectionName}" пока нет статей.` 
-            : `В разделе "${sectionName}" пока нет опубликованных статей.`
-          }
-        </p>
-        {isFiltered && (
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button 
-              onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white transition-colors"
-            >
-              Показать все
-            </button>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
-// Skeleton component for loading state
-function SectionSkeleton() {
-  return (
-    <div className="min-h-screen bg-black text-gray-100">
-      <Header onToggleMenu={() => {}} isMenuOpen={false} />
-      <div className="flex">
-        <Sidebar isMenuOpen={false} />
-        <main className="pt-14 w-full ml-0">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10">
-            
-            {/* Hero Section Skeleton */}
-            <section className="mb-12">
-              <div className="overflow-hidden rounded-2xl border border-white/10 bg-gray-800 h-[320px] md:h-[420px] animate-pulse">
-                <div className="absolute left-6 top-6 md:left-10 md:top-10">
-                  <div className="inline-flex flex-col rounded-2xl bg-gray-700 px-4 py-3 w-32 h-16 animate-pulse"></div>
-                </div>
-                <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
-                  <div className="h-8 bg-gray-700 rounded w-48 mb-2 animate-pulse"></div>
-                  <div className="h-4 bg-gray-700 rounded w-32 animate-pulse"></div>
-                </div>
-              </div>
-            </section>
-
-            {/* News Section Skeleton */}
-            <section className="mb-8">
-              <div className="h-12 bg-gray-700 rounded w-32 mb-6 animate-pulse"></div>
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex flex-wrap gap-2">
-                  {[...Array(5)].map((_, idx) => (
-                    <div key={idx} className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 w-20 animate-pulse"></div>
-                  ))}
-                </div>
-                <div className="hidden md:flex items-center gap-2">
-                  {[...Array(3)].map((_, idx) => (
-                    <div key={idx} className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 w-16 animate-pulse"></div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Content Grid Skeleton */}
-            <div className="space-y-16">
-              <section className="mb-16">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="h-8 bg-gray-700 rounded w-40 animate-pulse"></div>
-                  <div className="h-6 bg-gray-700 rounded w-20 animate-pulse"></div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                  {[...Array(8)].map((_, idx) => (
-                    <div key={idx} className="block">
-                      <div className="aspect-square w-full rounded-xl border border-white/10 bg-gray-700 animate-pulse mb-3"></div>
-                      <div className="h-4 bg-gray-700 rounded w-full mb-2 animate-pulse"></div>
-                      <div className="h-3 bg-gray-700 rounded w-24 animate-pulse"></div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
-  );
-}
-
-
-interface SectionPageProps {}
-
-function CategoryTabs({ sectionSlug, selectedCategory, onCategorySelect }: { 
-  sectionSlug: string;
-  selectedCategory: string;
-  onCategorySelect: (categorySlug: string) => void;
-}) {
+function Tabs() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -189,80 +19,33 @@ function CategoryTabs({ sectionSlug, selectedCategory, onCategorySelect }: {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        console.log('Fetching categories for section:', sectionSlug);
-        
-        // Fetch categories attached to this section
-        const fetchedCategories = await getCategories({
-            filters: {
-              sections: {
-                slug: {
-                  $eq: sectionSlug,
-                },
-              },
-            },
-          populate: {
-            sections: true,
-            },
-          });
-        
-        console.log('Categories attached to section:', fetchedCategories);
+        const fetchedCategories = await getCategories();
         setCategories(fetchedCategories);
-        setError(null);
       } catch (err) {
-        console.warn('Categories API error, using mock data:', err);
-        // Use mock categories when API fails
-        const mockCategories: Category[] = [
-          {
-            id: 1,
-            attributes: {
-              name: 'General',
-              slug: 'general',
-              description: 'General articles',
-              sections: { data: [] }
-            },
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            publishedAt: new Date().toISOString()
-          },
-          {
-            id: 2,
-            attributes: {
-              name: 'Tutorials',
-              slug: 'tutorials',
-              description: 'Tutorial articles',
-              sections: { data: [] }
-            },
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            publishedAt: new Date().toISOString()
-          },
-          {
-            id: 3,
-            attributes: {
-              name: 'Tips',
-              slug: 'tips',
-              description: 'Tips and tricks',
-              sections: { data: [] }
-            },
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            publishedAt: new Date().toISOString()
-          }
-        ];
-        setCategories(mockCategories);
-        setError(null);
+        setError(err instanceof Error ? err.message : 'Failed to fetch categories');
+        console.error('Error fetching categories:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    if (sectionSlug) {
       fetchCategories();
-    }
-  }, [sectionSlug]);
+  }, []);
 
-  // Build categories list with "All" option always first
-  const allCategories = [
+  // Fallback к hardcoded категориям если Strapi недоступен
+  const fallbackCategories = [
+    { name: "All", slug: "all" },
+    { name: "Company", slug: "company" },
+    { name: "Research", slug: "research" },
+    { name: "Product", slug: "product" },
+    { name: "Safety", slug: "safety" },
+    { name: "Security", slug: "security" },
+    { name: "Global Affairs", slug: "global-affairs" }
+  ];
+
+  const allCategories = error 
+    ? fallbackCategories 
+    : [
         { name: "All", slug: "all" },
         ...categories.map(cat => ({
           name: cat.attributes.name,
@@ -270,142 +53,57 @@ function CategoryTabs({ sectionSlug, selectedCategory, onCategorySelect }: {
         }))
       ];
 
-  console.log('Section slug:', sectionSlug);
-  console.log('Categories from API:', categories);
-  console.log('Categories to display:', allCategories);
-
   if (loading) {
     return (
-      <div className="flex flex-wrap gap-2 text-sm">
-        {[...Array(5)].map((_, idx) => (
-          <div key={idx} className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
-        ))}
-      </div>
-    );
-  }
-
-  if (error) {
-  return (
-    <div className="flex flex-wrap gap-2 text-sm">
-        <button
-          onClick={() => onCategorySelect('all')}
-          className={`px-3 h-8 rounded-full border transition-colors text-gray-300 hover:text-white hover:border-white/30 ${
-            selectedCategory === 'all' ? "border-white/30 text-white bg-white/10" : "border-white/10"
-          }`}
-        >
-          All
-        </button>
-        <span className="px-3 h-8 flex items-center text-yellow-400 text-xs">
-          Failed to load categories
-        </span>
+      <div className="flex flex-wrap gap-2 text-sm" data-oid="i469ghu">
+        <div className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
+        <div className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
+        <div className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-wrap gap-2 text-sm">
-      {allCategories.map((category) => (
+    <div className="flex flex-wrap gap-2 text-sm" data-oid="i469ghu">
+      {allCategories.map((category, i) =>
         <button
           key={category.slug}
-          onClick={() => onCategorySelect(category.slug)}
           className={`px-3 h-8 rounded-full border transition-colors text-gray-300 hover:text-white hover:border-white/30 ${
-            selectedCategory === category.slug ? "border-white/30 text-white bg-white/10" : "border-white/10"
+            i === 0 ? "border-white/30 text-white" : "border-white/10"
           }`}
+          data-oid="8jr82o9"
         >
           {category.name}
         </button>
-      ))}
-      {categories.length === 0 && !loading && (
-        <span className="px-3 h-8 flex items-center text-gray-400 text-xs">
-          No categories available
+      )}
+      {error && (
+        <span className="px-3 h-8 flex items-center text-yellow-400 text-xs">
+          Using fallback categories
         </span>
       )}
     </div>
   );
 }
 
-function HeroCard({ sectionName, onTestToast }: { sectionName: string; onTestToast?: () => void }) {
-  const getGradient = (name: string) => {
-    switch (name.toLowerCase()) {
-      case 'product':
-        return 'from-blue-400 via-purple-500 to-pink-400';
-      case 'research':
-        return 'from-green-400 via-teal-500 to-blue-400';
-      case 'company':
-        return 'from-orange-400 via-red-500 to-pink-400';
-      case 'safety':
-        return 'from-yellow-400 via-orange-500 to-red-400';
-      case 'security':
-        return 'from-indigo-400 via-purple-500 to-pink-400';
-      default:
-        return 'from-pink-400 via-orange-300 to-indigo-200';
-    }
-  };
-
+function Pill({ title, subtitle }: {title: string;subtitle?: string;}) {
   return (
-    <a
-      href="#"
-      className="group block overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-tr h-[320px] md:h-[420px] relative"
-      style={{ background: `linear-gradient(to top right, var(--tw-gradient-stops))` }}
-    >
-      <div className={`absolute inset-0 bg-gradient-to-tr ${getGradient(sectionName)}`} />
-      <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_10%_-10%,rgba(255,255,255,0.35),transparent_60%)]" />
-      
-      <div className="absolute left-6 top-6 md:left-10 md:top-10">
-        <div className="inline-flex flex-col rounded-2xl bg-white text-black/90 px-4 py-3 shadow-lg">
-          <span className="text-base font-semibold leading-none">{sectionName}</span>
-          <span className="text-[13px] text-black/60 leading-tight mt-1">Latest updates</span>
-        </div>
-      </div>
+    <div
+      className="inline-flex flex-col rounded-2xl bg-white text-black/90 px-4 py-3 shadow-lg"
+      data-oid=":_vce:s">
 
-      <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/10 to-transparent">
-        <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-white">
-          {sectionName} News
-        </h3>
-        <div className="mt-2 text-xs text-gray-300/90">
-          <span className="uppercase tracking-wide">Latest</span>
-          <span className="mx-2">•</span>
-          <time>{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
-        </div>
-        {onTestToast && (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              onTestToast();
-            }}
-            className="mt-4 bg-yellow-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-lg px-4 py-2 text-sm font-semibold text-yellow-200 hover:bg-yellow-500/30 transition-all duration-200"
-          >
-            Test Toast
-          </button>
-        )}
-      </div>
-    </a>
-  );
-}
+      <span className="text-base font-semibold leading-none" data-oid="5walso3">
+        {title}
+      </span>
+      {subtitle &&
+      <span
+        className="text-[13px] text-black/60 leading-tight mt-1"
+        data-oid="vwj6asu">
 
-function FilterControls() {
-  return (
-    <div className="hidden md:flex items-center gap-2 text-xs text-gray-300">
-      <button className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition">
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-        </svg>
-        Filter
-      </button>
-      <button className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition">
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-        </svg>
-        Sort
-      </button>
-      <button className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition">
-        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M3 3h6v6H3V3zm0 12h6v6H3v-6zm12-12h6v6h-6V3zm0 12h6v6h-6v-6z" />
-        </svg>
-        Grid
-      </button>
-    </div>
-  );
+          {subtitle}
+        </span>
+      }
+    </div>);
+
 }
 
 type Post = {
@@ -417,6 +115,33 @@ type Post = {
   category: string;
 };
 
+const posts: Post[] = [
+{
+  id: "1",
+  title: "Open Models",
+  tag: "Release",
+  date: "Aug 5, 2025",
+  tone: "blue",
+  category: "product"
+},
+{
+  id: "2",
+  title: "Introducing ChatGPT agent",
+  tag: "Product",
+  date: "Jul 17, 2025",
+  tone: "indigo",
+  category: "product"
+},
+{
+  id: "3",
+  title: "Transparency report 2025",
+  tag: "Safety",
+  date: "Jun 02, 2025",
+  tone: "gray",
+  category: "safety"
+}];
+
+
 type SectionPost = {
   id: string;
   title: string;
@@ -424,6 +149,198 @@ type SectionPost = {
   date: string;
   tone: "blue" | "green" | "orange" | "pink" | "purple" | "teal";
   category: string;
+};
+
+type KeyDocument = {
+  id: string;
+  title: string;
+  tag: string;
+  date: string;
+  description: string;
+  tone: "blue" | "green" | "orange" | "pink" | "purple" | "teal";
+  href?: string;
+  cover?: string;
+  ctaText?: string;
+};
+
+const keyDocuments: KeyDocument[] = [
+{
+  id: "key1",
+  title: "AI Safety Framework 2025",
+  description:
+  "Comprehensive guidelines for responsible AI development and deployment across all sectors",
+  tag: "Safety",
+  date: "Aug 25, 2025",
+  tone: "purple",
+  href: "#",
+  ctaText: "Start building"
+},
+{
+  id: "key2",
+  title: "GPT-5 Technical Documentation",
+  description:
+  "Complete technical specifications, API reference, and implementation guide for GPT-5",
+  tag: "Product",
+  date: "Aug 20, 2025",
+  tone: "blue",
+  href: "#",
+  ctaText: "Explore API"
+},
+{
+  id: "key3",
+  title: "OpenAI Research Roadmap",
+  description:
+  "Strategic research directions and upcoming breakthroughs in artificial intelligence",
+  tag: "Research",
+  date: "Aug 15, 2025",
+  tone: "green",
+  href: "#",
+  ctaText: "Learn more"
+}];
+
+const sectionData: Record<string, SectionPost[]> = {
+  Product: [
+  {
+    id: "p1",
+    title: "Introducing our latest image generation model in the API",
+    tag: "Product",
+    date: "Apr 23, 2025",
+    tone: "blue",
+    category: "product"
+  },
+  {
+    id: "p2",
+    title: "Introducing GPT-4.5",
+    tag: "Release",
+    date: "Feb 27, 2025",
+    tone: "green",
+    category: "product"
+  },
+  {
+    id: "p4",
+    title: "Introducing 23",
+    tag: "Release",
+    date: "Feb 27, 2025",
+    tone: "purple",
+    category: "product"
+  },
+  {
+    id: "p3",
+    title: "OpenAI o3-mini",
+    tag: "Release",
+    date: "Jan 31, 2025",
+    tone: "orange",
+    category: "product"
+  }],
+
+
+  Research: [
+  {
+    id: "r1",
+    title: "Pioneering an AI clinical copilot with Penda Health",
+    tag: "Publication",
+    date: "Jul 22, 2025",
+    tone: "pink",
+    category: "research"
+  },
+  {
+    id: "r2",
+    title: "Toward understanding and preventing misalignment generalization",
+    tag: "Publication",
+    date: "Jun 18, 2025",
+    tone: "purple",
+    category: "research"
+  },
+  {
+    id: "r3",
+    title: "Introducing HealthBench",
+    tag: "Publication",
+    date: "May 12, 2025",
+    tone: "teal",
+    category: "research"
+  }],
+
+
+  Company: [
+  {
+    id: "c1",
+    title: "OpenAI expands to new markets",
+    tag: "Company",
+    date: "Aug 15, 2025",
+    tone: "blue",
+    category: "company"
+  },
+  {
+    id: "c2",
+    title: "Partnership with leading healthcare providers",
+    tag: "Company",
+    date: "Jul 30, 2025",
+    tone: "green",
+    category: "company"
+  },
+  {
+    id: "c3",
+    title: "New office opening in Singapore",
+    tag: "Company",
+    date: "Jun 25, 2025",
+    tone: "orange",
+    category: "company"
+  }],
+
+
+  Safety: [
+  {
+    id: "s1",
+    title: "AI Safety research breakthrough",
+    tag: "Safety",
+    date: "Aug 10, 2025",
+    tone: "pink",
+    category: "safety"
+  },
+  {
+    id: "s2",
+    title: "Red team findings and improvements",
+    tag: "Safety",
+    date: "Jul 05, 2025",
+    tone: "purple",
+    category: "safety"
+  },
+  {
+    id: "s3",
+    title: "Transparency report Q2 2025",
+    tag: "Safety",
+    date: "Jun 15, 2025",
+    tone: "teal",
+    category: "safety"
+  }],
+
+
+  Security: [
+  {
+    id: "sec1",
+    title: "Enhanced security measures for API",
+    tag: "Security",
+    date: "Aug 20, 2025",
+    tone: "blue",
+    category: "security"
+  },
+  {
+    id: "sec2",
+    title: "Cybersecurity partnership announcement",
+    tag: "Security",
+    date: "Jul 12, 2025",
+    tone: "green",
+    category: "security"
+  },
+  {
+    id: "sec3",
+    title: "Security audit results published",
+    tag: "Security",
+    date: "Jun 08, 2025",
+    tone: "orange",
+    category: "security"
+  }]
+
 };
 
 
@@ -449,6 +366,7 @@ function Thumb({ tone }: {tone: Post["tone"] | SectionPost["tone"];}) {
         data-oid="hl8x7y2" />
 
     </div>);
+
 }
 
 function PostCard({ post }: {post: Post | SectionPost;}) {
@@ -461,7 +379,7 @@ function PostCard({ post }: {post: Post | SectionPost;}) {
   };
 
   const slug = createSlug(post.title);
-  const href = `/articles/${slug}`;
+  const href = `/${post.category}/${slug}`;
 
   return (
     <a href={href} className="block" data-oid="stib5jb">
@@ -481,347 +399,300 @@ function PostCard({ post }: {post: Post | SectionPost;}) {
         </div>
       </div>
     </a>);
+
+}
+
+function HeroTopCard({
+  title,
+  description,
+  buttonText = "Start building",
+  gradientFrom = "from-sky-400",
+  gradientVia = "via-blue-500",
+  gradientTo = "to-purple-400"
+
+
+
+
+}: {title: string;description: string;buttonText?: string;gradientFrom?: string;gradientVia?: string;gradientTo?: string;}) {
+  return (
+    <a
+      className="group block overflow-hidden rounded-[28px] border border-white/10 bg-zinc-900/80 backdrop-blur-md transition-all duration-500 hover:scale-[1.01] hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] hover:ring-1 hover:ring-white/20"
+      data-oid="hero-top-card">
+
+      <div
+        className="relative h-[320px] sm:h-[380px] md:h-[420px] lg:h-[480px]"
+        data-oid="card-container">
+
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${gradientFrom} ${gradientVia} ${gradientTo} rounded-[28px]`}
+          data-oid="gradient-bg">
+        </div>
+        <div
+          className="absolute inset-0 rounded-[28px] opacity-70 bg-[radial-gradient(600px_380px_at_80%_-10%,rgba(255,255,255,0.6),transparent_60%)]"
+          data-oid="radial-highlight">
+      </div>
+
+        <div
+          className="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6"
+          data-oid="content-container">
+
+          {/* Text content container with transition */}
+          <div
+            className="w-full transition-transform duration-300 ease-out group-hover:-translate-y-3"
+            data-oid="text-container"
+            key="olk-SEyA">
+
+            <h3
+              className="text-white text-lg sm:text-xl md:text-2xl font-semibold tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] leading-tight"
+              data-oid="card-title">
+
+              {title}
+        </h3>
+            <p
+              className="mt-2 text-white/90 text-xs sm:text-sm leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] max-w-[90%]"
+              data-oid="card-description">
+
+              {description}
+            </p>
+        </div>
+
+          {/* Button that slides up from below */}
+          <div
+            className="mt-4 flex items-center gap-3 transform translate-y-full opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+            data-oid="button-container">
+
+            <span
+              className="inline-flex items-center gap-2 rounded-full bg-white text-zinc-900 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold shadow-[0_8px_30px_rgba(255,255,255,0.25)] transition-colors duration-300 hover:bg-white/95"
+              data-oid="action-button">
+
+              {buttonText}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                data-oid="arrow-icon">
+
+                <path
+                  fill="currentColor"
+                  d="M13 5l7 7-7 7v-4H4v-6h9V5z"
+                  data-oid="arrow-path" />
+
+              </svg>
+        </span>
+    </div>
+        </div>
+      </div>
+    </a>);
+
+}
+
+function KeyDocumentCard({ document }: {document: KeyDocument;}) {
+  const toneMap: Record<string, string> = {
+    blue: "from-sky-400 via-sky-500 to-blue-300",
+    green: "from-emerald-400 via-green-500 to-teal-300",
+    orange: "from-orange-400 via-amber-400 to-yellow-300",
+    pink: "from-pink-400 via-rose-400 to-red-300",
+    purple: "from-purple-400 via-violet-400 to-indigo-300",
+    teal: "from-teal-400 via-cyan-400 to-blue-300"
+  };
+
+  return (
+    <a
+      href={document.href ?? "#"}
+      className="group block overflow-hidden rounded-[28px] border border-white/10 bg-zinc-900/80 backdrop-blur-md transition-all duration-500 hover:scale-[1.01] hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] hover:ring-1 hover:ring-white/20"
+      data-oid="key-doc-card">
+
+      <div
+        className="relative h-[320px] sm:h-[380px] md:h-[420px] lg:h-[480px]"
+        data-oid="t0t-oy8">
+
+        {/* Background gradient */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${toneMap[document.tone]} rounded-[28px]`}
+          data-oid="jkj014c" />
+
+
+        {/* Radial highlights */}
+        <div
+          className="absolute inset-0 rounded-[28px] bg-[radial-gradient(600px_380px_at_80%_-10%,rgba(255,255,255,0.6),transparent_60%)] opacity-70"
+          data-oid="i98095h" />
+
+
+        <div
+          className="absolute inset-0 rounded-[28px] bg-[radial-gradient(500px_420px_at_-10%_110%,rgba(255,255,255,0.35),transparent_60%)] opacity-60"
+          data-oid="ovez2ds" />
+
+
+        {/* Optional cover image */}
+        {document.cover &&
+        <img
+          src={document.cover}
+          alt={document.title}
+          className="absolute inset-0 h-full w-full object-cover rounded-[28px] opacity-80 mix-blend-screen transition-transform duration-700 ease-out will-change-transform group-hover:-translate-y-1"
+          data-oid="8b4446l" />
+
+        }
+
+        {/* Content pinned to bottom-left */}
+        <div
+          className="absolute inset-x-0 bottom-0 p-4 sm:p-6 md:p-8 lg:p-10"
+          data-oid="tlv11_a">
+
+          {/* Text content container with transition */}
+          <div
+            className="w-full transition-transform duration-300 ease-out group-hover:-translate-y-4"
+            data-oid="r_gznaj">
+
+            <h3
+              className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] leading-tight"
+              data-oid=".hykh-_">
+
+              {document.title}
+            </h3>
+            <p
+              className="mt-2 sm:mt-3 md:mt-4 text-white/90 text-sm sm:text-base md:text-lg leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] max-w-[95%]"
+              data-oid="w1ilq.n">
+
+              {document.description}
+            </p>
+        </div>
+
+          {/* Button that slides up from below */}
+          <div
+            className="mt-3 sm:mt-4 md:mt-6 flex items-center gap-3 md:gap-4 transform translate-y-full opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+            data-oid="7va0vv8">
+
+            <span
+              className="inline-flex items-center gap-2 rounded-full bg-white text-zinc-900 px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 text-sm sm:text-base font-semibold shadow-[0_8px_30px_rgba(255,255,255,0.25)] transition-colors duration-300 hover:bg-white/95"
+              data-oid="2wus1l9">
+
+              {document.ctaText ?? "Start building"}
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                data-oid="s2x578h">
+
+                <path
+                  fill="currentColor"
+                  d="M13 5l7 7-7 7v-4H4v-6h9V5z"
+                  data-oid="a72y-v5" />
+
+              </svg>
+            </span>
+            <time
+              className="text-white/80 text-xs sm:text-sm"
+              data-oid="n4jhum6">
+
+              {document.date}
+            </time>
+      </div>
+        </div>
+      </div>
+    </a>);
+
+}
+
+function HeroTopCards({ docs }: {docs: KeyDocument[];}) {
+  return (
+    <section className="py-6 md:py-10 lg:py-14" data-oid="-4isrhx">
+      <div
+        className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 pr-0 pl-0"
+        data-oid=".binyzq">
+
+        <div
+          className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          data-oid=":au0ncx">
+
+          <HeroTopCard
+            title="gpt-oss-120b"
+            description="A large open model designed to run in data centers and on high-end desktops and laptops."
+            buttonText="Start building"
+            gradientFrom="from-sky-400"
+            gradientVia="via-blue-500"
+            gradientTo="to-purple-400"
+            data-oid="zzd-.n2" />
+
+
+          <HeroTopCard
+            title="gpt-oss-20b"
+            description="A medium-sized open model that can run on most desktops and laptops."
+            buttonText="Start building"
+            gradientFrom="from-purple-400"
+            gradientVia="via-violet-500"
+            gradientTo="to-blue-400"
+            data-oid="n1jibj8" />
+
+
+          <HeroTopCard
+            title="gpt-oss-2b"
+            description="A medium-sized open model that can run on most desktops and laptops."
+            buttonText="Start building"
+            gradientFrom="from-indigo-200"
+            gradientVia="via-violet-300"
+            gradientTo="to-purple-200"
+            data-oid="byfymkm" />
+
+        </div>
+      </div>
+    </section>);
+
+}
+
+function Section({ title, posts }: {title: string;posts: SectionPost[];}) {
+  return (
+    <section className="mb-16" data-oid="gfd3lvk">
+      <div
+        className="flex items-center justify-between mb-6"
+        data-oid="pxy_r.m">
+
+        <h2
+          className="text-2xl font-semibold tracking-tight text-white"
+          data-oid="75.2c_u">
+
+          {title}
+        </h2>
+        <button
+          className="text-sm text-gray-300 hover:text-white transition"
+          data-oid="-:87evf">
+
+          View all
+      </button>
+    </div>
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
+        data-oid="n_-yumy">
+
+        {posts.map((post) =>
+        <PostCard key={post.id} post={post} data-oid="njxyaq5" />
+        )}
+      </div>
+    </section>);
+
 }
 
 
-
-export default function SectionPage({}: SectionPageProps) {
+export default function SectionPage() {
   const params = useParams();
   const slug = params.sectionSlug as string;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [section, setSection] = useState<Section | null>(null);
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [articlesLoading, setArticlesLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [notFound, setNotFound] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const { toasts, addToast, removeToast } = useToast();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const testToast = () => {
-    addToast('Тестовое уведомление работает!', 'success', 3000);
-  };
-
-  const handleCategorySelect = (categorySlug: string) => {
-    setSelectedCategory(categorySlug);
-    console.log('Selected category:', categorySlug);
-    
-    // Fetch articles filtered by both section and category
-    if (categorySlug !== 'all') {
-      fetchArticlesByCategory(categorySlug);
-    } else {
-      // For 'all' category, refetch all articles for this section
-      setArticlesLoading(true);
-      const fetchSectionData = async () => {
-        try {
-          const sectionArticles = await getArticles({
-            filters: {
-              sections: {
-                slug: {
-                  $eq: slug,
-                },
-              },
-            },
-            sort: ['createdAt:desc'],
-            populate: {
-              featuredImage: true,
-              author: {
-                populate: ['avatar'],
-              },
-              categories: true,
-              tags: true,
-              sections: true,
-            },
-          });
-          setArticles(sectionArticles);
-        } catch (error) {
-          console.warn('Failed to refetch all articles:', error);
-        } finally {
-          setArticlesLoading(false);
-        }
-      };
-      fetchSectionData();
-    }
-  };
-
-  const fetchArticlesByCategory = async (categorySlug: string) => {
-    try {
-      setArticlesLoading(true);
-      console.log('Fetching articles for section:', slug, 'and category:', categorySlug);
-      
-      const filteredArticles = await getArticles({
-        filters: {
-          $and: [
-            {
-              sections: {
-                slug: {
-                  $eq: slug,
-                },
-              },
-            },
-            {
-              categories: {
-                slug: {
-                  $eq: categorySlug,
-                },
-              },
-            },
-          ],
-        },
-        sort: ['createdAt:desc'],
-        populate: {
-          featuredImage: true,
-          author: {
-            populate: ['avatar'],
-          },
-          categories: true,
-          tags: true,
-          sections: true,
-        },
-      });
-      
-      console.log('Articles filtered by section and category:', filteredArticles);
-      setArticles(filteredArticles);
-    } catch (error) {
-      console.warn('Failed to fetch articles by category, using existing articles:', error);
-      // Keep existing articles and filter them client-side
-    } finally {
-      setArticlesLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    let isMounted = true;
-    let timeoutId: NodeJS.Timeout;
-    
-    const fetchSectionData = async () => {
-      try {
-        setLoading(true);
-        setArticlesLoading(true);
-        setError(null);
-        setNotFound(false);
-        
-        // Set 15-second timeout for 404 error
-        timeoutId = setTimeout(() => {
-          if (isMounted) {
-            setNotFound(true);
-            setLoading(false);
-            setArticlesLoading(false);
-          }
-        }, 15000);
-        
-        let sectionData: Section | null = null;
-        
-        // Try to fetch section data from API
-        try {
-          sectionData = await getSectionBySlug(slug);
-          if (sectionData && isMounted) {
-            setSection(sectionData);
-            setLoading(false); // Section data loaded
-            clearTimeout(timeoutId); // Clear timeout if data received
-          } else if (isMounted) {
-            // Section not found in API, use mock data
-            const mockSection: Section = {
-              id: 1,
-              attributes: {
-                name: slug.charAt(0).toUpperCase() + slug.slice(1),
-                slug: slug,
-                description: `Latest ${slug} news and updates`
-              },
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-              publishedAt: new Date().toISOString()
-            };
-            setSection(mockSection);
-            setLoading(false);
-            clearTimeout(timeoutId);
-          }
-        } catch (apiError) {
-          console.warn('API error fetching section, using mock data:', apiError);
-          if (isMounted) {
-            // Use mock data when API fails
-            const mockSection: Section = {
-              id: 1,
-              attributes: {
-                name: slug.charAt(0).toUpperCase() + slug.slice(1),
-                slug: slug,
-                description: `Latest ${slug} news and updates`
-              },
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-              publishedAt: new Date().toISOString()
-            };
-            setSection(mockSection);
-            setLoading(false);
-            clearTimeout(timeoutId);
-          }
-        }
-
-        // Fetch articles for the section
-        try {
-          console.log('Fetching articles for section slug:', slug);
-          
-          const sectionArticles = await getArticles({
-            filters: {
-              sections: {
-                slug: {
-                  $eq: slug,
-                },
-              },
-            },
-            sort: ['createdAt:desc'],
-            populate: {
-              featuredImage: true,
-              author: {
-                populate: ['avatar'],
-              },
-              categories: true,
-              tags: true,
-              sections: true,
-            },
-          });
-          
-          console.log('Articles with section filter:', sectionArticles);
-          
-          if (isMounted) {
-            setArticles(sectionArticles);
-            setArticlesLoading(false);
-          }
-        } catch (apiError) {
-          console.warn('Articles API error, using mock data:', apiError);
-        if (isMounted) {
-            // Use mock articles when API fails
-            const mockArticles: Article[] = [
-              {
-            id: 1,
-            attributes: {
-                  title: `Sample ${slug} Article 1`,
-                  slug: `sample-${slug}-article-1`,
-                  excerpt: `This is a sample article for the ${slug} section.`,
-                  content: `This is the full content of the sample article for the ${slug} section.`,
-                  publishedAt: new Date().toISOString(),
-                  featuredImage: { data: null },
-                  author: { data: null },
-                  categories: { data: [] },
-                  tags: { data: [] },
-                  sections: { data: [] }
-            },
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-                publishedAt: new Date().toISOString()
-              },
-              {
-                id: 2,
-                attributes: {
-                  title: `Sample ${slug} Article 2`,
-                  slug: `sample-${slug}-article-2`,
-                  excerpt: `Another sample article for the ${slug} section.`,
-                  content: `This is another sample article for the ${slug} section.`,
-            publishedAt: new Date().toISOString(),
-                  featuredImage: { data: null },
-                  author: { data: null },
-                  categories: { data: [] },
-                  tags: { data: [] },
-                  sections: { data: [] }
-                },
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                publishedAt: new Date().toISOString()
-              }
-            ];
-            setArticles(mockArticles);
-            setArticlesLoading(false);
-          }
-        }
-
-      } catch (err) {
-        console.error('Unexpected error:', err);
-        if (isMounted) {
-          setNotFound(true);
-          setLoading(false);
-        }
-      }
-    };
-
-    if (slug) {
-      fetchSectionData();
-    }
-
-    // Cleanup function
-    return () => {
-      isMounted = false;
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [slug]);
-
-  // Transform API articles to section posts format
-  const transformArticlesToPosts = (articles: Article[]): SectionPost[] => {
-    return articles.map(article => ({
-      id: article.id.toString(),
-      title: article.attributes.title,
-      tag: article.attributes.categories?.data[0]?.attributes.name || "Article",
-      date: new Date(article.createdAt).toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
-      }),
-      tone: "blue" as const,
-      category: article.attributes.categories?.data[0]?.attributes.slug || slug
-    }));
-  };
-
-
-  // Always provide section data (either from API or default)
-  const currentSection = section || {
-    id: 1,
-    attributes: {
-      name: slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : 'Section',
-      slug: slug || 'section',
-      description: `Latest ${slug || 'section'} news and updates`,
-    },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      publishedAt: new Date().toISOString(),
-  };
-
-  if (notFound) {
-    return <NotFoundError sectionSlug={slug} />;
-  }
-
-  if (loading) {
-    return <SectionSkeleton />;
-  }
-
-  // Transform articles to section posts format
-  let sectionPosts = transformArticlesToPosts(articles);
-
-  // Filter posts by selected category
-  if (selectedCategory !== 'all') {
-    sectionPosts = sectionPosts.filter(post => {
-        const article = articles.find(a => a.id.toString() === post.id);
-        return article?.attributes.categories?.data.some(cat => 
-          cat.attributes.slug === selectedCategory
-        );
-    });
-  }
-    
-  console.log('Articles from API:', articles);
-  console.log('Section posts after filtering:', sectionPosts);
-  console.log('Selected category:', selectedCategory);
+  // Capitalize first letter of slug for display
+  const sectionTitle = slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : 'Section';
 
   return (
     <div className="min-h-screen bg-black text-gray-100" data-oid="rwsv1as">
       <Header
         onToggleMenu={toggleMenu}
         isMenuOpen={isMenuOpen}
+        showSearch={false}
         data-oid="op4icmo" />
-      {/* <ToastContainer toasts={toasts} onRemoveToast={removeToast} /> */}
+
+
       <div className="flex" data-oid="ngvi.xv" key="olk-NeQN">
         <Sidebar isMenuOpen={isMenuOpen} />
 
@@ -833,67 +704,121 @@ export default function SectionPage({}: SectionPageProps) {
             className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10 flex-col justify-between block"
             data-oid="llmo4l2">
 
-            {/* Hero Section */}
-            <section id="hero-section" className="mb-12">
-              <HeroCard sectionName={currentSection.attributes.name} onTestToast={testToast} />
+            {/* Hero Top Books Section */}
+            <section id="hero-section" data-oid="lcz75dl">
+              <HeroTopCards docs={keyDocuments} data-oid="i8zhi4c" />
             </section>
 
             {/* News Section */}
-            <section id="news-section" className="mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight mb-6">
-                {currentSection.attributes.name}
+            <section id="news-section" className="mb-8" data-oid="6qvh1en">
+              <h1
+                className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight"
+                data-oid="kjs1qu0">
+
+                {sectionTitle}
               </h1>
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <CategoryTabs 
-                  sectionSlug={slug} 
-                  selectedCategory={selectedCategory}
-                  onCategorySelect={handleCategorySelect}
-                />
-                <FilterControls />
+              <div
+                className="mt-4 sm:mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0"
+                data-oid="s_f3k.n">
+
+                <Tabs data-oid="2pwvy8b" />
+                <div
+                  className="hidden md:flex items-center gap-2 text-xs text-gray-300"
+                  data-oid="hb5dtm6">
+
+                  <button
+                    className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition"
+                    data-oid="svudr4y">
+
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      data-oid="78bz2sd">
+
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                        data-oid="ku.m20a" />
+
+                    </svg>
+                    Filter
+                  </button>
+                  <button
+                    className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition"
+                    data-oid="0prdkn6">
+
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      data-oid="mxknymn">
+
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
+                        d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
+                        data-oid="zmud2-e" />
+
+                    </svg>
+                    Sort
+                  </button>
+                  <button
+                    className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition"
+                    data-oid="hzvobkc">
+
+                    <svg
+                      className="w-3 h-3"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      data-oid="v:keo08">
+
+                      <path
+                        d="M3 3h6v6H3V3zm0 12h6v6H3v-6zm12-12h6v6h-6V3zm0 12h6v6h-6v-6z"
+                        data-oid="gn--7zq" />
+
+                    </svg>
+                    Grid
+                  </button>
               </div>
-              {selectedCategory !== 'all' && (
-                <div className="mt-4 text-sm text-gray-400">
-                  Showing articles in category: <span className="text-white font-medium">{selectedCategory}</span>
                 </div>
-              )}
             </section>
 
-            {/* Content Sections */}
-            <div className="space-y-16">
+            <div data-oid="oe-e7c_">
+              {Object.entries(sectionData).map(
+                ([sectionTitle, sectionPosts]) =>
                 <section
-                  key={currentSection.attributes.name}
-                  id={`${currentSection.attributes.name.toLowerCase()}-section`}
-                  className="mb-16">
+                  key={sectionTitle}
+                  id={`${sectionTitle.toLowerCase()}-section`}
+                  data-oid="5xf5u-f">
 
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold tracking-tight text-white">
-                      {currentSection.attributes.name}
-                    </h2>
-                    <button className="text-sm text-gray-300 hover:text-white transition">
-                      View all
-                    </button>
-                  </div>
-                
-                {articlesLoading ? (
-                  <ArticleListSkeleton />
-                ) : sectionPosts.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                    {sectionPosts.map((post) => (
-                      <PostCard key={post.id} post={post} />
-                    ))}
-                  </div>
-                ) : (
-                  <NoArticlesPlaceholder 
-                    sectionName={currentSection.attributes.name} 
-                    selectedCategory={selectedCategory}
-                  />
-                )}
+                    <Section
+                    title={sectionTitle}
+                    posts={sectionPosts}
+                    data-oid="cdmkh91" />
+
               </section>
+
+              )}
             </div>
 
+            {/* Writer Action Agent Section */}
+            <section className="mb-16" data-oid="ux9afw5">
+              <WriterActionAgent data-oid="0mqtg6g" />
+            </section>
+
+            {/* ChatGPT Business Section */}
+            <section className="mb-16" data-oid="s2skcw1">
+              <ChatGPTBusinessSection data-oid="j90uroy" />
+            </section>
           </div>
         </main>
       </div>
-    </div>
-  );
+    </div>);
+
 }
