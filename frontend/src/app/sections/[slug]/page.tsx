@@ -25,7 +25,8 @@ export async function generateStaticParams() {
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: SectionPageProps) {
-  const section = await getServerSectionBySlug(params.slug);
+  const { slug } = await params;
+  const section = await getServerSectionBySlug(slug);
   
   if (!section) {
     return {
@@ -55,7 +56,8 @@ export async function generateMetadata({ params }: SectionPageProps) {
 }
 
 export default async function SectionPage({ params }: SectionPageProps) {
-  const section = await getServerSectionBySlug(params.slug, {
+  const { slug } = await params;
+  const section = await getServerSectionBySlug(slug, {
     populate: {
       articles: {
         populate: ['featuredImage', 'author'],
@@ -70,9 +72,9 @@ export default async function SectionPage({ params }: SectionPageProps) {
   // Get articles for this section
   const articles = await getServerArticles({
     filters: {
-      sections: {
+      section: {
         slug: {
-          $eq: params.slug,
+          $eq: slug,
         },
       },
     },
