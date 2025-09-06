@@ -11,6 +11,7 @@ import {
   getCategories,
   getCategoryBySlug,
   getSections,
+  getMainSections,
   getSectionBySlug,
   getAuthors,
   getAuthorBySlug,
