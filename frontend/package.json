@@ -24,6 +24,7 @@
         "test:all:npm": "npm run test:work-progress && npm run test:e2e && npm run test:accessibility"
     },
     "dependencies": {
+        "@heroicons/react": "^2.2.0",
         "@strapi/client": "^1.5.0",
         "next": "15.3.5",
         "react": "^19.0.0",

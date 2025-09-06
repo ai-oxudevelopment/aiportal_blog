@@ -66,6 +66,33 @@
     "provider_metadata": {
       "type": "json"
     },
+    "folder": {
+      "type": "string",
+      "default": "uncategorized"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["images", "documents", "videos", "audio", "archives", "other"],
+      "default": "other"
+    },
+    "tags": {
+      "type": "json",
+      "default": []
+    },
+    "description": {
+      "type": "text"
+    },
+    "isPublic": {
+      "type": "boolean",
+      "default": true
+    },
+    "downloadCount": {
+      "type": "integer",
+      "default": 0
+    },
+    "lastAccessed": {
+      "type": "datetime"
+    },
     "related": {
       "type": "relation",
       "relation": "morphToMany"

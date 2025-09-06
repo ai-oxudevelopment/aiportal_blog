@@ -1,34 +1,40 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import SearchBar from "./SearchBar";
+import MobileMenu from "./MobileMenu";
 
 function Brand() {
   return (
-    <div className="flex items-center gap-2 text-white" data-oid="pvdcz58">
-      <span className="text-lg font-bold tracking-tight" data-oid="8tq-vom">
+    <Link href="/" className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity">
+      <span className="text-lg font-bold tracking-tight">
         AIWORKPLACE BLOG
       </span>
-    </div>);
-
+    </Link>
+  );
 }
 
 interface HeaderProps {
   onToggleMenu: () => void;
   isMenuOpen: boolean;
+  showSearch?: boolean;
 }
 
 const navigationItems = [
-{ id: "hero-section", label: "Key Documents" },
-{ id: "news-section", label: "News" },
-{ id: "product-section", label: "Product" },
-{ id: "research-section", label: "Research" },
-{ id: "company-section", label: "Company" },
-{ id: "safety-section", label: "Safety" },
-{ id: "security-section", label: "Security" }];
+  { id: "hero-section", label: "Key Documents" },
+  { id: "news-section", label: "News" },
+  { id: "product-section", label: "Product" },
+  { id: "research-section", label: "Research" },
+  { id: "company-section", label: "Company" },
+  { id: "safety-section", label: "Safety" },
+  { id: "security-section", label: "Security" }
+];
 
 
-export default function Header({ onToggleMenu, isMenuOpen }: HeaderProps) {
+export default function Header({ onToggleMenu, isMenuOpen, showSearch = true }: HeaderProps) {
   const [activeSection, setActiveSection] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,18 +117,39 @@ export default function Header({ onToggleMenu, isMenuOpen }: HeaderProps) {
           </button>
         </div>
 
-        <div
-          className="flex items-center gap-3 text-gray-300"
-          data-oid="hgfuwtm">
-
+        <div className="flex items-center gap-3 text-gray-300">
+          {showSearch && (
+            <div className="hidden md:block w-64">
+              <SearchBar placeholder="Search articles..." />
+            </div>
+          )}
+          
+          {/* Mobile Search Button */}
+          {showSearch && (
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
+              aria-label="Open search"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          )}
+          
           <button
-            className="h-8 px-4 rounded-full bg-gradient-to-r from-pink-500 via-orange-500 to-blue-500 hover:from-pink-600 hover:via-orange-600 hover:to-blue-600 border-0 text-white text-xs font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-gradient-chaos"
-            data-oid="mhozfw_">
-
-            О продукте
+            className="h-8 px-4 rounded-full bg-gradient-to-r from-pink-500 via-orange-500 to-blue-500 hover:from-pink-600 hover:via-orange-600 hover:to-blue-600 border-0 text-white text-xs font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
+            About Product
           </button>
         </div>
       </div>
-    </header>);
-
+      
+      {/* Mobile Menu */}
+      <MobileMenu 
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
+    </header>
+  );
 }

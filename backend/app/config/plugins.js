@@ -9,10 +9,26 @@ module.exports = {
         small: 500,
         xsmall: 64
       },
-      provider: 'local',
+      provider: process.env.NODE_ENV === 'production' ? 'cloudinary' : 'local',
       providerOptions: {
         localServer: {
           maxage: 300000, // 5 minutes cache
+        },
+        cloudinary: {
+          cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+          api_key: process.env.CLOUDINARY_API_KEY,
+          api_secret: process.env.CLOUDINARY_API_SECRET,
+          folder: process.env.CLOUDINARY_FOLDER || 'aiportal-blog',
+          use_filename: true,
+          unique_filename: true,
+          overwrite: false,
+          resource_type: 'auto',
+          transformation: [
+            {
+              quality: 'auto',
+              fetch_format: 'auto'
+            }
+          ]
         },
       },
       actionOptions: {

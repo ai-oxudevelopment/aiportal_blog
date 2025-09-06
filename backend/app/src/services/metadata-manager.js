@@ -310,3 +310,4 @@ class MetadataManagerService {
 }
 
 module.exports = MetadataManagerService;
+
