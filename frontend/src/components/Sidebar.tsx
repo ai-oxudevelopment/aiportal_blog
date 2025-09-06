@@ -1,21 +1,58 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useMainSections } from "../lib/hooks";
+import { getMainSections } from "../lib/api";
+import type { Section } from "../lib/types";
 
 interface SidebarProps {
   isMenuOpen: boolean;
 }
 
 export default function Sidebar({ isMenuOpen }: SidebarProps) {
-  const { data: sections, loading, error } = useMainSections();
+  const [sections, setSections] = useState<Section[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Only show sections from API, no fallback
-  const menuItems = sections ? sections.map(section => ({
-    name: section.attributes.name,
-    slug: section.attributes.slug
-  })) : [];
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        setLoading(true);
+        const fetchedSections = await getMainSections();
+        setSections(fetchedSections);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch sections');
+        console.error('Error fetching sections:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSections();
+  }, []);
+
+  // Fallback sections if API is unavailable
+  const fallbackSections = [
+    {
+      name: "Инструменты",
+      slug: "tools"
+    },
+    {
+      name: "Изучить", 
+      slug: "learn"
+    },
+    {
+      name: "Внедрить",
+      slug: "implement"
+    }
+  ];
+
+  const menuItems = (error || sections.length === 0)
+    ? fallbackSections 
+    : sections.map(section => ({
+        name: section.attributes.name,
+        slug: section.attributes.slug
+      }));
 
   return (
     <aside
