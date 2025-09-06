@@ -688,6 +688,7 @@ export default function Page() {
       <Header
         onToggleMenu={toggleMenu}
         isMenuOpen={isMenuOpen}
+        showSearch={false}
         data-oid="op4icmo" />
 
 
