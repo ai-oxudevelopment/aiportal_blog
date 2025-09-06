@@ -107,9 +107,12 @@ export const getSections = async (params?: any): Promise<Section[]> => {
 export const getMainSections = async (): Promise<Section[]> => {
   return await getPublishedContent('sections', {
     filters: {
-      sectionType: 'main',
+      parentSection: {
+        $null: true
+      }
     },
     populate: {
+      parentSection: true,
       subsections: {
         populate: ['articles'],
         sort: ['order:asc', 'name:asc'],

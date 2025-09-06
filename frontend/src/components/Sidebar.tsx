@@ -65,7 +65,7 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
     }
   ];
 
-  const menuItems = error 
+  const menuItems = (error || sections.length === 0)
     ? fallbackSections 
     : sections.map(section => ({
         name: section.attributes.name,
