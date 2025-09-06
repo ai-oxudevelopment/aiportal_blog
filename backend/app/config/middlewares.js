@@ -28,10 +28,10 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
-  {
-    name: 'global::media-cache',
-    config: {},
-  },
+  // {
+  //   name: 'global::media-cache',
+  //   config: {},
+  // },
   // {
   //   name: 'global::image-optimization',
   //   config: {},

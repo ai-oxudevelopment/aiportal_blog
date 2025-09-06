@@ -1,5 +1,13 @@
 // backend/app/src/services/media-cache.js
-const Redis = require('ioredis');
+let Redis = null;
+
+// Conditionally require ioredis only if available
+try {
+  Redis = require('ioredis');
+} catch (error) {
+  // ioredis not installed, will use in-memory cache only
+  console.warn('ioredis not available, using in-memory cache only');
+}
 
 /**
  * Service for caching media API responses and metadata
@@ -18,8 +26,8 @@ class MediaCacheService {
    * Initialize Redis connection
    */
   initializeRedis() {
-    if (!this.isEnabled) {
-      this.strapi.log.info('Redis not configured, using in-memory cache fallback');
+    if (!this.isEnabled || !Redis) {
+      this.strapi.log.info('Redis not configured or not available, using in-memory cache fallback');
       this.memoryCache = new Map();
       return;
     }

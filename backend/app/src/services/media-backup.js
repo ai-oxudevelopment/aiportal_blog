@@ -2,8 +2,21 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { createReadStream, createWriteStream } = require('fs');
-const archiver = require('archiver');
-const cron = require('node-cron');
+let archiver = null;
+let cron = null;
+
+// Conditionally require archiver and cron only if available
+try {
+  archiver = require('archiver');
+} catch (error) {
+  console.warn('archiver not available, backup functionality will be limited');
+}
+
+try {
+  cron = require('node-cron');
+} catch (error) {
+  console.warn('node-cron not available, scheduled backups will be disabled');
+}
 
 /**
  * Service for media backup and restoration
@@ -38,6 +51,11 @@ class MediaBackupService {
   scheduleBackups() {
     if (!this.isEnabled) {
       this.strapi.log.info('Media backups are disabled');
+      return;
+    }
+
+    if (!cron) {
+      this.strapi.log.warn('node-cron not available, scheduled backups are disabled');
       return;
     }
 
@@ -85,6 +103,10 @@ class MediaBackupService {
       };
 
       // Create archive
+      if (!archiver) {
+        throw new Error('archiver not available, cannot create backup');
+      }
+
       const output = createWriteStream(backupPath);
       const archive = archiver('tar', {
         gzip: compression === 'gzip',

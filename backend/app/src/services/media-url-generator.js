@@ -1,5 +1,13 @@
 // backend/app/src/services/media-url-generator.js
-const cloudinary = require('cloudinary').v2;
+let cloudinary = null;
+
+// Conditionally require cloudinary only if available
+try {
+  cloudinary = require('cloudinary').v2;
+} catch (error) {
+  // Cloudinary not installed, will use local URLs only
+  console.warn('Cloudinary not available, using local URLs only');
+}
 
 /**
  * Service for generating optimized media URLs with CDN support
@@ -10,8 +18,8 @@ class MediaUrlGeneratorService {
     this.isProduction = process.env.NODE_ENV === 'production';
     this.baseUrl = process.env.STRAPI_URL || 'http://localhost:1337';
     
-    // Configure Cloudinary if in production
-    if (this.isProduction && process.env.CLOUDINARY_CLOUD_NAME) {
+    // Configure Cloudinary if in production and available
+    if (this.isProduction && process.env.CLOUDINARY_CLOUD_NAME && cloudinary) {
       cloudinary.config({
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
         api_key: process.env.CLOUDINARY_API_KEY,
@@ -138,6 +146,11 @@ class MediaUrlGeneratorService {
    * @returns {string} Cloudinary URL
    */
   generateCloudinaryUrl(file, options) {
+    // If cloudinary is not available, fallback to local URL
+    if (!cloudinary) {
+      return this.generateLocalUrl(file, options);
+    }
+
     try {
       const publicId = this.extractCloudinaryPublicId(file.url);
       if (!publicId) {
