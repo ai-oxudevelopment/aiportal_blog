@@ -961,8 +961,6 @@ export interface ApiSectionSection extends Schema.CollectionType {
         maxLength: 255;
       }>;
     slug: Attribute.UID<'api::section.section', 'name'> & Attribute.Required;
-    sectionType: Attribute.Enumeration<['main', 'sub']> &
-      Attribute.DefaultTo<'main'>;
     articles: Attribute.Relation<
       'api::section.section',
       'oneToMany',

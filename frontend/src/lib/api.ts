@@ -106,9 +106,6 @@ export const getSections = async (params?: any): Promise<Section[]> => {
 
 export const getMainSections = async (): Promise<Section[]> => {
   return await getPublishedContent('sections', {
-    filters: {
-      sectionType: 'main'
-    },
     populate: {
       articles: {
         populate: ['featuredImage', 'author'],

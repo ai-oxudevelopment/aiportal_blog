@@ -22,11 +22,6 @@
       "targetField": "name",
       "required": true
     },
-    "sectionType": {
-      "type": "enumeration",
-      "enum": ["main", "sub"],
-      "default": "main"
-    },
     "articles": {
       "type": "relation",
       "relation": "oneToMany",
