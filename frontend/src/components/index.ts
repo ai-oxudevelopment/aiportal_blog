@@ -22,6 +22,8 @@ export { default as TagCloud } from './TagCloud';
 // Search Components
 export { default as SearchBar } from './SearchBar';
 export { default as SearchArticles } from './SearchArticles';
+export { default as SearchResults } from './SearchResults';
+export { default as FilterSidebar } from './FilterSidebar';
 
 // Social and Sharing
 export { default as SocialShare } from './SocialShare';
@@ -36,3 +38,31 @@ export { default as EbookDownload } from './EbookDownload';
 export { default as WriterActionAgent } from './WriterActionAgent';
 export { default as ChatGPTBusinessSection } from './ChatGPTBusinessSection';
 export { default as StrapiTest } from './StrapiTest';
+
+// Error handling and loading components
+export { 
+  ErrorBoundary, 
+  AsyncErrorBoundary, 
+  NetworkErrorBoundary 
+} from './ErrorBoundary';
+
+export {
+  LoadingSpinner as LoadingSpinnerNew,
+  Skeleton,
+  ArticleCardSkeleton,
+  ArticleListSkeleton,
+  PageLoading,
+  InlineLoading,
+  LoadingButton,
+  SearchLoading,
+  TableSkeleton,
+  FormSkeleton,
+  GlobalLoading,
+  RetryComponent,
+} from './LoadingStates';
+
+export {
+  NotificationSystem,
+  useNotifications,
+  Toast,
+} from './NotificationSystem';
