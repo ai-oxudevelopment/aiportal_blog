@@ -51,11 +51,24 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed left-0 top-14 bottom-0 w-full md:w-64 bg-black/80 backdrop-blur-sm border-r border-white/10 z-30 transition-all duration-300 ease-in-out ${
+      className={`fixed left-0 top-14 bottom-0 w-full md:w-64 bg-black/90 backdrop-blur-md border-r border-white/10 z-30 transition-all duration-300 ease-in-out ${
         isMenuOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       <nav className="flex flex-col h-full px-6 py-8">
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold text-white">Sections</h2>
+            <Link
+              href="/sections"
+              className="text-xs text-gray-400 hover:text-white transition-colors"
+            >
+              View all
+            </Link>
+          </div>
+          <div className="h-px bg-gradient-to-r from-white/20 to-transparent"></div>
+        </div>
+        
         {loading ? (
           <div className="space-y-2">
             {[...Array(7)].map((_, idx) => (
@@ -63,16 +76,16 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
             ))}
           </div>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {menuItems.map((item, idx) => (
               <li key={item.slug}>
                 <Link
                   href={`/sections/${item.slug}`}
-                  className={`flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors rounded-md ${
-                    idx === menuItems.length - 1 ? "bg-white/10 text-white" : ""
-                  }`}
+                  className="flex items-center px-3 py-3 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-200 rounded-lg group"
                 >
-                  {item.name}
+                  <span className="group-hover:translate-x-1 transition-transform duration-200">
+                    {item.name}
+                  </span>
                 </Link>
               </li>
             ))}

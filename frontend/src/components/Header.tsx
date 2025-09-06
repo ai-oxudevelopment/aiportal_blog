@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import MobileMenu from "./MobileMenu";
+import { getSections } from "../lib/api";
+import type { Section } from "../lib/types";
 
 function Brand() {
   return (
@@ -21,24 +23,39 @@ interface HeaderProps {
   showSearch?: boolean;
 }
 
-const navigationItems = [
+// Navigation items for main page sections
+const mainPageSections = [
   { id: "hero-section", label: "Key Documents" },
-  { id: "news-section", label: "News" },
-  { id: "product-section", label: "Product" },
-  { id: "research-section", label: "Research" },
-  { id: "company-section", label: "Company" },
-  { id: "safety-section", label: "Safety" },
-  { id: "security-section", label: "Security" }
+  { id: "news-section", label: "News" }
 ];
 
 
 export default function Header({ onToggleMenu, isMenuOpen, showSearch = true }: HeaderProps) {
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch sections from API
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        setLoading(true);
+        const fetchedSections = await getSections();
+        setSections(fetchedSections);
+      } catch (err) {
+        console.error('Error fetching sections:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSections();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navigationItems.map((item) =>
+      const sections = mainPageSections.map((item) =>
       document.getElementById(item.id)
       );
       const scrollPosition = window.scrollY + 100; // Offset for header height
@@ -46,7 +63,7 @@ export default function Header({ onToggleMenu, isMenuOpen, showSearch = true }: 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
         if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(navigationItems[i].id);
+          setActiveSection(mainPageSections[i].id);
           break;
         }
       }
@@ -149,6 +166,10 @@ export default function Header({ onToggleMenu, isMenuOpen, showSearch = true }: 
       <MobileMenu 
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
+        sections={sections.map(section => ({
+          name: section.attributes.name,
+          slug: section.attributes.slug
+        }))}
       />
     </header>
   );
