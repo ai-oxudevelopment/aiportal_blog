@@ -1,4 +1,4 @@
-// frontend/src/app/articles/[slug]/page.tsx
+// frontend/src/app/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import { getServerArticleBySlug, getServerArticles } from '@/lib/server-api';
 import { getServerImageUrl } from '@/lib/server-api';
