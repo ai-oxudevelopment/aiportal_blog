@@ -39,7 +39,7 @@ interface UseDataFetchingResult<T> {
   lastFetched: Date | null;
 }
 
-interface UseDataFetchingOptions {
+interface UseDataFetchingOptions<T> {
   enabled?: boolean;
   retryOnError?: boolean;
   maxRetries?: number;
@@ -51,7 +51,7 @@ interface UseDataFetchingOptions {
 function useDataFetching<T>(
   fetchFunction: () => Promise<T>,
   dependencies: any[] = [],
-  options: UseDataFetchingOptions = {}
+  options: UseDataFetchingOptions<T> = {}
 ): UseDataFetchingResult<T> {
   const {
     enabled = true,
@@ -182,52 +182,52 @@ function useDataFetching<T>(
 }
 
 // Article hooks with enhanced options
-export const useArticles = (params?: any, options?: UseDataFetchingOptions) => {
+export const useArticles = (params?: any, options?: UseDataFetchingOptions<Article[]>) => {
   return useDataFetching(() => getArticles(params), [JSON.stringify(params)], options);
 };
 
-export const useArticle = (id: string | number, params?: any, options?: UseDataFetchingOptions) => {
-  return useDataFetching(() => getArticle(id, params), [id, JSON.stringify(params)], options);
+export const useArticle = (id: string | number, options?: UseDataFetchingOptions<Article>) => {
+  return useDataFetching(() => getArticle(id), [id], options);
 };
 
-export const useArticleBySlug = (slug: string, params?: any, options?: UseDataFetchingOptions) => {
-  return useDataFetching(() => getArticleBySlug(slug, params), [slug, JSON.stringify(params)], options);
+export const useArticleBySlug = (slug: string, options?: UseDataFetchingOptions<Article>) => {
+  return useDataFetching(() => getArticleBySlug(slug), [slug], options);
 };
 
 // Category hooks
-export const useCategories = (params?: any, options?: UseDataFetchingOptions) => {
+export const useCategories = (params?: any, options?: UseDataFetchingOptions<Category[]>) => {
   return useDataFetching(() => getCategories(params), [JSON.stringify(params)], options);
 };
 
-export const useCategoryBySlug = (slug: string, params?: any, options?: UseDataFetchingOptions) => {
-  return useDataFetching(() => getCategoryBySlug(slug, params), [slug, JSON.stringify(params)], options);
+export const useCategoryBySlug = (slug: string, options?: UseDataFetchingOptions<Category>) => {
+  return useDataFetching(() => getCategoryBySlug(slug), [slug], options);
 };
 
 // Section hooks
-export const useSections = (params?: any, options?: UseDataFetchingOptions) => {
+export const useSections = (params?: any, options?: UseDataFetchingOptions<Section[]>) => {
   return useDataFetching(() => getSections(params), [JSON.stringify(params)], options);
 };
 
-export const useSectionBySlug = (slug: string, params?: any, options?: UseDataFetchingOptions) => {
-  return useDataFetching(() => getSectionBySlug(slug, params), [slug, JSON.stringify(params)], options);
+export const useSectionBySlug = (slug: string, options?: UseDataFetchingOptions<Section>) => {
+  return useDataFetching(() => getSectionBySlug(slug), [slug], options);
 };
 
 // Author hooks
-export const useAuthors = (params?: any, options?: UseDataFetchingOptions) => {
+export const useAuthors = (params?: any, options?: UseDataFetchingOptions<Author[]>) => {
   return useDataFetching(() => getAuthors(params), [JSON.stringify(params)], options);
 };
 
-export const useAuthorBySlug = (slug: string, params?: any, options?: UseDataFetchingOptions) => {
-  return useDataFetching(() => getAuthorBySlug(slug, params), [slug, JSON.stringify(params)], options);
+export const useAuthorBySlug = (slug: string, options?: UseDataFetchingOptions<Author>) => {
+  return useDataFetching(() => getAuthorBySlug(slug), [slug], options);
 };
 
 // Tag hooks
-export const useTags = (params?: any, options?: UseDataFetchingOptions) => {
+export const useTags = (params?: any, options?: UseDataFetchingOptions<Tag[]>) => {
   return useDataFetching(() => getTags(params), [JSON.stringify(params)], options);
 };
 
 // Search hook with debouncing
-export const useSearchArticles = (query: string, params?: any, options?: UseDataFetchingOptions) => {
+export const useSearchArticles = (query: string, params?: any, options?: UseDataFetchingOptions<Article[]>) => {
   const [debouncedQuery, setDebouncedQuery] = useState(query);
   
   useEffect(() => {
@@ -250,7 +250,7 @@ export const usePaginatedArticles = (
   page: number = 1, 
   pageSize: number = 10, 
   params?: any,
-  options?: UseDataFetchingOptions
+  options?: UseDataFetchingOptions<Article[]>
 ) => {
   const paginationParams = {
     ...params,
@@ -268,7 +268,7 @@ export const usePaginatedArticles = (
 };
 
 // Hook for featured articles
-export const useFeaturedArticles = (limit: number = 5, options?: UseDataFetchingOptions) => {
+export const useFeaturedArticles = (limit: number = 5, options?: UseDataFetchingOptions<Article[]>) => {
   const params = {
     pagination: { limit },
     sort: ['createdAt:desc'],
@@ -283,7 +283,7 @@ export const useFeaturedArticles = (limit: number = 5, options?: UseDataFetching
 };
 
 // Hook for recent articles
-export const useRecentArticles = (limit: number = 10, options?: UseDataFetchingOptions) => {
+export const useRecentArticles = (limit: number = 10, options?: UseDataFetchingOptions<Article[]>) => {
   const params = {
     pagination: { limit },
     sort: ['createdAt:desc'],
@@ -321,7 +321,7 @@ export const useArticlesByCategory = (
 export const useArticlesByAuthor = (
   authorSlug: string, 
   limit?: number, 
-  options?: UseDataFetchingOptions
+  options?: UseDataFetchingOptions<Article[]>
 ) => {
   const params = {
     ...(limit && { pagination: { limit } }),
@@ -346,7 +346,7 @@ export const useArticlesByAuthor = (
 export const useArticlesByTag = (
   tagSlug: string, 
   limit?: number, 
-  options?: UseDataFetchingOptions
+  options?: UseDataFetchingOptions<Article[]>
 ) => {
   const params = {
     ...(limit && { pagination: { limit } }),

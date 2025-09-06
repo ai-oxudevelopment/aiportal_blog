@@ -167,7 +167,6 @@ export default function DemoPage() {
                   <ArticlesList 
                     variant="default"
                     title="Select an article to view details"
-                    limit={1}
                   />
                   <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <p className="text-yellow-800">

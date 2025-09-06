@@ -20,7 +20,7 @@ export default function Page() {
       data-oid="r28vy42">
 
       {/* Header */}
-      <Header onToggleMenu={toggleMenu} data-oid="13.7t1v" />
+      <Header onToggleMenu={toggleMenu} isMenuOpen={isMenuOpen} data-oid="13.7t1v" />
 
       {/* Sidebar */}
       <Sidebar isMenuOpen={isMenuOpen} data-oid="3ltv4f0" />

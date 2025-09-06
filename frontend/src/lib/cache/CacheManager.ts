@@ -125,7 +125,7 @@ class CacheManager {
     this.metrics.size = this.cache.size;
   }
 
-  private generateKey(prefix: string, ...parts: (string | number)[]): string {
+  private createKey(prefix: string, ...parts: (string | number)[]): string {
     return `${prefix}:${parts.join(':')}`;
   }
 
@@ -306,21 +306,21 @@ class CacheManager {
 
   // Cache key generators
   generateKey = {
-    article: (id: string | number) => this.generateKey('article', id),
-    articleBySlug: (slug: string) => this.generateKey('article', 'slug', slug),
+    article: (id: string | number) => this.createKey('article', id),
+    articleBySlug: (slug: string) => this.createKey('article', 'slug', slug),
     articles: (params: Record<string, any>) => 
-      this.generateKey('articles', JSON.stringify(params)),
-    category: (id: string | number) => this.generateKey('category', id),
-    categoryBySlug: (slug: string) => this.generateKey('category', 'slug', slug),
-    categories: () => this.generateKey('categories'),
-    author: (id: string | number) => this.generateKey('author', id),
-    authorBySlug: (slug: string) => this.generateKey('author', 'slug', slug),
-    authors: () => this.generateKey('authors'),
-    tag: (id: string | number) => this.generateKey('tag', id),
-    tagBySlug: (slug: string) => this.generateKey('tag', 'slug', slug),
-    tags: () => this.generateKey('tags'),
+      this.createKey('articles', JSON.stringify(params)),
+    category: (id: string | number) => this.createKey('category', id),
+    categoryBySlug: (slug: string) => this.createKey('category', 'slug', slug),
+    categories: () => this.createKey('categories'),
+    author: (id: string | number) => this.createKey('author', id),
+    authorBySlug: (slug: string) => this.createKey('author', 'slug', slug),
+    authors: () => this.createKey('authors'),
+    tag: (id: string | number) => this.createKey('tag', id),
+    tagBySlug: (slug: string) => this.createKey('tag', 'slug', slug),
+    tags: () => this.createKey('tags'),
     search: (query: string, params: Record<string, any>) => 
-      this.generateKey('search', query, JSON.stringify(params)),
+      this.createKey('search', query, JSON.stringify(params)),
   };
 
   // Cache invalidation helpers

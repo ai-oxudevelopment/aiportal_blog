@@ -26,6 +26,7 @@ export interface Article extends StrapiEntity {
     slug: string;
     content: string;
     excerpt?: string;
+    publishedAt?: string;
     featuredImage?: {
       data: StrapiEntity | null;
     };
