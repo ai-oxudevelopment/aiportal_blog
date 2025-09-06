@@ -1,35 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import { getMainSections } from "../lib/api";
-import type { Section } from "../lib/types";
+import { useMainSections } from "../lib/hooks";
 
 interface SidebarProps {
   isMenuOpen: boolean;
 }
 
 export default function Sidebar({ isMenuOpen }: SidebarProps) {
-  const [sections, setSections] = useState<Section[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchSections = async () => {
-      try {
-        setLoading(true);
-        const fetchedSections = await getMainSections();
-        setSections(fetchedSections);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch sections');
-        console.error('Error fetching sections:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSections();
-  }, []);
+  const { data: sections, loading, error } = useMainSections();
 
   // Fallback to hardcoded sections if API is unavailable
   const fallbackSections = [
@@ -47,7 +27,7 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
     }
   ];
 
-  const menuItems = (error || sections.length === 0)
+  const menuItems = (error || !sections || sections.length === 0)
     ? fallbackSections 
     : sections.map(section => ({
         name: section.attributes.name,

@@ -208,6 +208,10 @@ export const useSections = (params?: any, options?: UseDataFetchingOptions<Secti
   return useDataFetching(() => getSections(params), [JSON.stringify(params)], options);
 };
 
+export const useMainSections = (options?: UseDataFetchingOptions<Section[]>) => {
+  return useDataFetching(() => getMainSections(), ['main-sections'], options);
+};
+
 export const useSectionBySlug = (slug: string, options?: UseDataFetchingOptions<Section>) => {
   return useDataFetching(() => getSectionBySlug(slug), [slug], options);
 };
