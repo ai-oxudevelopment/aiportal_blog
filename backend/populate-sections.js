@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
+const STRAPI_URL = process.env.STRAPI_URL || 'отсутствует подключение';
 const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
 
 // Структура секций согласно требованиям

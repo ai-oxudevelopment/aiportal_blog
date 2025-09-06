@@ -3,7 +3,7 @@
 
 const axios = require('axios');
 
-const STRAPI_URL = 'http://localhost:1337';
+const STRAPI_URL = 'отсутствует подключение';
 const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
 
 const articles = [
@@ -341,8 +341,8 @@ async function populateArticles() {
   console.log(`\n📊 Результат: создано ${successCount} из ${articles.length} статей`);
   
   if (successCount > 0) {
-    console.log('\n🌐 Проверьте статьи в Strapi Admin Panel: http://localhost:1337/admin');
-    console.log('📝 Или через API: http://localhost:1337/api/articles');
+    console.log('\n🌐 Проверьте статьи в Strapi Admin Panel: отсутствует подключение/admin');
+    console.log('📝 Или через API: отсутствует подключение/api/articles');
   }
 }
 

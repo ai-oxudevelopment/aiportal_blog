@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .error { background-color: #ffebee; border-color: #f44336; }
+        .success { background-color: #e8f5e8; border-color: #4caf50; }
+    </style>
+</head>
+<body>
+    <h1>Test Strapi API</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="results"></div>
+    
+    <script>
+        const API_TOKEN = 'отсутствует подключение';
+        
+        async function testAPI() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing API...</p>';
+            
+            try {
+                // Test 1: Get all categories
+                console.log('Testing all categories...');
+                const allCategoriesResponse = await fetch('отсутствует подключение/api/categories', {
+                    headers: {
+                        'Authorization': `Bearer ${API_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!allCategoriesResponse.ok) {
+                    throw new Error(`HTTP error! status: ${allCategoriesResponse.status}`);
+                }
+                
+                const allCategories = await allCategoriesResponse.json();
+                console.log('All categories:', allCategories);
+                
+                resultsDiv.innerHTML += `
+                    <div class="result success">
+                        <h3>✅ All Categories Test</h3>
+                        <p>Found ${allCategories.data.length} categories</p>
+                        <pre>${JSON.stringify(allCategories, null, 2)}</pre>
+                    </div>
+                `;
+                
+                // Test 2: Get categories with sections populated
+                console.log('Testing categories with sections...');
+                const categoriesWithSectionsResponse = await fetch('отсутствует подключение/api/categories?populate[sections]=true', {
+                    headers: {
+                        'Authorization': `Bearer ${API_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!categoriesWithSectionsResponse.ok) {
+                    throw new Error(`HTTP error! status: ${categoriesWithSectionsResponse.status}`);
+                }
+                
+                const categoriesWithSections = await categoriesWithSectionsResponse.json();
+                console.log('Categories with sections:', categoriesWithSections);
+                
+                resultsDiv.innerHTML += `
+                    <div class="result success">
+                        <h3>✅ Categories with Sections Test</h3>
+                        <p>Found ${categoriesWithSections.data.length} categories with sections</p>
+                        <pre>${JSON.stringify(categoriesWithSections, null, 2)}</pre>
+                    </div>
+                `;
+                
+                // Test 3: Get categories filtered by section slug
+                console.log('Testing categories filtered by section slug...');
+                const filteredCategoriesResponse = await fetch('отсутствует подключение/api/categories?filters[sections][slug][$eq]=prompts&populate[sections]=true', {
+                    headers: {
+                        'Authorization': `Bearer ${API_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!filteredCategoriesResponse.ok) {
+                    throw new Error(`HTTP error! status: ${filteredCategoriesResponse.status}`);
+                }
+                
+                const filteredCategories = await filteredCategoriesResponse.json();
+                console.log('Filtered categories:', filteredCategories);
+                
+                resultsDiv.innerHTML += `
+                    <div class="result success">
+                        <h3>✅ Filtered Categories Test</h3>
+                        <p>Found ${filteredCategories.data.length} categories for section "prompts"</p>
+                        <pre>${JSON.stringify(filteredCategories, null, 2)}</pre>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('API test failed:', error);
+                resultsDiv.innerHTML += `
+                    <div class="result error">
+                        <h3>❌ API Test Failed</h3>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
