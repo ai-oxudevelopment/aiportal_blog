@@ -1,8 +1,8 @@
 // Test the getCategoriesBySection function
 const axios = require('axios');
 
-const STRAPI_URL = 'отсутствует подключение';
-const API_TOKEN = 'отсутствует подключение';
+const STRAPI_URL = 'http://localhost:1337';
+const API_TOKEN = 'http://localhost:1337';
 
 const headers = {
   'Authorization': `Bearer ${API_TOKEN}`,

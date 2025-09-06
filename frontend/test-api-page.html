@@ -15,7 +15,7 @@
     <div id="results"></div>
     
     <script>
-        const API_TOKEN = 'отсутствует подключение';
+        const API_TOKEN = 'http://localhost:1337';
         
         async function testAPI() {
             const resultsDiv = document.getElementById('results');
@@ -24,7 +24,7 @@
             try {
                 // Test 1: Get all categories
                 console.log('Testing all categories...');
-                const allCategoriesResponse = await fetch('отсутствует подключение/api/categories', {
+                const allCategoriesResponse = await fetch('http://localhost:1337/api/categories', {
                     headers: {
                         'Authorization': `Bearer ${API_TOKEN}`,
                         'Content-Type': 'application/json'
@@ -48,7 +48,7 @@
                 
                 // Test 2: Get categories with sections populated
                 console.log('Testing categories with sections...');
-                const categoriesWithSectionsResponse = await fetch('отсутствует подключение/api/categories?populate[sections]=true', {
+                const categoriesWithSectionsResponse = await fetch('http://localhost:1337/api/categories?populate[sections]=true', {
                     headers: {
                         'Authorization': `Bearer ${API_TOKEN}`,
                         'Content-Type': 'application/json'
@@ -72,7 +72,7 @@
                 
                 // Test 3: Get categories filtered by section slug
                 console.log('Testing categories filtered by section slug...');
-                const filteredCategoriesResponse = await fetch('отсутствует подключение/api/categories?filters[sections][slug][$eq]=prompts&populate[sections]=true', {
+                const filteredCategoriesResponse = await fetch('http://localhost:1337/api/categories?filters[sections][slug][$eq]=prompts&populate[sections]=true', {
                     headers: {
                         'Authorization': `Bearer ${API_TOKEN}`,
                         'Content-Type': 'application/json'

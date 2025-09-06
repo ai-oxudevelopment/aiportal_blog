@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const STRAPI_URL = 'отсутствует подключение';
+const STRAPI_URL = 'http://localhost:1337';
 
 const sections = [
   {
@@ -43,7 +43,7 @@ async function createSections() {
     }
   }
   
-  console.log('🎉 Готово! Проверьте Strapi Admin: отсутствует подключение/admin');
+  console.log('🎉 Готово! Проверьте Strapi Admin: http://localhost:1337/admin');
 }
 
 createSections().catch(console.error);

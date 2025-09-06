@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const STRAPI_URL = process.env.STRAPI_URL || 'отсутствует подключение';
+const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
 
 // Данные для входа в админку (используйте ваши данные)
 const ADMIN_EMAIL = process.env.STRAPI_ADMIN_EMAIL || 'admin@example.com';

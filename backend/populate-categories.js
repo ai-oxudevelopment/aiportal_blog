@@ -3,7 +3,7 @@
 
 const axios = require('axios');
 
-const STRAPI_URL = 'отсутствует подключение';
+const STRAPI_URL = 'http://localhost:1337';
 const API_TOKEN = process.env.STRAPI_API_TOKEN || '';
 
 const categories = [
@@ -83,7 +83,7 @@ async function populateCategories() {
   console.log('2. Or create an API token for authentication');
   console.log('');
   console.log('To configure public access:');
-  console.log('1. Go to отсутствует подключение/admin');
+  console.log('1. Go to http://localhost:1337/admin');
   console.log('2. Settings → Users & Permissions Plugin → Roles → Public');
   console.log('3. Enable "find" and "findOne" for Category content type');
   console.log('4. Save the configuration');
