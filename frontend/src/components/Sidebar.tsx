@@ -69,14 +69,6 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
             ))}
           </div>
         )}
-        
-        {error && (
-          <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded-md">
-            <span className="text-yellow-400 text-xs">
-              Using fallback sections
-            </span>
-          </div>
-        )}
       </nav>
     </aside>
   );
