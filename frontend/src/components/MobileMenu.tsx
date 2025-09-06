@@ -16,13 +16,10 @@ export default function MobileMenu({ isOpen, onClose, sections = [] }: MobileMen
   if (!isOpen) return null;
 
   const defaultSections = [
-    { name: "Research", slug: "research" },
-    { name: "Safety", slug: "safety" },
-    { name: "For Business", slug: "for-business" },
-    { name: "For Developers", slug: "for-developers" },
-    { name: "Stories", slug: "stories" },
-    { name: "Company", slug: "company" },
-    { name: "News", slug: "news" }
+    { name: "Библиотека правил", slug: "prompts" },
+    { name: "Инструменты", slug: "tools" },
+    { name: "Изучить", slug: "learn" },
+    { name: "Внедрить", slug: "implement" }
   ];
 
   const menuSections = sections.length > 0 ? sections : defaultSections;
@@ -71,7 +68,7 @@ export default function MobileMenu({ isOpen, onClose, sections = [] }: MobileMen
               {menuSections.map((section) => (
                 <li key={section.slug}>
                   <Link
-                    href={`/sections/${section.slug}`}
+                    href={`/${section.slug}`}
                     onClick={onClose}
                     className="flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors rounded-md"
                   >

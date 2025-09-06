@@ -34,6 +34,10 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
   // Fallback sections if API is unavailable
   const fallbackSections = [
     {
+      name: "Библиотека правил",
+      slug: "prompts"
+    },
+    {
       name: "Инструменты",
       slug: "tools"
     },
@@ -79,7 +83,7 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
             {menuItems.map((item) => (
               <Link
                 key={item.slug}
-                href={`/sections/${item.slug}`}
+                href={`/${item.slug}`}
                 className="flex items-center px-3 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all duration-200 rounded-lg group"
               >
                 <span className="group-hover:translate-x-1 transition-transform duration-200">
