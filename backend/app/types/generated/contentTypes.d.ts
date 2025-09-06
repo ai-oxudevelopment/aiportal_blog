@@ -949,7 +949,7 @@ export interface ApiSectionSection extends Schema.CollectionType {
     singularName: 'section';
     pluralName: 'sections';
     displayName: 'Section';
-    description: 'Main sections of the blog with hierarchical structure';
+    description: 'Main sections of the blog';
   };
   options: {
     draftAndPublish: true;
@@ -961,20 +961,6 @@ export interface ApiSectionSection extends Schema.CollectionType {
         maxLength: 255;
       }>;
     slug: Attribute.UID<'api::section.section', 'name'> & Attribute.Required;
-    description: Attribute.Text;
-    icon: Attribute.String;
-    order: Attribute.Integer & Attribute.DefaultTo<0>;
-    featured: Attribute.Boolean & Attribute.DefaultTo<false>;
-    parentSection: Attribute.Relation<
-      'api::section.section',
-      'manyToOne',
-      'api::section.section'
-    >;
-    subsections: Attribute.Relation<
-      'api::section.section',
-      'oneToMany',
-      'api::section.section'
-    >;
     sectionType: Attribute.Enumeration<['main', 'sub']> &
       Attribute.DefaultTo<'main'>;
     articles: Attribute.Relation<

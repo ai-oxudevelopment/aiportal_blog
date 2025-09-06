@@ -35,33 +35,15 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
   const fallbackSections = [
     {
       name: "Инструменты",
-      slug: "tools",
-      icon: "🛠️",
-      subsections: [
-        { name: "Готовые инструкции", slug: "ready-instructions" },
-        { name: "AI-агенты", slug: "ai-agents" },
-        { name: "MCP", slug: "mcp" }
-      ]
+      slug: "tools"
     },
     {
-      name: "Изучить",
-      slug: "learn",
-      icon: "📚",
-      subsections: [
-        { name: "Исследования", slug: "research" },
-        { name: "Видеокурсы", slug: "video-courses" },
-        { name: "Учебные статьи", slug: "tutorials" },
-        { name: "UseCases платформы", slug: "platform-usecases" }
-      ]
+      name: "Изучить", 
+      slug: "learn"
     },
     {
       name: "Внедрить",
-      slug: "implement",
-      icon: "🚀",
-      subsections: [
-        { name: "Истории успеха", slug: "success-stories" },
-        { name: "Гайды", slug: "guides" }
-      ]
+      slug: "implement"
     }
   ];
 
@@ -69,12 +51,7 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
     ? fallbackSections 
     : sections.map(section => ({
         name: section.attributes.name,
-        slug: section.attributes.slug,
-        icon: section.attributes.icon,
-        subsections: section.attributes.subsections?.data?.map(sub => ({
-          name: sub.attributes.name,
-          slug: sub.attributes.slug
-        })) || []
+        slug: section.attributes.slug
       }));
 
   return (
@@ -100,36 +77,15 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
         ) : (
           <div className="space-y-4">
             {menuItems.map((item) => (
-              <div key={item.slug} className="space-y-1">
-                {/* Main section */}
-                <Link
-                  href={`/sections/${item.slug}`}
-                  className="flex items-center px-3 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all duration-200 rounded-lg group"
-                >
-                  <span className="mr-2 text-lg">{item.icon}</span>
-                  <span className="group-hover:translate-x-1 transition-transform duration-200">
-                    {item.name}
-                  </span>
-                </Link>
-                
-                {/* Subsections */}
-                {item.subsections && item.subsections.length > 0 && (
-                  <ul className="ml-6 space-y-1">
-                    {item.subsections.map((subsection) => (
-                      <li key={subsection.slug}>
-                        <Link
-                          href={`/sections/${subsection.slug}`}
-                          className="flex items-center px-3 py-2 text-xs text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-200 rounded-md group"
-                        >
-                          <span className="group-hover:translate-x-1 transition-transform duration-200">
-                            {subsection.name}
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <Link
+                key={item.slug}
+                href={`/sections/${item.slug}`}
+                className="flex items-center px-3 py-3 text-sm font-medium text-white hover:bg-white/10 transition-all duration-200 rounded-lg group"
+              >
+                <span className="group-hover:translate-x-1 transition-transform duration-200">
+                  {item.name}
+                </span>
+              </Link>
             ))}
           </div>
         )}
