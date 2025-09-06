@@ -92,10 +92,33 @@ export const getSections = async (params?: any): Promise<Section[]> => {
   return await getPublishedContent('sections', {
     ...params,
     populate: {
+      parentSection: true,
+      subsections: {
+        populate: ['articles'],
+      },
       articles: {
         populate: ['featuredImage', 'author'],
       },
     },
+    sort: ['order:asc', 'name:asc'],
+  });
+};
+
+export const getMainSections = async (): Promise<Section[]> => {
+  return await getPublishedContent('sections', {
+    filters: {
+      sectionType: 'main',
+    },
+    populate: {
+      subsections: {
+        populate: ['articles'],
+        sort: ['order:asc', 'name:asc'],
+      },
+      articles: {
+        populate: ['featuredImage', 'author'],
+      },
+    },
+    sort: ['order:asc', 'name:asc'],
   });
 };
 

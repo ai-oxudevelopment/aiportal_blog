@@ -5,7 +5,7 @@
     "singularName": "section",
     "pluralName": "sections",
     "displayName": "Section",
-    "description": "Main sections of the blog"
+    "description": "Main sections of the blog with hierarchical structure"
   },
   "options": {
     "draftAndPublish": true
@@ -35,6 +35,23 @@
     "featured": {
       "type": "boolean",
       "default": false
+    },
+    "parentSection": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::section.section",
+      "inversedBy": "subsections"
+    },
+    "subsections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::section.section",
+      "mappedBy": "parentSection"
+    },
+    "sectionType": {
+      "type": "enumeration",
+      "enum": ["main", "sub"],
+      "default": "main"
     },
     "articles": {
       "type": "relation",

@@ -64,6 +64,15 @@ export interface Section extends StrapiEntity {
     name: string;
     slug: string;
     description?: string;
+    icon?: string;
+    order?: number;
+    sectionType?: 'main' | 'sub';
+    parentSection?: {
+      data: Section | null;
+    };
+    subsections?: {
+      data: Section[];
+    };
     articles?: {
       data: Article[];
     };
