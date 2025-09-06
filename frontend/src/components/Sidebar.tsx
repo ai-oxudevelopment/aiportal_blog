@@ -11,28 +11,11 @@ interface SidebarProps {
 export default function Sidebar({ isMenuOpen }: SidebarProps) {
   const { data: sections, loading, error } = useMainSections();
 
-  // Fallback to hardcoded sections if API is unavailable
-  const fallbackSections = [
-    {
-      name: "Инструменты",
-      slug: "tools"
-    },
-    {
-      name: "Изучить", 
-      slug: "learn"
-    },
-    {
-      name: "Внедрить",
-      slug: "implement"
-    }
-  ];
-
-  const menuItems = (error || !sections || sections.length === 0)
-    ? fallbackSections 
-    : sections.map(section => ({
-        name: section.attributes.name,
-        slug: section.attributes.slug
-      }));
+  // Only show sections from API, no fallback
+  const menuItems = sections ? sections.map(section => ({
+    name: section.attributes.name,
+    slug: section.attributes.slug
+  })) : [];
 
   return (
     <aside
@@ -67,14 +50,6 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
                 </span>
               </Link>
             ))}
-          </div>
-        )}
-        
-        {error && (
-          <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded-md">
-            <span className="text-yellow-400 text-xs">
-              Using fallback sections
-            </span>
           </div>
         )}
       </nav>
