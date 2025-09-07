@@ -8,6 +8,7 @@ import Sidebar from "../../components/Sidebar";
 import WriterActionAgent from "../../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
 import { getCategories, getSections } from "../../lib/api";
+import { useSectionBySlug } from "../../lib/hooks";
 import type { Category, Section } from "../../lib/types";
 
 function Tabs() {
@@ -193,150 +194,6 @@ const keyDocuments: KeyDocument[] = [
   ctaText: "Learn more"
 }];
 
-const sectionData: Record<string, SectionPost[]> = {
-  Product: [
-  {
-    id: "p1",
-    title: "Introducing our latest image generation model in the API",
-    tag: "Product",
-    date: "Apr 23, 2025",
-    tone: "blue",
-    category: "product"
-  },
-  {
-    id: "p2",
-    title: "Introducing GPT-4.5",
-    tag: "Release",
-    date: "Feb 27, 2025",
-    tone: "green",
-    category: "product"
-  },
-  {
-    id: "p4",
-    title: "Introducing 23",
-    tag: "Release",
-    date: "Feb 27, 2025",
-    tone: "purple",
-    category: "product"
-  },
-  {
-    id: "p3",
-    title: "OpenAI o3-mini",
-    tag: "Release",
-    date: "Jan 31, 2025",
-    tone: "orange",
-    category: "product"
-  }],
-
-
-  Research: [
-  {
-    id: "r1",
-    title: "Pioneering an AI clinical copilot with Penda Health",
-    tag: "Publication",
-    date: "Jul 22, 2025",
-    tone: "pink",
-    category: "research"
-  },
-  {
-    id: "r2",
-    title: "Toward understanding and preventing misalignment generalization",
-    tag: "Publication",
-    date: "Jun 18, 2025",
-    tone: "purple",
-    category: "research"
-  },
-  {
-    id: "r3",
-    title: "Introducing HealthBench",
-    tag: "Publication",
-    date: "May 12, 2025",
-    tone: "teal",
-    category: "research"
-  }],
-
-
-  Company: [
-  {
-    id: "c1",
-    title: "OpenAI expands to new markets",
-    tag: "Company",
-    date: "Aug 15, 2025",
-    tone: "blue",
-    category: "company"
-  },
-  {
-    id: "c2",
-    title: "Partnership with leading healthcare providers",
-    tag: "Company",
-    date: "Jul 30, 2025",
-    tone: "green",
-    category: "company"
-  },
-  {
-    id: "c3",
-    title: "New office opening in Singapore",
-    tag: "Company",
-    date: "Jun 25, 2025",
-    tone: "orange",
-    category: "company"
-  }],
-
-
-  Safety: [
-  {
-    id: "s1",
-    title: "AI Safety research breakthrough",
-    tag: "Safety",
-    date: "Aug 10, 2025",
-    tone: "pink",
-    category: "safety"
-  },
-  {
-    id: "s2",
-    title: "Red team findings and improvements",
-    tag: "Safety",
-    date: "Jul 05, 2025",
-    tone: "purple",
-    category: "safety"
-  },
-  {
-    id: "s3",
-    title: "Transparency report Q2 2025",
-    tag: "Safety",
-    date: "Jun 15, 2025",
-    tone: "teal",
-    category: "safety"
-  }],
-
-
-  Security: [
-  {
-    id: "sec1",
-    title: "Enhanced security measures for API",
-    tag: "Security",
-    date: "Aug 20, 2025",
-    tone: "blue",
-    category: "security"
-  },
-  {
-    id: "sec2",
-    title: "Cybersecurity partnership announcement",
-    tag: "Security",
-    date: "Jul 12, 2025",
-    tone: "green",
-    category: "security"
-  },
-  {
-    id: "sec3",
-    title: "Security audit results published",
-    tag: "Security",
-    date: "Jun 08, 2025",
-    tone: "orange",
-    category: "security"
-  }]
-
-};
 
 
 function Thumb({ tone }: {tone: Post["tone"] | SectionPost["tone"];}) {
@@ -672,12 +529,15 @@ export default function SectionPage() {
   const slug = params.sectionSlug as string;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Load section data dynamically
+  const { data: section, loading: sectionLoading, error: sectionError } = useSectionBySlug(slug);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Capitalize first letter of slug for display
-  const sectionTitle = slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : 'Section';
+  // Get section title from API data or fallback to slug
+  const sectionTitle = section?.attributes.name || (slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : 'Section');
 
   return (
     <div className="min-h-screen bg-black text-gray-100" data-oid="rwsv1as">
@@ -785,20 +645,46 @@ export default function SectionPage() {
             </section>
 
             <div data-oid="oe-e7c_">
-              {Object.entries(sectionData).map(
-                ([sectionTitle, sectionPosts]) =>
+              {/* Show loading state */}
+              {sectionLoading && (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-300 mx-auto"></div>
+                  <p className="mt-4 text-gray-400">Loading section...</p>
+                </div>
+              )}
+
+              {/* Show error state */}
+              {sectionError && (
+                <div className="text-center py-8">
+                  <p className="text-red-400">Error loading section: {sectionError.message}</p>
+                </div>
+              )}
+
+              {/* Show section articles when loaded */}
+              {section && section.attributes.articles?.data && (
                 <section
-                  key={sectionTitle}
-                  id={`${sectionTitle.toLowerCase()}-section`}
+                  id={`${section.attributes.slug}-section`}
                   data-oid="5xf5u-f">
 
-                    <Section
-                    title={sectionTitle}
-                    posts={sectionPosts}
+                  <Section
+                    title={section.attributes.name}
+                    posts={section.attributes.articles.data.map(article => ({
+                      id: article.id.toString(),
+                      title: article.attributes.title,
+                      tag: section.attributes.name,
+                      date: article.attributes.publishedAt 
+                        ? new Date(article.attributes.publishedAt).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric', 
+                            year: 'numeric' 
+                          })
+                        : 'Recent',
+                      tone: 'blue' as const,
+                      category: section.attributes.slug
+                    }))}
                     data-oid="cdmkh91" />
 
-              </section>
-
+                </section>
               )}
             </div>
 
