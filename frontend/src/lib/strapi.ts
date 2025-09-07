@@ -231,7 +231,21 @@ export const getPublishedContent = async (
     
     // Add filters
     if (params?.filters) {
-      queryParams.append('filters', JSON.stringify(params.filters));
+      Object.entries(params.filters).forEach(([key, value]) => {
+        if (typeof value === 'object' && value !== null) {
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            if (typeof subValue === 'object' && subValue !== null) {
+              Object.entries(subValue).forEach(([subSubKey, subSubValue]) => {
+                queryParams.append(`filters[${key}][${subKey}][${subSubKey}]`, String(subSubValue));
+              });
+            } else {
+              queryParams.append(`filters[${key}][${subKey}]`, String(subValue));
+            }
+          });
+        } else {
+          queryParams.append(`filters[${key}]`, String(value));
+        }
+      });
     }
 
     const response = await makeRequest(
