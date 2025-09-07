@@ -27,6 +27,7 @@ export interface Article extends StrapiEntity {
     content: string;
     excerpt?: string;
     publishedAt?: string;
+    type?: 'default' | 'article' | 'prompt';
     featuredImage?: {
       data: StrapiEntity | null;
     };
@@ -70,6 +71,7 @@ export interface Section extends StrapiEntity {
     name: string;
     slug: string;
     description?: string;
+    article_types: 'article' | 'prompt';
     articles?: {
       data: Article[];
     };

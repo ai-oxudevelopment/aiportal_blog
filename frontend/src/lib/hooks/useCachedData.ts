@@ -81,7 +81,10 @@ function useCachedData<T>(
   }, []);
 
   const fetchData = useCallback(async (forceRefresh = false) => {
-    if (!enabled) return;
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
 
     // Check cache first (unless forcing refresh)
     if (!forceRefresh) {
@@ -214,7 +217,11 @@ export const useCachedArticles = (params: any = {}, options: CachedDataOptions =
     [JSON.stringify(params)],
     {
       ttl: 0, // Disable cache temporarily for debugging
-      tags: ['articles', ...(params.filters?.sections?.slug?.$eq ? [`section-${params.filters.sections.slug.$eq}`] : [])],
+      tags: [
+        'articles', 
+        ...(params.filters?.sections?.slug?.$eq ? [`section-${params.filters.sections.slug.$eq}`] : []),
+        ...(params.filters?.type?.$eq ? [`type-${params.filters.type.$eq}`] : [])
+      ],
       staleWhileRevalidate: false,
       ...options,
     }

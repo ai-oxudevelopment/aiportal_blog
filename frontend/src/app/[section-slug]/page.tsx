@@ -620,18 +620,31 @@ export default function SectionPage() {
   });
 
   // Load articles for this section with caching
-  // Since articles are not directly linked to sections, we'll get all articles
-  // and filter them by categories in the component
-  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles({}, {
-    ttl: 0, // Disable cache temporarily for debugging
-    staleWhileRevalidate: false
-  });
+  // Filter articles by section's article_types field
+  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles(
+    section?.attributes.article_types ? {
+      filters: {
+        type: {
+          $eq: (section.attributes as any).article_types
+        }
+      }
+    } : {}, 
+    {
+      ttl: 0, // Disable cache temporarily for debugging
+      staleWhileRevalidate: false,
+      enabled: !!(section?.attributes as any).article_types // Only fetch articles when we have the section's article_types
+    }
+  );
 
   // Debug logging
   console.log('SectionPage Debug:', {
     params,
     slug,
-    section: section ? { name: section.attributes.name, categoriesCount: section.attributes.categories?.data?.length } : null,
+    section: section ? { 
+      name: section.attributes.name, 
+      categoriesCount: section.attributes.categories?.data?.length,
+      articleTypes: (section.attributes as any).article_types
+    } : null,
     sectionLoading,
     sectionError,
     articles: articles ? articles.length : null,
