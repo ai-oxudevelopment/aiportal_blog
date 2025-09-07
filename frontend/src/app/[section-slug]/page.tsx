@@ -547,7 +547,7 @@ export default function SectionPage() {
         <Sidebar isMenuOpen={isMenuOpen} />
 
         <main
-          className={`pt-14 w-full transition-all duration-300 ease-in-out ${isMenuOpen ? "md:ml-64" : "ml-0"}`}
+          className={`pt-14 w-full transition-all duration-300 ease-in-out ${isMenuOpen ? "md:ml-80" : "ml-0"}`}
           data-oid="raq.yo:">
 
           <div
