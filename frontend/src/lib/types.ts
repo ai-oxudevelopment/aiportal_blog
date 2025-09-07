@@ -28,6 +28,7 @@ export interface Article extends StrapiEntity {
     excerpt?: string;
     publishedAt?: string;
     type?: 'default' | 'article' | 'prompt';
+    usage_count?: number;
     featuredImage?: {
       data: StrapiEntity | null;
     };

@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import { useCachedArticles } from "../lib/hooks/useCachedData";
+import { ErrorBoundary } from "../components/ErrorBoundary";
+import type { Article } from "../lib/types";
 
 // src/app/page.tsx
 
@@ -136,6 +139,216 @@ function HeroTopCards() {
     </section>);
 }
 
+function PromptArticlesSection() {
+  // Fetch articles with type "prompt"
+  const { data: articles, loading, error } = useCachedArticles({
+    filters: {
+      type: {
+        $eq: "prompt"
+      }
+    }
+  });
+
+  if (loading) {
+    return (
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <h2 className="text-2xl font-semibold text-white mb-6">AI Prompts</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-48 bg-gray-700 rounded-lg animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <h2 className="text-2xl font-semibold text-white mb-6">AI Prompts</h2>
+          <div className="text-center py-8">
+            <div className="max-w-sm mx-auto">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-red-500/10 flex items-center justify-center">
+                <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-gray-400 text-sm">Ошибка загрузки промптов</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!articles || articles.length === 0) {
+    return (
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <h2 className="text-2xl font-semibold text-white mb-6">AI Prompts</h2>
+          <div className="text-center py-12">
+            <div className="max-w-md mx-auto">
+              {/* Animated prompt illustration */}
+              <div className="w-32 h-32 mx-auto mb-6 relative">
+                <svg viewBox="0 0 200 200" className="w-full h-full">
+                  {/* Background circle with subtle animation */}
+                  <circle 
+                    cx="100" 
+                    cy="100" 
+                    r="90" 
+                    fill="url(#promptGradient)" 
+                    opacity="0.1"
+                    className="animate-pulse"
+                  />
+                  
+                  {/* Gradient definition */}
+                  <defs>
+                    <linearGradient id="promptGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#10b981" />
+                      <stop offset="100%" stopColor="#3b82f6" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Floating prompt bubbles */}
+                  <g className="animate-bounce" style={{ animationDuration: '3s' }}>
+                    <circle cx="80" cy="80" r="15" fill="#10b981" opacity="0.8" />
+                    <circle cx="120" cy="70" r="12" fill="#3b82f6" opacity="0.9" />
+                    <circle cx="90" cy="120" r="10" fill="#8b5cf6" opacity="1" />
+                  </g>
+                  
+                  {/* AI brain/neural network */}
+                  <g className="animate-pulse" style={{ animationDuration: '2s' }}>
+                    <circle cx="100" cy="100" r="8" fill="#fbbf24" />
+                    <circle cx="85" cy="85" r="4" fill="#fbbf24" opacity="0.7" />
+                    <circle cx="115" cy="85" r="4" fill="#fbbf24" opacity="0.7" />
+                    <circle cx="85" cy="115" r="4" fill="#fbbf24" opacity="0.7" />
+                    <circle cx="115" cy="115" r="4" fill="#fbbf24" opacity="0.7" />
+                  </g>
+                  
+                  {/* Connection lines */}
+                  <g className="animate-ping" style={{ animationDuration: '4s' }}>
+                    <line x1="100" y1="100" x2="85" y2="85" stroke="#fbbf24" strokeWidth="2" opacity="0.5" />
+                    <line x1="100" y1="100" x2="115" y2="85" stroke="#fbbf24" strokeWidth="2" opacity="0.5" />
+                    <line x1="100" y1="100" x2="85" y2="115" stroke="#fbbf24" strokeWidth="2" opacity="0.5" />
+                    <line x1="100" y1="100" x2="115" y2="115" stroke="#fbbf24" strokeWidth="2" opacity="0.5" />
+                  </g>
+                </svg>
+              </div>
+              
+              {/* Minimal text */}
+              <h4 className="text-xl font-semibold text-white mb-2">No Prompts Yet</h4>
+              <p className="text-gray-400 text-sm">AI prompts are being prepared</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-white">AI Prompts</h2>
+          <span className="text-sm text-gray-400">{articles.length} prompts available</span>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {articles.map((article) => {
+            const {
+              id,
+              attributes: {
+                title,
+                slug,
+                excerpt,
+                featuredImage,
+                categories,
+                publishedAt
+              }
+            } = article;
+            
+            const usage_count = (article.attributes as any).usage_count || 0;
+
+            const publishDate = new Date(publishedAt || new Date());
+            const categoryName = categories?.data?.[0]?.attributes?.name || 'Prompt';
+
+            return (
+              <a 
+                key={id} 
+                href={`/articles/${slug}`} 
+                className="block group h-full" 
+              >
+                <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-green-500/50 hover:shadow-[0_0_80px_-20px_rgba(16,185,129,0.45)] transition-all duration-300 h-full flex flex-col">
+                  {/* Image */}
+                  {featuredImage?.data && (
+                    <div className="aspect-video relative overflow-hidden flex-shrink-0">
+                      <img
+                        src={featuredImage.data.attributes.url}
+                        alt={featuredImage.data.attributes.alternativeText || title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                      {/* Prompt badge */}
+                      <div className="absolute top-2 right-2">
+                        <span className="bg-green-600/90 text-white text-xs font-medium px-2 py-1 rounded-full">
+                          AI Prompt
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Content */}
+                  <div className="p-4 flex flex-col flex-grow">
+                    {/* Category */}
+                    {categories?.data && (
+                      <div className="mb-2 flex-shrink-0">
+                        <span className="inline-block bg-green-600/20 text-green-400 text-xs font-medium px-2 py-1 rounded-full">
+                          {categoryName}
+                        </span>
+                      </div>
+                    )}
+                    
+                    {/* Title */}
+                    <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-green-400 transition-colors line-clamp-2 flex-shrink-0">
+                      {title}
+                    </h3>
+                    
+                    {/* Excerpt */}
+                    {excerpt && (
+                      <p className="text-gray-400 text-sm mb-3 line-clamp-2 flex-grow">
+                        {excerpt}
+                      </p>
+                    )}
+                    
+                    {/* Footer with usage count and date */}
+                    <div className="flex items-center justify-between text-xs text-gray-500 flex-shrink-0 mt-auto">
+                      <div className="flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span>{usage_count} uses</span>
+                      </div>
+                      <time dateTime={publishDate.toISOString()}>
+                        {publishDate.toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </time>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Page() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -164,8 +377,17 @@ export default function Page() {
 
             {/* Hero Top Cards Section */}
             <section id="hero-section" data-oid="lcz75dl">
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">AI Workplace Blog</h2>
+              <p className="text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+                Your source for AI workplace insights, research, and industry updates
+              </p>
               <HeroTopCards data-oid="i8zhi4c" />
             </section>
+
+            {/* AI Prompts Section */}
+            <ErrorBoundary>
+              <PromptArticlesSection />
+            </ErrorBoundary>
 
           </div>
         </main>
