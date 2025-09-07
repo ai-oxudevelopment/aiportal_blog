@@ -8,8 +8,8 @@ import Sidebar from "../../components/Sidebar";
 import WriterActionAgent from "../../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
 import { getSections } from "../../lib/api";
-import { useSectionBySlug } from "../../lib/hooks";
-import type { Category, Section } from "../../lib/types";
+import { useSectionBySlug, useArticles } from "../../lib/hooks";
+import type { Category, Section, Article } from "../../lib/types";
 
 function Tabs({ section, loading: sectionLoading }: { section: Section | null; loading: boolean }) {
   // Get categories from the section data
@@ -83,31 +83,6 @@ type Post = {
   category: string;
 };
 
-const posts: Post[] = [
-{
-  id: "1",
-  title: "Open Models",
-  tag: "Release",
-  date: "Aug 5, 2025",
-  tone: "blue",
-  category: "product"
-},
-{
-  id: "2",
-  title: "Introducing ChatGPT agent",
-  tag: "Product",
-  date: "Jul 17, 2025",
-  tone: "indigo",
-  category: "product"
-},
-{
-  id: "3",
-  title: "Transparency report 2025",
-  tag: "Safety",
-  date: "Jun 02, 2025",
-  tone: "gray",
-  category: "safety"
-}];
 
 
 type SectionPost = {
@@ -131,40 +106,6 @@ type KeyDocument = {
   ctaText?: string;
 };
 
-const keyDocuments: KeyDocument[] = [
-{
-  id: "key1",
-  title: "AI Safety Framework 2025",
-  description:
-  "Comprehensive guidelines for responsible AI development and deployment across all sectors",
-  tag: "Safety",
-  date: "Aug 25, 2025",
-  tone: "purple",
-  href: "#",
-  ctaText: "Start building"
-},
-{
-  id: "key2",
-  title: "GPT-5 Technical Documentation",
-  description:
-  "Complete technical specifications, API reference, and implementation guide for GPT-5",
-  tag: "Product",
-  date: "Aug 20, 2025",
-  tone: "blue",
-  href: "#",
-  ctaText: "Explore API"
-},
-{
-  id: "key3",
-  title: "OpenAI Research Roadmap",
-  description:
-  "Strategic research directions and upcoming breakthroughs in artificial intelligence",
-  tag: "Research",
-  date: "Aug 15, 2025",
-  tone: "green",
-  href: "#",
-  ctaText: "Learn more"
-}];
 
 
 
@@ -417,7 +358,7 @@ function KeyDocumentCard({ document }: {document: KeyDocument;}) {
 
 }
 
-function HeroTopCards({ docs }: {docs: KeyDocument[];}) {
+function HeroTopCards() {
   return (
     <section className="py-6 md:py-10 lg:py-14" data-oid="-4isrhx">
       <div
@@ -463,7 +404,28 @@ function HeroTopCards({ docs }: {docs: KeyDocument[];}) {
 
 }
 
-function Section({ title, posts }: {title: string;posts: SectionPost[];}) {
+function Section({ title, posts, articles, loading }: {
+  title: string;
+  posts?: SectionPost[];
+  articles?: Article[];
+  loading?: boolean;
+}) {
+  // Convert articles to post format if provided
+  const displayPosts = articles ? articles.map(article => ({
+    id: article.id.toString(),
+    title: article.attributes.title,
+    tag: article.attributes.categories?.data[0]?.attributes?.name || 'Article',
+    date: article.attributes.publishedAt 
+      ? new Date(article.attributes.publishedAt).toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric' 
+        })
+      : 'Recent',
+    tone: 'blue' as const,
+    category: article.attributes.categories?.data[0]?.attributes?.slug || 'general'
+  })) : (posts || []);
+
   return (
     <section className="mb-16" data-oid="gfd3lvk">
       <div
@@ -483,14 +445,23 @@ function Section({ title, posts }: {title: string;posts: SectionPost[];}) {
           View all
       </button>
     </div>
-      <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
-        data-oid="n_-yumy">
+      
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-48 bg-gray-700 rounded-lg animate-pulse"></div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
+          data-oid="n_-yumy">
 
-        {posts.map((post) =>
-        <PostCard key={post.id} post={post} data-oid="njxyaq5" />
-        )}
-      </div>
+          {displayPosts.map((post) =>
+            <PostCard key={post.id} post={post} data-oid="njxyaq5" />
+          )}
+        </div>
+      )}
     </section>);
 
 }
@@ -503,6 +474,17 @@ export default function SectionPage() {
 
   // Load section data dynamically
   const { data: section, loading: sectionLoading, error: sectionError } = useSectionBySlug(slug);
+
+  // Load articles for this section
+  const { data: articles, loading: articlesLoading, error: articlesError } = useArticles({
+    filters: {
+      sections: {
+        slug: {
+          $eq: slug
+        }
+      }
+    }
+  });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -533,7 +515,7 @@ export default function SectionPage() {
 
             {/* Hero Top Books Section */}
             <section id="hero-section" data-oid="lcz75dl">
-              <HeroTopCards docs={keyDocuments} data-oid="i8zhi4c" />
+              <HeroTopCards data-oid="i8zhi4c" />
             </section>
 
             {/* News Section */}
@@ -633,27 +615,15 @@ export default function SectionPage() {
               )}
 
               {/* Show section articles when loaded */}
-              {section && section.attributes.articles?.data && (
+              {section && (
                 <section
                   id={`${section.attributes.slug}-section`}
                   data-oid="5xf5u-f">
 
                   <Section
                     title={section.attributes.name}
-                    posts={section.attributes.articles.data.map(article => ({
-                      id: article.id.toString(),
-                      title: article.attributes.title,
-                      tag: section.attributes.name,
-                      date: article.attributes.publishedAt 
-                        ? new Date(article.attributes.publishedAt).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric', 
-                            year: 'numeric' 
-                          })
-                        : 'Recent',
-                      tone: 'blue' as const,
-                      category: section.attributes.slug
-                    }))}
+                    articles={articles || []}
+                    loading={articlesLoading}
                     data-oid="cdmkh91" />
 
                 </section>
