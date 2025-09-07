@@ -694,25 +694,6 @@ export default function SectionPage() {
                 </div>
               )}
 
-              {articlesError && !sectionError && (
-                <div className="text-center py-8">
-                  <div className="max-w-md mx-auto">
-                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-yellow-500/10 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <h4 className="text-md font-medium text-white mb-2">Articles Unavailable</h4>
-                    <p className="text-gray-400 text-sm">
-                      {articlesError.type === 'network' 
-                        ? 'Failed to load articles. Please check your connection.'
-                        : 'Articles for this section are currently unavailable.'
-                      }
-                    </p>
-                  </div>
-                </div>
-              )}
-
               {/* Show section articles when loaded and no errors */}
               {section && !sectionError && (
                 <ErrorBoundary>

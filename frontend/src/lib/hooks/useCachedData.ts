@@ -153,7 +153,7 @@ function useCachedData<T>(
         setIsStale(false);
       }
     }
-  }, [enabled, cacheKey, ttl, tags, staleWhileRevalidate, data, fetchFunction, onError, onSuccess]);
+  }, [enabled, cacheKey, ttl, tags, staleWhileRevalidate, fetchFunction, onError, onSuccess]);
 
   const retry = useCallback(async () => {
     if (retryCountRef.current >= 3) return;
@@ -173,7 +173,7 @@ function useCachedData<T>(
   // Initial fetch and dependency-based refetch
   useEffect(() => {
     fetchData();
-  }, [fetchData, ...dependencies]);
+  }, [enabled, cacheKey, ...dependencies]);
 
   return {
     data,

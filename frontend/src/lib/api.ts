@@ -132,6 +132,7 @@ export const getSectionBySlug = async (slug: string): Promise<Section | null> =>
       articles: {
         populate: ['featuredImage', 'author'],
       },
+      categories: true,
     },
   });
 };
