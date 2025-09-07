@@ -44,6 +44,7 @@ interface PromptCardProps {
 export default function PromptCard({ prompt }: PromptCardProps) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showTagsDropdown, setShowTagsDropdown] = useState(false);
 
   const { title, content, tags, categories, category, publishedAt } = prompt.attributes;
   
@@ -83,6 +84,20 @@ export default function PromptCard({ prompt }: PromptCardProps) {
     window.open(`/prompts/${prompt.attributes.slug}`, '_blank');
   };
 
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showTagsDropdown) {
+        setShowTagsDropdown(false);
+      }
+    };
+
+    if (showTagsDropdown) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [showTagsDropdown]);
+
   return (
     <>
       <div className="group relative bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden hover:border-zinc-700/50 hover:bg-zinc-800/50 transition-all duration-200 h-full flex flex-col cursor-pointer"
@@ -103,31 +118,62 @@ export default function PromptCard({ prompt }: PromptCardProps) {
             </h3>
             
             {/* Technologies/Tags - Like cursor.directory */}
-            <div className="flex items-center gap-2 text-xs text-gray-400">
-              {tags?.data && tags.data.length > 0 ? (
-                <>
+            <div className="relative">
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                {tags?.data && tags.data.length > 0 ? (
+                  <>
+                    <span className="text-gray-300 font-medium">
+                      {tags.data[0].attributes.name}
+                    </span>
+                    {tags.data.length > 1 && (
+                      <>
+                        <span className="text-gray-500">
+                          {tags.data[1].attributes.name}
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowTagsDropdown(!showTagsDropdown);
+                          }}
+                          className="text-gray-500 flex items-center gap-1 hover:text-gray-400 transition-colors"
+                        >
+                          +{tags.data.length - 2} more
+                          <svg 
+                            className={`w-3 h-3 transition-transform ${showTagsDropdown ? 'rotate-180' : ''}`} 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      </>
+                    )}
+                  </>
+                ) : (category?.data || categories?.data?.[0]) ? (
                   <span className="text-gray-300 font-medium">
-                    {tags.data[0].attributes.name}
+                    {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
                   </span>
-                  {tags.data.length > 1 && (
-                    <>
-                      <span className="text-gray-500">
-                        {tags.data[1].attributes.name}
-                      </span>
-                      <span className="text-gray-500 flex items-center gap-1">
-                        +{tags.data.length - 2} more
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </span>
-                    </>
-                  )}
-                </>
-              ) : (category?.data || categories?.data?.[0]) ? (
-                <span className="text-gray-300 font-medium">
-                  {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
-                </span>
-              ) : null}
+                ) : null}
+              </div>
+              
+              {/* Tags Dropdown */}
+              {showTagsDropdown && tags?.data && tags.data.length > 2 && (
+                <div className="absolute top-full left-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg z-10 min-w-[200px]">
+                  <div className="p-2">
+                    {tags.data.map((tag, index) => (
+                      <div
+                        key={tag.id}
+                        className={`px-2 py-1 text-xs text-gray-300 hover:bg-zinc-700 rounded transition-colors ${
+                          index < 2 ? 'text-gray-500' : ''
+                        }`}
+                      >
+                        {tag.attributes.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
