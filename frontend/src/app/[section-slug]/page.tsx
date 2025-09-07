@@ -594,6 +594,45 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
             </div>
           ))}
         </div>
+      ) : articles && articles.length > 0 ? (
+        // Fallback: Show all articles without categories grouping
+        <div className="mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {articles.map((article) => {
+              const {
+                id,
+                attributes: {
+                  title,
+                  slug,
+                  type
+                }
+              } = article;
+
+              // Determine if this is a prompt or regular article
+              const isPrompt = type === 'prompt' || inferredArticleType === 'prompt';
+
+              if (isPrompt) {
+                // Render as PromptCard
+                return (
+                  <PromptCard 
+                    key={id} 
+                    prompt={article as any} 
+                  />
+                );
+              } else {
+                // Render as regular ArticleCard - simplified for fallback
+                return (
+                  <article key={id} className="bg-zinc-900/50 border border-white/10 rounded-lg p-4">
+                    <h3 className="text-white font-medium mb-2">{title}</h3>
+                    <a href={`/articles/${slug}`} className="text-blue-400 hover:text-blue-300 text-sm">
+                      Read more →
+                    </a>
+                  </article>
+                );
+              }
+            })}
+          </div>
+        </div>
       ) : articles && articles.length === 0 ? (
         <div className="text-center py-16">
           <div className="max-w-md mx-auto">
