@@ -576,15 +576,55 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
           ))}
         </div>
       ) : articles && articles.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="max-w-sm mx-auto">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-500/10 flex items-center justify-center">
-              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <div className="text-center py-16">
+          <div className="max-w-md mx-auto">
+            {/* Animated writing illustration */}
+            <div className="w-32 h-32 mx-auto mb-6 relative">
+              <svg viewBox="0 0 200 200" className="w-full h-full">
+                {/* Background circle with subtle animation */}
+                <circle 
+                  cx="100" 
+                  cy="100" 
+                  r="90" 
+                  fill="url(#gradient)" 
+                  opacity="0.1"
+                  className="animate-pulse"
+                />
+                
+                {/* Gradient definition */}
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#8b5cf6" />
+                  </linearGradient>
+                </defs>
+                
+                {/* Floating document pages */}
+                <g className="animate-bounce" style={{ animationDuration: '3s' }}>
+                  <rect x="60" y="80" width="30" height="40" rx="2" fill="#3b82f6" opacity="0.8" />
+                  <rect x="70" y="70" width="30" height="40" rx="2" fill="#6366f1" opacity="0.9" />
+                  <rect x="80" y="60" width="30" height="40" rx="2" fill="#8b5cf6" opacity="1" />
+                </g>
+                
+                {/* Writing hand/pen */}
+                <g className="animate-pulse" style={{ animationDuration: '2s' }}>
+                  <path d="M140 90 Q150 85 155 90" stroke="#fbbf24" strokeWidth="4" fill="none" strokeLinecap="round" />
+                  <circle cx="155" cy="90" r="3" fill="#fbbf24" />
+                </g>
+                
+                {/* Floating dots representing ideas */}
+                <g className="animate-ping" style={{ animationDuration: '4s' }}>
+                  <circle cx="50" cy="60" r="2" fill="#10b981" opacity="0.7" />
+                  <circle cx="160" cy="50" r="2" fill="#f59e0b" opacity="0.7" />
+                  <circle cx="40" cy="140" r="2" fill="#ef4444" opacity="0.7" />
+                  <circle cx="170" cy="130" r="2" fill="#8b5cf6" opacity="0.7" />
+                </g>
               </svg>
             </div>
-            <h4 className="text-lg font-medium text-white mb-2">No Articles Yet</h4>
-            <p className="text-gray-400">This section doesn't have any articles yet. Check back later!</p>
+            
+            {/* Minimal text */}
+            <h4 className="text-xl font-semibold text-white mb-2">Coming Soon</h4>
+            <p className="text-gray-400 text-sm">Content is being prepared</p>
           </div>
         </div>
       ) : (
