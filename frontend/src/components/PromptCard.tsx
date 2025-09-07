@@ -85,11 +85,12 @@ export default function PromptCard({ prompt }: PromptCardProps) {
 
   return (
     <>
-      <div className="group relative bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
+      <div className="group relative bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden hover:border-zinc-700/50 hover:bg-zinc-800/50 transition-all duration-200 h-full flex flex-col cursor-pointer"
+           onClick={handleViewFull}>
         {/* Main Content Area */}
-        <div className="p-4 flex-grow flex flex-col">
-          {/* Description Text */}
-          <div className="text-gray-300 text-sm leading-relaxed mb-4 flex-grow">
+        <div className="p-5 flex-grow flex flex-col">
+          {/* Description Text - Monospace like cursor.directory */}
+          <div className="text-gray-300 text-sm leading-relaxed mb-4 flex-grow font-mono">
             <p className="line-clamp-4">
               {content}
             </p>
@@ -97,25 +98,33 @@ export default function PromptCard({ prompt }: PromptCardProps) {
           
           {/* Title and Technologies */}
           <div className="mt-auto">
-            <h3 className="text-white font-semibold text-lg mb-2 line-clamp-2">
+            <h3 className="text-white font-semibold text-base mb-2 line-clamp-2">
               {title}
             </h3>
             
-            {/* Technologies/Tags */}
+            {/* Technologies/Tags - Like cursor.directory */}
             <div className="flex items-center gap-2 text-xs text-gray-400">
               {tags?.data && tags.data.length > 0 ? (
                 <>
-                  <span className="bg-gray-700/50 px-2 py-1 rounded">
+                  <span className="text-gray-300">
                     {tags.data[0].attributes.name}
                   </span>
                   {tags.data.length > 1 && (
-                    <span className="text-gray-500">
-                      +{tags.data.length - 1} more
-                    </span>
+                    <>
+                      <span className="text-gray-500">
+                        {tags.data[1].attributes.name}
+                      </span>
+                      <span className="text-gray-500 flex items-center gap-1">
+                        +{tags.data.length - 2} more
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </span>
+                    </>
                   )}
                 </>
               ) : (category?.data || categories?.data?.[0]) ? (
-                <span className="bg-gray-700/50 px-2 py-1 rounded">
+                <span className="text-gray-300">
                   {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
                 </span>
               ) : null}
@@ -123,62 +132,45 @@ export default function PromptCard({ prompt }: PromptCardProps) {
           </div>
         </div>
 
-        {/* Overlay Action Buttons */}
-        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <div className="flex gap-2">
+        {/* Subtle Action Buttons - Only on hover */}
+        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div className="flex gap-1">
             <button
-              onClick={handleCopy}
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors ${
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopy();
+              }}
+              className={`w-7 h-7 rounded-md flex items-center justify-center text-xs transition-colors ${
                 copied 
-                  ? 'bg-green-600/20 text-green-400' 
-                  : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
+                  ? 'bg-green-500/20 text-green-400' 
+                  : 'bg-zinc-700/50 hover:bg-zinc-600/50 text-gray-300'
               }`}
               title={copied ? 'Скопировано!' : 'Копировать'}
             >
               {copied ? (
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               ) : (
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
               )}
             </button>
             
             <button
-              onClick={handleShare}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm flex items-center justify-center transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShare();
+              }}
+              className="w-7 h-7 rounded-md bg-zinc-700/50 hover:bg-zinc-600/50 text-gray-300 flex items-center justify-center transition-colors"
               title="Поделиться"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
               </svg>
             </button>
-            
-            <button
-              onClick={handleUse}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm flex items-center justify-center transition-colors"
-              title="Попробовать"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1m-6-8h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2z" />
-              </svg>
-            </button>
           </div>
-        </div>
-
-        {/* Bottom Action Button */}
-        <div className="p-4 border-t border-white/10">
-          <button
-            onClick={handleViewFull}
-            className="w-full bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-sm font-medium px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
-          >
-            <span>Перейти к полной странице</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </button>
         </div>
       </div>
 
