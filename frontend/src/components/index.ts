@@ -15,6 +15,9 @@ export { default as ArticleDetail } from './ArticleDetail';
 export { default as ArticlesList } from './ArticlesList';
 export { default as RelatedArticles } from './RelatedArticles';
 
+// Prompt Components
+export { default as PromptCard } from './PromptCard';
+
 // Category and Tag Components
 export { default as CategoryList } from './CategoryList';
 export { default as TagCloud } from './TagCloud';
