@@ -725,22 +725,43 @@ export default function SectionPage() {
               {sectionError && (
                 <div className="text-center py-12">
                   <div className="max-w-md mx-auto">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
-                      <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    {/* Cute confused character illustration */}
+                    <div className="w-32 h-32 mx-auto mb-6">
+                      <svg viewBox="0 0 200 200" className="w-full h-full">
+                        {/* Background circle */}
+                        <circle cx="100" cy="100" r="90" fill="#fbbf24" opacity="0.1" />
+                        
+                        {/* Character body */}
+                        <circle cx="100" cy="120" r="35" fill="#fbbf24" />
+                        
+                        {/* Character head */}
+                        <circle cx="100" cy="80" r="25" fill="#fbbf24" />
+                        
+                        {/* Eyes */}
+                        <circle cx="92" cy="75" r="3" fill="#1f2937" />
+                        <circle cx="108" cy="75" r="3" fill="#1f2937" />
+                        
+                        {/* Confused eyebrows */}
+                        <path d="M85 70 Q92 65 99 70" stroke="#1f2937" strokeWidth="2" fill="none" strokeLinecap="round" />
+                        <path d="M101 70 Q108 65 115 70" stroke="#1f2937" strokeWidth="2" fill="none" strokeLinecap="round" />
+                        
+                        {/* Question mark above head */}
+                        <text x="100" y="45" textAnchor="middle" fontSize="24" fill="#fbbf24" fontWeight="bold">?</text>
+                        
+                        {/* Arms in confused pose */}
+                        <path d="M65 120 Q55 110 60 100" stroke="#fbbf24" strokeWidth="6" fill="none" strokeLinecap="round" />
+                        <path d="M135 120 Q145 110 140 100" stroke="#fbbf24" strokeWidth="6" fill="none" strokeLinecap="round" />
+                        
+                        {/* Legs */}
+                        <path d="M85 155 L85 175" stroke="#fbbf24" strokeWidth="6" strokeLinecap="round" />
+                        <path d="M115 155 L115 175" stroke="#fbbf24" strokeWidth="6" strokeLinecap="round" />
                       </svg>
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Section Not Found</h3>
-                    <p className="text-gray-400 mb-4">
-                      {sectionError.type === 'network' 
-                        ? 'Network error. Please check your connection and try again.'
-                        : `The section "${slug}" could not be found or is currently unavailable.`
-                      }
-                    </p>
+                    
                     {sectionError.retryable && (
                       <button 
                         onClick={() => window.location.reload()}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
                       >
                         Try Again
                       </button>
