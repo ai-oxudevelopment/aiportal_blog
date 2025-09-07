@@ -621,18 +621,24 @@ export default function SectionPage() {
 
   // Load articles for this section with caching
   // Filter articles by section's article_types field
+  const sectionArticleType = section?.attributes ? (section.attributes as any).article_types : null;
+  
+  // Fallback: if no article_types is specified, fetch all articles
+  // This ensures the page doesn't break if the field is missing
+  const shouldFetchArticles = !!(section && !sectionLoading && !sectionError);
+  
   const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles(
-    section?.attributes.article_types ? {
+    sectionArticleType ? {
       filters: {
         type: {
-          $eq: (section.attributes as any).article_types
+          $eq: sectionArticleType
         }
       }
     } : {}, 
     {
       ttl: 0, // Disable cache temporarily for debugging
       staleWhileRevalidate: false,
-      enabled: !!(section?.attributes as any).article_types // Only fetch articles when we have the section's article_types
+      enabled: shouldFetchArticles // Fetch articles when section is loaded
     }
   );
 
@@ -643,7 +649,8 @@ export default function SectionPage() {
     section: section ? { 
       name: section.attributes.name, 
       categoriesCount: section.attributes.categories?.data?.length,
-      articleTypes: (section.attributes as any).article_types
+      articleTypes: sectionArticleType,
+      allAttributes: section.attributes // Log all attributes to see what's available
     } : null,
     sectionLoading,
     sectionError,
