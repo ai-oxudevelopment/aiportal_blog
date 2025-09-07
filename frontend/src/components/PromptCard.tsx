@@ -79,92 +79,106 @@ export default function PromptCard({ prompt }: PromptCardProps) {
     window.open(`/prompts/${prompt.attributes.slug}`, '_blank');
   };
 
+  const handleViewFull = () => {
+    window.open(`/prompts/${prompt.attributes.slug}`, '_blank');
+  };
+
   return (
     <>
-      <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
-        {/* Header */}
-        <div className="p-4 border-b border-white/10">
-          <h3 className="text-white font-semibold text-lg mb-2 line-clamp-2">
-            {title}
-          </h3>
+      <div className="group relative bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
+        {/* Main Content Area */}
+        <div className="p-4 flex-grow flex flex-col">
+          {/* Description Text */}
+          <div className="text-gray-300 text-sm leading-relaxed mb-4 flex-grow">
+            <p className="line-clamp-4">
+              {content}
+            </p>
+          </div>
           
-          {/* Tags */}
-          {tags?.data && tags.data.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-3">
-              {tags.data.slice(0, 3).map((tag) => (
-                <span
-                  key={tag.id}
-                  className="inline-block bg-blue-600/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full"
-                >
-                  {tag.attributes.name}
-                </span>
-              ))}
-              {tags.data.length > 3 && (
-                <span className="inline-block bg-gray-600/20 text-gray-400 text-xs font-medium px-2 py-1 rounded-full">
-                  +{tags.data.length - 3}
-                </span>
-              )}
-            </div>
-          )}
-          
-          {/* Category */}
-          {(category?.data || categories?.data?.[0]) && (
+          {/* Title and Technologies */}
+          <div className="mt-auto">
+            <h3 className="text-white font-semibold text-lg mb-2 line-clamp-2">
+              {title}
+            </h3>
+            
+            {/* Technologies/Tags */}
             <div className="flex items-center gap-2 text-xs text-gray-400">
-              <span className="bg-gray-700/50 px-2 py-1 rounded">
-                {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
-              </span>
+              {tags?.data && tags.data.length > 0 ? (
+                <>
+                  <span className="bg-gray-700/50 px-2 py-1 rounded">
+                    {tags.data[0].attributes.name}
+                  </span>
+                  {tags.data.length > 1 && (
+                    <span className="text-gray-500">
+                      +{tags.data.length - 1} more
+                    </span>
+                  )}
+                </>
+              ) : (category?.data || categories?.data?.[0]) ? (
+                <span className="bg-gray-700/50 px-2 py-1 rounded">
+                  {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
+                </span>
+              ) : null}
             </div>
-          )}
-        </div>
-
-        {/* Content Preview */}
-        <div className="p-4 flex-grow">
-          <div className="text-gray-300 text-sm line-clamp-3 mb-4">
-            {content.substring(0, 150)}...
-          </div>
-          
-          {/* Date */}
-          <div className="text-xs text-gray-500 mb-4">
-            {new Date(publishedAt).toLocaleDateString('ru-RU', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric'
-            })}
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="p-4 border-t border-white/10">
+        {/* Overlay Action Buttons */}
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <div className="flex gap-2">
             <button
-              onClick={() => setIsPreviewOpen(true)}
-              className="flex-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-sm font-medium px-3 py-2 rounded-lg transition-colors"
-            >
-              Предпросмотр
-            </button>
-            <button
               onClick={handleCopy}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors ${
                 copied 
                   ? 'bg-green-600/20 text-green-400' 
-                  : 'bg-gray-600/20 hover:bg-gray-600/30 text-gray-300'
+                  : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
               }`}
+              title={copied ? 'Скопировано!' : 'Копировать'}
             >
-              {copied ? '✓' : '📋'}
+              {copied ? (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              )}
             </button>
+            
             <button
               onClick={handleShare}
-              className="px-3 py-2 rounded-lg text-sm font-medium bg-gray-600/20 hover:bg-gray-600/30 text-gray-300 transition-colors"
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm flex items-center justify-center transition-colors"
+              title="Поделиться"
             >
-              📤
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+              </svg>
             </button>
+            
             <button
               onClick={handleUse}
-              className="px-3 py-2 rounded-lg text-sm font-medium bg-green-600/20 hover:bg-green-600/30 text-green-400 transition-colors"
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm flex items-center justify-center transition-colors"
+              title="Попробовать"
             >
-              ▶
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1m-6-8h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2z" />
+              </svg>
             </button>
           </div>
+        </div>
+
+        {/* Bottom Action Button */}
+        <div className="p-4 border-t border-white/10">
+          <button
+            onClick={handleViewFull}
+            className="w-full bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 text-sm font-medium px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            <span>Перейти к полной странице</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </button>
         </div>
       </div>
 
