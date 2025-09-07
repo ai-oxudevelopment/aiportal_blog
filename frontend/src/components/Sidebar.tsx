@@ -60,7 +60,7 @@ export default function Sidebar({ isMenuOpen }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed left-0 top-14 bottom-0 w-full md:w-64 bg-black/90 backdrop-blur-md border-r border-white/10 z-30 transition-all duration-300 ease-in-out ${
+      className={`fixed left-0 top-14 bottom-0 w-full md:w-80 bg-black/90 backdrop-blur-md border-r border-white/10 z-30 transition-all duration-300 ease-in-out ${
         isMenuOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
