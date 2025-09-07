@@ -401,28 +401,38 @@ function HeroTopCards() {
 }
 
 function Section({ title, articles, loading, selectedCategory, articlesError, isStale }: SectionProps) {
-  // Filter articles by selected category with memoization for performance
-  const filteredArticles = useMemo(() => {
-    if (!articles) return [];
-    if (!selectedCategory || selectedCategory === 'all') return articles;
+  // Group articles by category with memoization for performance
+  const groupedArticles = useMemo(() => {
+    if (!articles) return {};
     
-    const filtered = articles.filter(article => 
-      article.attributes.categories?.data.some(cat => cat.attributes.slug === selectedCategory)
-    );
+    const groups: Record<string, typeof articles> = {};
     
-    console.log('Section Debug:', {
-      title,
-      totalArticles: articles.length,
-      selectedCategory,
-      filteredArticles: filtered.length,
-      articles: articles.map(article => ({
-        title: article.attributes.title,
-        categories: article.attributes.categories?.data?.map(cat => cat.attributes.slug) || []
-      }))
+    articles.forEach(article => {
+      const categories = article.attributes.categories?.data || [];
+      categories.forEach(category => {
+        const categorySlug = category.attributes.slug;
+        if (!groups[categorySlug]) {
+          groups[categorySlug] = [];
+        }
+        groups[categorySlug].push(article);
+      });
     });
     
-    return filtered;
-  }, [articles, selectedCategory]);
+    return groups;
+  }, [articles]);
+
+  // Get categories for display
+  const categories = useMemo(() => {
+    return Object.keys(groupedArticles).map(slug => {
+      const categoryArticles = groupedArticles[slug];
+      const categoryName = categoryArticles[0]?.attributes.categories?.data.find(cat => cat.attributes.slug === slug)?.attributes.name || slug;
+      return {
+        slug,
+        name: categoryName,
+        articles: categoryArticles.slice(0, 6) // Show only first 6 articles
+      };
+    });
+  }, [groupedArticles]);
 
   return (
     <section className="mb-16 relative" data-oid="gfd3lvk">
@@ -444,15 +454,9 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
           className="text-2xl font-semibold tracking-tight text-white"
           data-oid="75.2c_u">
 
-          {title} {selectedCategory !== 'all' && selectedCategory && `(${selectedCategory})`}
+          {title}
         </h2>
-        <button
-          className="text-sm text-gray-300 hover:text-white transition"
-          data-oid="-:87evf">
-
-          View all
-      </button>
-    </div>
+      </div>
       
       {loading && !articles ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
@@ -471,87 +475,106 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
             <p className="text-gray-400 text-sm">Failed to load articles</p>
           </div>
         </div>
-      ) : filteredArticles.length > 0 ? (
-      <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
-        data-oid="n_-yumy">
+      ) : categories.length > 0 ? (
+        <div className="space-y-12">
+          {categories.map((category) => (
+            <div key={category.slug} className="mb-12">
+              {/* Category Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-white">
+                  {category.name}
+                </h3>
+                <a 
+                  href={`/categories/${category.slug}`}
+                  className="text-sm text-gray-300 hover:text-white transition-colors flex items-center gap-1"
+                >
+                  Читать все
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
 
-          {filteredArticles.map((article) => {
-            const {
-              id,
-              attributes: {
-                title,
-                slug,
-                excerpt,
-                featuredImage,
-                categories,
-                publishedAt
-              }
-            } = article;
+              {/* Articles Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+                {category.articles.map((article) => {
+                  const {
+                    id,
+                    attributes: {
+                      title,
+                      slug,
+                      excerpt,
+                      featuredImage,
+                      categories,
+                      publishedAt
+                    }
+                  } = article;
 
-            const publishDate = new Date(publishedAt || new Date());
-            const categoryName = categories?.data?.[0]?.attributes?.name || 'Article';
-            const categorySlug = categories?.data?.[0]?.attributes?.slug || 'article';
+                  const publishDate = new Date(publishedAt || new Date());
+                  const categoryName = categories?.data?.[0]?.attributes?.name || 'Article';
 
-            return (
-              <a 
-                key={id} 
-                href={`/articles/${slug}`} 
-                className="block group h-full" 
-                data-oid="njxyaq5"
-              >
-                <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
-                  {/* Image */}
-                  {featuredImage?.data && (
-                    <div className="aspect-video relative overflow-hidden flex-shrink-0">
-                      <img
-                        src={featuredImage.data.attributes.url}
-                        alt={featuredImage.data.attributes.alternativeText || title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    </div>
-                  )}
-                  
-                  {/* Content */}
-                  <div className="p-4 flex flex-col flex-grow">
-                    {/* Category */}
-                    {categories?.data && (
-                      <div className="mb-2 flex-shrink-0">
-                        <span className="inline-block bg-blue-600/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full">
-                          {categoryName}
-                        </span>
+                  return (
+                    <a 
+                      key={id} 
+                      href={`/articles/${slug}`} 
+                      className="block group h-full" 
+                      data-oid="njxyaq5"
+                    >
+                      <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
+                        {/* Image */}
+                        {featuredImage?.data && (
+                          <div className="aspect-video relative overflow-hidden flex-shrink-0">
+                            <img
+                              src={featuredImage.data.attributes.url}
+                              alt={featuredImage.data.attributes.alternativeText || title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                          </div>
+                        )}
+                        
+                        {/* Content */}
+                        <div className="p-4 flex flex-col flex-grow">
+                          {/* Category */}
+                          {categories?.data && (
+                            <div className="mb-2 flex-shrink-0">
+                              <span className="inline-block bg-blue-600/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full">
+                                {categoryName}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {/* Title */}
+                          <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 flex-shrink-0">
+                            {title}
+                          </h3>
+                          
+                          {/* Excerpt */}
+                          {excerpt && (
+                            <p className="text-gray-400 text-sm mb-3 line-clamp-2 flex-grow">
+                              {excerpt}
+                            </p>
+                          )}
+                          
+                          {/* Date */}
+                          <div className="flex items-center text-xs text-gray-500 flex-shrink-0 mt-auto">
+                            <time dateTime={publishDate.toISOString()}>
+                              {publishDate.toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </time>
+                          </div>
+                        </div>
                       </div>
-                    )}
-                    
-                    {/* Title */}
-                    <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 flex-shrink-0">
-                      {title}
-                    </h3>
-                    
-                    {/* Excerpt */}
-                    {excerpt && (
-                      <p className="text-gray-400 text-sm mb-3 line-clamp-2 flex-grow">
-                        {excerpt}
-                      </p>
-                    )}
-                    
-                    {/* Date */}
-                    <div className="flex items-center text-xs text-gray-500 flex-shrink-0 mt-auto">
-                      <time dateTime={publishDate.toISOString()}>
-                        {publishDate.toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </time>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            );
-          })}
-      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
       ) : articles && articles.length === 0 ? (
         <div className="text-center py-12">
           <div className="max-w-sm mx-auto">
@@ -574,7 +597,7 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
             </div>
             <h4 className="text-md font-medium text-white mb-2">No Articles Found</h4>
             <p className="text-gray-400 text-sm">
-              No articles found for the "{selectedCategory}" category. Try selecting a different category.
+              No articles found in this section.
             </p>
           </div>
         </div>
@@ -670,70 +693,6 @@ export default function SectionPage() {
                   onCategoryChange={handleCategoryChange}
                   data-oid="2pwvy8b" 
                 />
-                <div
-                  className="hidden md:flex items-center gap-2 text-xs text-gray-300"
-                  data-oid="hb5dtm6">
-
-                  <button
-                    className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition"
-                    data-oid="svudr4y">
-
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      data-oid="78bz2sd">
-
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.5"
-                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                        data-oid="ku.m20a" />
-
-                    </svg>
-                    Filter
-                  </button>
-                  <button
-                    className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition"
-                    data-oid="0prdkn6">
-
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      data-oid="mxknymn">
-
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.5"
-                        d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
-                        data-oid="zmud2-e" />
-
-                    </svg>
-                    Sort
-                  </button>
-                  <button
-                    className="flex items-center gap-2 px-3 h-8 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition"
-                    data-oid="hzvobkc">
-
-                    <svg
-                      className="w-3 h-3"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      data-oid="v:keo08">
-
-                      <path
-                        d="M3 3h6v6H3V3zm0 12h6v6H3v-6zm12-12h6v6h-6V3zm0 12h6v6h-6v-6z"
-                        data-oid="gn--7zq" />
-
-                    </svg>
-                    Grid
-                  </button>
-              </div>
                 </div>
             </section>
 
