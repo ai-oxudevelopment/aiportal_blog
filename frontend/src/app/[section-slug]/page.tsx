@@ -1,7 +1,7 @@
 // frontend/src/app/[section-slug]/page.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
@@ -9,6 +9,7 @@ import WriterActionAgent from "../../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
 import { getSections } from "../../lib/api";
 import { useSectionBySlug, useArticles, type HookError } from "../../lib/hooks";
+import { useCachedSectionBySlug, useCachedArticles } from "../../lib/hooks/useCachedData";
 import ArticleCard from "../../components/ArticleCard";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import type { Category, Section, Article } from "../../lib/types";
@@ -27,6 +28,7 @@ interface SectionProps {
   loading?: boolean;
   selectedCategory?: string;
   articlesError?: HookError | null;
+  isStale?: boolean;
 }
 
 interface HeroTopCardProps {
@@ -49,16 +51,18 @@ function Tabs({
   selectedCategory, 
   onCategoryChange 
 }: TabsProps) {
-  // Get categories from the section data
-  const sectionCategories = section?.attributes.categories?.data || [];
-  
-  const allCategories = [
-    { name: "All", slug: "all" },
-    ...sectionCategories.map(cat => ({
-      name: cat.attributes.name,
-      slug: cat.attributes.slug
-    }))
-  ];
+  // Get categories from the section data with memoization
+  const allCategories = useMemo(() => {
+    const sectionCategories = section?.attributes.categories?.data || [];
+    
+    return [
+      { name: "All", slug: "all" },
+      ...sectionCategories.map(cat => ({
+        name: cat.attributes.name,
+        slug: cat.attributes.slug
+      }))
+    ];
+  }, [section?.attributes.categories?.data]);
 
   if (sectionLoading) {
     return (
@@ -390,15 +394,29 @@ function HeroTopCards() {
 
 }
 
-function Section({ title, articles, loading, selectedCategory, articlesError }: SectionProps) {
-  // Filter articles by selected category
-  const filteredArticles = articles ? articles.filter(article => {
-    if (!selectedCategory || selectedCategory === 'all') return true;
-    return article.attributes.categories?.data.some(cat => cat.attributes.slug === selectedCategory);
-  }) : [];
+function Section({ title, articles, loading, selectedCategory, articlesError, isStale }: SectionProps) {
+  // Filter articles by selected category with memoization for performance
+  const filteredArticles = useMemo(() => {
+    if (!articles) return [];
+    if (!selectedCategory || selectedCategory === 'all') return articles;
+    
+    return articles.filter(article => 
+      article.attributes.categories?.data.some(cat => cat.attributes.slug === selectedCategory)
+    );
+  }, [articles, selectedCategory]);
 
   return (
-    <section className="mb-16" data-oid="gfd3lvk">
+    <section className="mb-16 relative" data-oid="gfd3lvk">
+      {/* Show subtle indicator when articles are being refreshed */}
+      {isStale && articles && articles.length > 0 && (
+        <div className="absolute top-0 right-0 z-10">
+          <div className="bg-blue-600/70 backdrop-blur-sm text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+            <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+            <span>Refreshing</span>
+          </div>
+        </div>
+      )}
+
       <div
         className="flex items-center justify-between mb-6"
         data-oid="pxy_r.m">
@@ -417,7 +435,7 @@ function Section({ title, articles, loading, selectedCategory, articlesError }: 
       </button>
     </div>
       
-      {loading ? (
+      {loading && !articles ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="h-48 bg-gray-700 rounded-lg animate-pulse"></div>
@@ -435,9 +453,9 @@ function Section({ title, articles, loading, selectedCategory, articlesError }: 
           </div>
         </div>
       ) : filteredArticles.length > 0 ? (
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
-          data-oid="n_-yumy">
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
+        data-oid="n_-yumy">
 
           {filteredArticles.map((article) =>
             <ArticleCard 
@@ -448,8 +466,8 @@ function Section({ title, articles, loading, selectedCategory, articlesError }: 
               showReadingTime={false}
               data-oid="njxyaq5" 
             />
-          )}
-        </div>
+        )}
+      </div>
       ) : articles && articles.length === 0 ? (
         <div className="text-center py-12">
           <div className="max-w-sm mx-auto">
@@ -488,11 +506,11 @@ export default function SectionPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // Load section data dynamically
-  const { data: section, loading: sectionLoading, error: sectionError } = useSectionBySlug(slug);
+  // Load section data dynamically with caching
+  const { data: section, loading: sectionLoading, error: sectionError, isStale: sectionStale } = useCachedSectionBySlug(slug);
 
-  // Load articles for this section
-  const { data: articles, loading: articlesLoading, error: articlesError } = useArticles({
+  // Load articles for this section with caching
+  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles({
     filters: {
       sections: {
         slug: {
@@ -502,12 +520,19 @@ export default function SectionPage() {
     }
   });
 
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
-  };
+  }, [isMenuOpen]);
 
-  // Get section title from API data or fallback to slug
-  const sectionTitle = section?.attributes.name || (slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : 'Section');
+  const handleCategoryChange = useCallback((category: string) => {
+    setSelectedCategory(category);
+  }, []);
+
+  // Get section title from API data or fallback to slug with memoization
+  const sectionTitle = useMemo(() => 
+    section?.attributes.name || (slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : 'Section'),
+    [section?.attributes.name, slug]
+  );
 
   return (
     <div className="min-h-screen bg-black text-gray-100" data-oid="rwsv1as">
@@ -531,9 +556,9 @@ export default function SectionPage() {
 
             {/* Hero Top Books Section */}
             <ErrorBoundary>
-              <section id="hero-section" data-oid="lcz75dl">
+            <section id="hero-section" data-oid="lcz75dl">
                 <HeroTopCards data-oid="i8zhi4c" />
-              </section>
+            </section>
             </ErrorBoundary>
 
             {/* News Section */}
@@ -552,7 +577,7 @@ export default function SectionPage() {
                   section={section} 
                   loading={sectionLoading} 
                   selectedCategory={selectedCategory}
-                  onCategoryChange={setSelectedCategory}
+                  onCategoryChange={handleCategoryChange}
                   data-oid="2pwvy8b" 
                 />
                 <div
@@ -623,11 +648,21 @@ export default function SectionPage() {
             </section>
 
             <div data-oid="oe-e7c_">
-              {/* Show loading state */}
-              {sectionLoading && (
+              {/* Show loading state - only show spinner if no cached data */}
+              {sectionLoading && !section && (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-300 mx-auto"></div>
                   <p className="mt-4 text-gray-400">Loading section...</p>
+                </div>
+              )}
+
+              {/* Show subtle indicator when refreshing cached data */}
+              {sectionStale && section && (
+                <div className="fixed top-4 right-4 z-50">
+                  <div className="bg-blue-600/90 backdrop-blur-sm text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2">
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    <span className="text-sm">Updating...</span>
+                  </div>
                 </div>
               )}
 
@@ -681,9 +716,9 @@ export default function SectionPage() {
               {/* Show section articles when loaded and no errors */}
               {section && !sectionError && (
                 <ErrorBoundary>
-                  <section
+                <section
                     id={`${section.attributes.slug}-section`}
-                    data-oid="5xf5u-f">
+                  data-oid="5xf5u-f">
 
                     <Section
                       title={section.attributes.name}
@@ -691,9 +726,10 @@ export default function SectionPage() {
                       loading={articlesLoading}
                       selectedCategory={selectedCategory}
                       articlesError={articlesError}
-                      data-oid="cdmkh91" />
+                      isStale={articlesStale}
+                    data-oid="cdmkh91" />
 
-                  </section>
+              </section>
                 </ErrorBoundary>
               )}
 
