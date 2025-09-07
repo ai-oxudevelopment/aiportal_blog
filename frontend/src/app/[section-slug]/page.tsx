@@ -8,22 +8,47 @@ import Sidebar from "../../components/Sidebar";
 import WriterActionAgent from "../../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
 import { getSections } from "../../lib/api";
-import { useSectionBySlug, useArticles } from "../../lib/hooks";
+import { useSectionBySlug, useArticles, type HookError } from "../../lib/hooks";
 import ArticleCard from "../../components/ArticleCard";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import type { Category, Section, Article } from "../../lib/types";
+
+// Component Props Interfaces
+interface TabsProps {
+  section: Section | null;
+  loading: boolean;
+  selectedCategory: string;
+  onCategoryChange: (slug: string) => void;
+}
+
+interface SectionProps {
+  title: string;
+  articles?: Article[];
+  loading?: boolean;
+  selectedCategory?: string;
+  articlesError?: HookError | null;
+}
+
+interface HeroTopCardProps {
+  title: string;
+  description: string;
+  buttonText?: string;
+  gradientFrom?: string;
+  gradientVia?: string;
+  gradientTo?: string;
+}
+
+interface PillProps {
+  title: string;
+  subtitle?: string;
+}
 
 function Tabs({ 
   section, 
   loading: sectionLoading, 
   selectedCategory, 
   onCategoryChange 
-}: { 
-  section: Section | null; 
-  loading: boolean;
-  selectedCategory: string;
-  onCategoryChange: (slug: string) => void;
-}) {
+}: TabsProps) {
   // Get categories from the section data
   const sectionCategories = section?.attributes.categories?.data || [];
   
@@ -68,7 +93,7 @@ function Tabs({
   );
 }
 
-function Pill({ title, subtitle }: {title: string;subtitle?: string;}) {
+function Pill({ title, subtitle }: PillProps) {
   return (
     <div
       className="inline-flex flex-col rounded-2xl bg-white text-black/90 px-4 py-3 shadow-lg"
@@ -130,7 +155,7 @@ function HeroTopCard({
 
 
 
-}: {title: string;description: string;buttonText?: string;gradientFrom?: string;gradientVia?: string;gradientTo?: string;}) {
+}: HeroTopCardProps) {
   return (
     <a
       className="group block overflow-hidden rounded-[28px] border border-white/10 bg-zinc-900/80 backdrop-blur-md transition-all duration-500 hover:scale-[1.01] hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] hover:ring-1 hover:ring-white/20"
@@ -203,7 +228,16 @@ function HeroTopCard({
 
 }
 
-function KeyDocumentCard({ document }: {document: any;}) {
+// KeyDocumentCard is deprecated - using hardcoded data for now
+function KeyDocumentCard({ document }: {document: {
+  title: string;
+  description: string;
+  tone: "blue" | "green" | "orange" | "pink" | "purple" | "teal";
+  date: string;
+  href?: string;
+  ctaText?: string;
+  cover?: string;
+};}) {
   const toneMap: Record<string, string> = {
     blue: "from-sky-400 via-sky-500 to-blue-300",
     green: "from-emerald-400 via-green-500 to-teal-300",
@@ -356,13 +390,7 @@ function HeroTopCards() {
 
 }
 
-function Section({ title, articles, loading, selectedCategory, articlesError }: {
-  title: string;
-  articles?: Article[];
-  loading?: boolean;
-  selectedCategory?: string;
-  articlesError?: any;
-}) {
+function Section({ title, articles, loading, selectedCategory, articlesError }: SectionProps) {
   // Filter articles by selected category
   const filteredArticles = articles ? articles.filter(article => {
     if (!selectedCategory || selectedCategory === 'all') return true;
