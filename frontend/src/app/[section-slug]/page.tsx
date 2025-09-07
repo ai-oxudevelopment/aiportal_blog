@@ -10,6 +10,7 @@ import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
 import { getSections } from "../../lib/api";
 import { useSectionBySlug, useArticles } from "../../lib/hooks";
 import ArticleCard from "../../components/ArticleCard";
+import { ErrorBoundary } from "../../components/ErrorBoundary";
 import type { Category, Section, Article } from "../../lib/types";
 
 function Tabs({ 
@@ -355,11 +356,12 @@ function HeroTopCards() {
 
 }
 
-function Section({ title, articles, loading, selectedCategory }: {
+function Section({ title, articles, loading, selectedCategory, articlesError }: {
   title: string;
   articles?: Article[];
   loading?: boolean;
   selectedCategory?: string;
+  articlesError?: any;
 }) {
   // Filter articles by selected category
   const filteredArticles = articles ? articles.filter(article => {
@@ -393,6 +395,17 @@ function Section({ title, articles, loading, selectedCategory }: {
             <div key={i} className="h-48 bg-gray-700 rounded-lg animate-pulse"></div>
           ))}
         </div>
+      ) : articlesError ? (
+        <div className="text-center py-8">
+          <div className="max-w-sm mx-auto">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-red-500/10 flex items-center justify-center">
+              <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p className="text-gray-400 text-sm">Failed to load articles</p>
+          </div>
+        </div>
       ) : filteredArticles.length > 0 ? (
         <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
@@ -409,9 +422,31 @@ function Section({ title, articles, loading, selectedCategory }: {
             />
           )}
         </div>
+      ) : articles && articles.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="max-w-sm mx-auto">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-500/10 flex items-center justify-center">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h4 className="text-lg font-medium text-white mb-2">No Articles Yet</h4>
+            <p className="text-gray-400">This section doesn't have any articles yet. Check back later!</p>
+          </div>
+        </div>
       ) : (
-        <div className="text-center py-8 text-gray-400">
-          No articles found for this category.
+        <div className="text-center py-8">
+          <div className="max-w-sm mx-auto">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gray-500/10 flex items-center justify-center">
+              <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <h4 className="text-md font-medium text-white mb-2">No Articles Found</h4>
+            <p className="text-gray-400 text-sm">
+              No articles found for the "{selectedCategory}" category. Try selecting a different category.
+            </p>
+          </div>
         </div>
       )}
     </section>);
@@ -467,9 +502,11 @@ export default function SectionPage() {
             data-oid="llmo4l2">
 
             {/* Hero Top Books Section */}
-            <section id="hero-section" data-oid="lcz75dl">
-              <HeroTopCards data-oid="i8zhi4c" />
-            </section>
+            <ErrorBoundary>
+              <section id="hero-section" data-oid="lcz75dl">
+                <HeroTopCards data-oid="i8zhi4c" />
+              </section>
+            </ErrorBoundary>
 
             {/* News Section */}
             <section id="news-section" className="mb-8" data-oid="6qvh1en">
@@ -566,27 +603,93 @@ export default function SectionPage() {
                 </div>
               )}
 
-              {/* Show error state */}
+              {/* Show error states */}
               {sectionError && (
-                <div className="text-center py-8">
-                  <p className="text-red-400">Error loading section: {sectionError.message}</p>
+                <div className="text-center py-12">
+                  <div className="max-w-md mx-auto">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">Section Not Found</h3>
+                    <p className="text-gray-400 mb-4">
+                      {sectionError.type === 'network' 
+                        ? 'Network error. Please check your connection and try again.'
+                        : `The section "${slug}" could not be found or is currently unavailable.`
+                      }
+                    </p>
+                    {sectionError.retryable && (
+                      <button 
+                        onClick={() => window.location.reload()}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                      >
+                        Try Again
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
 
-              {/* Show section articles when loaded */}
-              {section && (
-                <section
-                  id={`${section.attributes.slug}-section`}
-                  data-oid="5xf5u-f">
+              {articlesError && !sectionError && (
+                <div className="text-center py-8">
+                  <div className="max-w-md mx-auto">
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-yellow-500/10 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h4 className="text-md font-medium text-white mb-2">Articles Unavailable</h4>
+                    <p className="text-gray-400 text-sm">
+                      {articlesError.type === 'network' 
+                        ? 'Failed to load articles. Please check your connection.'
+                        : 'Articles for this section are currently unavailable.'
+                      }
+                    </p>
+                  </div>
+                </div>
+              )}
 
-                  <Section
-                    title={section.attributes.name}
-                    articles={articles || []}
-                    loading={articlesLoading}
-                    selectedCategory={selectedCategory}
-                    data-oid="cdmkh91" />
+              {/* Show section articles when loaded and no errors */}
+              {section && !sectionError && (
+                <ErrorBoundary>
+                  <section
+                    id={`${section.attributes.slug}-section`}
+                    data-oid="5xf5u-f">
 
-                </section>
+                    <Section
+                      title={section.attributes.name}
+                      articles={articles || []}
+                      loading={articlesLoading}
+                      selectedCategory={selectedCategory}
+                      articlesError={articlesError}
+                      data-oid="cdmkh91" />
+
+                  </section>
+                </ErrorBoundary>
+              )}
+
+              {/* Show message when section loading finished but no section found */}
+              {!sectionLoading && !section && !sectionError && (
+                <div className="text-center py-12">
+                  <div className="max-w-md mx-auto">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-500/10 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">Section Not Available</h3>
+                    <p className="text-gray-400 mb-4">
+                      The section "{slug}" is not available or doesn't exist.
+                    </p>
+                    <a 
+                      href="/"
+                      className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    >
+                      Go to Homepage
+                    </a>
+                  </div>
+                </div>
               )}
             </div>
 
