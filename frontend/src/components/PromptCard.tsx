@@ -258,10 +258,10 @@ export default function PromptCard({ prompt }: PromptCardProps) {
               e.stopPropagation();
               handleTryPrompt();
             }}
-            className="w-8 h-8 rounded-lg bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg shadow-md"
+            className="w-7 h-7 rounded-md bg-zinc-700/50 hover:bg-zinc-600/70 text-gray-300 hover:text-blue-400 flex items-center justify-center transition-all duration-200 hover:scale-105"
             title="Попробовать AI-чат"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </button>
