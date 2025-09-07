@@ -497,13 +497,13 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
               <a 
                 key={id} 
                 href={`/articles/${slug}`} 
-                className="block group" 
+                className="block group h-full" 
                 data-oid="njxyaq5"
               >
-                <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300">
+                <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
                   {/* Image */}
                   {featuredImage?.data && (
-                    <div className="aspect-video relative overflow-hidden">
+                    <div className="aspect-video relative overflow-hidden flex-shrink-0">
                       <img
                         src={featuredImage.data.attributes.url}
                         alt={featuredImage.data.attributes.alternativeText || title}
@@ -514,10 +514,10 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
                   )}
                   
                   {/* Content */}
-                  <div className="p-4">
+                  <div className="p-4 flex flex-col flex-grow">
                     {/* Category */}
                     {categories?.data && (
-                      <div className="mb-2">
+                      <div className="mb-2 flex-shrink-0">
                         <span className="inline-block bg-blue-600/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full">
                           {categoryName}
                         </span>
@@ -525,19 +525,19 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
                     )}
                     
                     {/* Title */}
-                    <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
+                    <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 flex-shrink-0">
                       {title}
                     </h3>
                     
                     {/* Excerpt */}
                     {excerpt && (
-                      <p className="text-gray-400 text-sm mb-3 line-clamp-2">
+                      <p className="text-gray-400 text-sm mb-3 line-clamp-2 flex-grow">
                         {excerpt}
                       </p>
                     )}
                     
                     {/* Date */}
-                    <div className="flex items-center text-xs text-gray-500">
+                    <div className="flex items-center text-xs text-gray-500 flex-shrink-0 mt-auto">
                       <time dateTime={publishDate.toISOString()}>
                         {publishDate.toLocaleDateString('en-US', {
                           month: 'short',
