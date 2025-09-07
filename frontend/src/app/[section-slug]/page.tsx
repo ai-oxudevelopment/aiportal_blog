@@ -510,15 +510,9 @@ export default function SectionPage() {
   const { data: section, loading: sectionLoading, error: sectionError, isStale: sectionStale } = useCachedSectionBySlug(slug);
 
   // Load articles for this section with caching
-  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles({
-    filters: {
-      sections: {
-        slug: {
-          $eq: slug
-        }
-      }
-    }
-  });
+  // Since articles are not directly linked to sections, we'll get all articles
+  // and filter them by categories in the component
+  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles();
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
