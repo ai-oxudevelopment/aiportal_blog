@@ -20,9 +20,7 @@ export const getArticles = async (params?: any): Promise<Article[]> => {
     ...params,
     populate: {
       featuredImage: true,
-      author: {
-        populate: ['avatar'],
-      },
+      author: true,
       categories: true,
       tags: true,
     },
@@ -129,9 +127,6 @@ export const getSection = async (id: string | number): Promise<Section> => {
 export const getSectionBySlug = async (slug: string): Promise<Section | null> => {
   return await getContentBySlug('sections', slug, {
     populate: {
-      articles: {
-        populate: ['featuredImage', 'author'],
-      },
       categories: true,
     },
   });

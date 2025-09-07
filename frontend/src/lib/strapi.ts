@@ -224,9 +224,24 @@ export const getPublishedContent = async (
       }
     }
     
-    // Add populate
+    // Add populate - handle different formats safely
     if (params?.populate) {
-      queryParams.append('populate', JSON.stringify(params.populate));
+      if (typeof params.populate === 'string') {
+        queryParams.append('populate', params.populate);
+      } else if (Array.isArray(params.populate)) {
+        params.populate.forEach((field: string) => {
+          queryParams.append('populate', field);
+        });
+      } else {
+        // For complex populate objects, use deep populate syntax
+        Object.entries(params.populate).forEach(([key, value]) => {
+          if (value === true) {
+            queryParams.append('populate', key);
+          } else if (typeof value === 'object') {
+            queryParams.append(`populate[${key}]`, JSON.stringify(value));
+          }
+        });
+      }
     }
     
     // Add filters
@@ -274,9 +289,24 @@ export const getPublishedItem = async (
     // Add publication state
     queryParams.append('publicationState', 'live');
     
-    // Add populate
+    // Add populate - handle different formats safely
     if (params?.populate) {
-      queryParams.append('populate', JSON.stringify(params.populate));
+      if (typeof params.populate === 'string') {
+        queryParams.append('populate', params.populate);
+      } else if (Array.isArray(params.populate)) {
+        params.populate.forEach((field: string) => {
+          queryParams.append('populate', field);
+        });
+      } else {
+        // For complex populate objects, use deep populate syntax
+        Object.entries(params.populate).forEach(([key, value]) => {
+          if (value === true) {
+            queryParams.append('populate', key);
+          } else if (typeof value === 'object') {
+            queryParams.append(`populate[${key}]`, JSON.stringify(value));
+          }
+        });
+      }
     }
 
     const response = await makeRequest(
@@ -308,9 +338,24 @@ export const getContentBySlug = async (
     // Add slug filter
     queryParams.append('filters[slug][$eq]', slug);
     
-    // Add populate
+    // Add populate - handle different formats safely
     if (params?.populate) {
-      queryParams.append('populate', JSON.stringify(params.populate));
+      if (typeof params.populate === 'string') {
+        queryParams.append('populate', params.populate);
+      } else if (Array.isArray(params.populate)) {
+        params.populate.forEach((field: string) => {
+          queryParams.append('populate', field);
+        });
+      } else {
+        // For complex populate objects, use deep populate syntax
+        Object.entries(params.populate).forEach(([key, value]) => {
+          if (value === true) {
+            queryParams.append('populate', key);
+          } else if (typeof value === 'object') {
+            queryParams.append(`populate[${key}]`, JSON.stringify(value));
+          }
+        });
+      }
     }
 
     const response = await makeRequest(
