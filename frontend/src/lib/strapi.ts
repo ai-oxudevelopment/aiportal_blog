@@ -263,12 +263,17 @@ export const getPublishedContent = async (
       });
     }
 
+    const url = `/${contentType}?${queryParams.toString()}`;
+    console.log('getPublishedContent request:', url);
+    
     const response = await makeRequest(
-      `/${contentType}?${queryParams.toString()}`,
+      url,
       {},
       options?.useCache ?? true,
       options?.retryConfig
     );
+    
+    console.log('getPublishedContent response:', response);
     return response.data;
   } catch (error) {
     console.error(`Error fetching ${contentType}:`, error);

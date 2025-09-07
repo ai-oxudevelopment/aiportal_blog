@@ -213,9 +213,9 @@ export const useCachedArticles = (params: any = {}, options: CachedDataOptions =
     cacheKey,
     [JSON.stringify(params)],
     {
-      ttl: 5 * 60 * 1000, // 5 minutes for articles
+      ttl: 0, // Disable cache temporarily for debugging
       tags: ['articles', ...(params.filters?.sections?.slug?.$eq ? [`section-${params.filters.sections.slug.$eq}`] : [])],
-      staleWhileRevalidate: true,
+      staleWhileRevalidate: false,
       ...options,
     }
   );
