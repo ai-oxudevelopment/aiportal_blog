@@ -1,0 +1,73 @@
+# Section Page Refactoring - Product Requirements Document
+
+## Project Overview
+Refactor the [section-slug]/page.tsx to remove hardcoded data and implement dynamic category and article display based on the specified section from the Strapi CMS.
+
+## Current State Analysis
+The current section page contains:
+- Hardcoded section data (Product, Research, Company, Safety, Security)
+- Hardcoded articles and categories
+- Static key documents
+- No real API integration for section-specific content
+- Mixed hardcoded and API-driven components (Tabs component uses API, but main content is hardcoded)
+
+## Technical Requirements
+
+### 1. API Integration
+- Replace hardcoded section data with dynamic API calls to getSectionBySlug()
+- Implement proper error handling for missing sections
+- Add loading states for all API operations
+- Use existing hooks (useSectionBySlug, useCategories, useArticles)
+
+### 2. Dynamic Category Display
+- Fetch categories specific to the current section
+- Display categories as interactive tabs/filters
+- Implement category filtering for articles
+- Handle empty category states gracefully
+
+### 3. Dynamic Article Display
+- Fetch articles belonging to the current section
+- Support filtering by category within the section
+- Implement proper article card components using existing ArticleCard
+- Add pagination for large article lists
+
+### 4. Component Refactoring
+- Remove hardcoded data arrays (sectionData, keyDocuments, posts)
+- Refactor Tabs component to work with section-specific categories
+- Update PostCard component to use real article data
+- Implement proper TypeScript types for all data
+
+### 5. UI/UX Improvements
+- Maintain existing design system and styling
+- Add proper loading skeletons
+- Implement error boundaries
+- Add breadcrumb navigation
+- Ensure responsive design
+
+### 6. Performance Optimization
+- Implement proper caching using existing cache system
+- Add optimistic updates where appropriate
+- Minimize API calls through smart data fetching
+- Use existing enhanced data fetching hooks
+
+## Success Criteria
+- All hardcoded data removed from section page
+- Dynamic content loading based on section slug
+- Proper error handling and loading states
+- Maintained visual design consistency
+- Improved performance through caching
+- Full TypeScript type safety
+
+## Technical Stack
+- Next.js 14 with App Router
+- TypeScript
+- Tailwind CSS
+- Strapi CMS integration
+- Existing component library
+- Enhanced data fetching hooks
+
+## Dependencies
+- Existing API layer (lib/api.ts)
+- Existing hooks (lib/hooks.ts)
+- Existing components (ArticleCard, CategoryList, etc.)
+- Strapi backend with proper content structure

@@ -35,12 +35,7 @@ function Tabs() {
   // Fallback к hardcoded категориям если Strapi недоступен
   const fallbackCategories = [
     { name: "All", slug: "all" },
-    { name: "Company", slug: "company" },
-    { name: "Research", slug: "research" },
-    { name: "Product", slug: "product" },
-    { name: "Safety", slug: "safety" },
-    { name: "Security", slug: "security" },
-    { name: "Global Affairs", slug: "global-affairs" }
+    { name: "NotFound", slug: "not-found" },
   ];
 
   const allCategories = error 

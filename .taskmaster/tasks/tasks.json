@@ -1,561 +1,210 @@
 {
-  "master": {
+  "tags": {
+    "section-page-refactor": {
+      "metadata": {
+        "name": "section-page-refactor",
+        "description": "Refactor section page to remove hardcoded data and implement dynamic content loading",
+        "created": "2024-12-19T10:00:00.000Z",
+        "lastModified": "2024-12-19T10:00:00.000Z"
+      },
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Remove Hardcoded Section Data",
+          "description": "Remove hardcoded sectionData object and replace with dynamic API calls to getSectionBySlug",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "details": "Replace the hardcoded sectionData object containing Product, Research, Company, Safety, Security sections with real API calls to fetch section information based on the URL slug parameter.",
+          "testStrategy": "Verify that section data is loaded dynamically from API and no hardcoded data remains in the component."
+        },
+        {
+          "id": 2,
+          "title": "Implement Dynamic Section Loading",
+          "description": "Add useSectionBySlug hook to fetch section data based on URL parameter",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [
+            1
+          ],
+          "details": "Implement proper section data fetching using the existing useSectionBySlug hook. Add loading states, error handling, and proper TypeScript types.",
+          "testStrategy": "Test section loading with valid and invalid slugs, verify loading states and error handling work correctly."
+        },
+        {
+          "id": 3,
+          "title": "Refactor Tabs Component for Section-Specific Categories",
+          "description": "Update Tabs component to fetch and display categories specific to the current section",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [
+            2
+          ],
+          "details": "Modify the Tabs component to accept section parameter and fetch categories that belong to the current section. Remove hardcoded fallback categories and implement proper filtering.",
+          "testStrategy": "Verify that categories are filtered by section and display correctly with proper loading states."
+        },
+        {
+          "id": 4,
+          "title": "Remove Hardcoded Articles and Key Documents",
+          "description": "Remove hardcoded posts and keyDocuments arrays and replace with dynamic article fetching",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [
+            2
+          ],
+          "details": "Remove hardcoded posts array and keyDocuments array. Implement dynamic article fetching based on section and category filters using existing useArticles hook.",
+          "testStrategy": "Verify that articles are loaded dynamically and no hardcoded article data remains in the component."
+        },
+        {
+          "id": 5,
+          "title": "Implement Dynamic Article Display",
+          "description": "Create dynamic article sections based on section data and implement category filtering",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [
+            3,
+            4
+          ],
+          "details": "Replace hardcoded section rendering with dynamic article sections. Implement category filtering within sections and proper article card rendering using existing ArticleCard component.",
+          "testStrategy": "Test article display with different sections and categories, verify filtering works correctly."
+        },
+        {
+          "id": 6,
+          "title": "Add Proper Error Handling and Loading States",
+          "description": "Implement comprehensive error handling and loading states for all API operations",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [
+            2,
+            3,
+            4
+          ],
+          "details": "Add proper error boundaries, loading skeletons, and error messages for all API operations. Handle cases where section doesn't exist or has no content.",
+          "testStrategy": "Test error scenarios including network failures, missing sections, and empty content states."
+        },
+        {
+          "id": 7,
+          "title": "Update TypeScript Types and Interfaces",
+          "description": "Update component props and state types to match real API data structure",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "details": "Update all TypeScript interfaces and component props to match the real Strapi API data structure. Remove hardcoded type definitions and use existing types from lib/types.ts.",
+          "testStrategy": "Verify TypeScript compilation passes and all type checking is correct."
+        },
+        {
+          "id": 8,
+          "title": "Optimize Performance and Caching",
+          "description": "Implement proper caching and performance optimizations using existing cache system",
+          "status": "pending",
+          "priority": "low",
+          "dependencies": [
+            5,
+            6,
+            7
+          ],
+          "details": "Implement proper caching strategies using the existing cache system. Add optimistic updates where appropriate and minimize unnecessary API calls.",
+          "testStrategy": "Test caching behavior and verify performance improvements in loading times."
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2024-12-19T10:00:00.000Z",
+    "lastModified": "2024-12-19T10:00:00.000Z"
+  },
+  "section-refactor": {
     "tasks": [
       {
         "id": 1,
-        "title": "Initialize Strapi Backend Project",
-        "status": "done",
-        "dependencies": [],
+        "title": "Удалить хардкод данных секций",
+        "description": "Заменить объект sectionData с захардкоженными секциями на динамические API вызовы getSectionBySlug",
+        "status": "pending",
         "priority": "high",
-        "description": "Set up Strapi CMS in the backend folder with proper configuration and content types",
-        "details": "Create Strapi project in backend folder, configure database, set up content types for articles, categories, sections, collections, and tags. Configure media handling and API endpoints.",
-        "testStrategy": "Verify Strapi admin panel is accessible, content types are created, and API endpoints respond correctly",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Install and Initialize Strapi Project",
-            "description": "Create new Strapi project in backend folder with proper configuration",
-            "dependencies": [],
-            "details": "Run 'npx create-strapi-app@latest backend --quickstart --no-run', configure package.json, set up project structure, install dependencies, and verify Strapi installation.",
-            "testStrategy": "Verify Strapi project is created, dependencies are installed, and project structure is correct",
-            "status": "done"
-          },
-          {
-            "id": 2,
-            "title": "Configure Database Connection",
-            "description": "Set up database configuration for development and production environments",
-            "dependencies": [
-              "1.1"
-            ],
-            "details": "Configure database.js with PostgreSQL/MySQL settings, set up environment variables for database credentials, test database connection, and configure connection pooling.",
-            "testStrategy": "Verify database connection works, test with sample queries, and ensure connection pooling is configured",
-            "status": "done"
-          },
-          {
-            "id": 3,
-            "title": "Set Up Basic Content Types Structure",
-            "description": "Create initial content type definitions for core entities",
-            "dependencies": [
-              "1.2"
-            ],
-            "details": "Create basic content types: Article, Category, Section, Collection, Tag. Set up basic fields (name, description, slug) without relationships initially.",
-            "testStrategy": "Verify content types are created in Strapi admin, basic fields are accessible, and admin panel loads correctly",
-            "status": "done"
-          },
-          {
-            "id": 4,
-            "title": "Configure Media Library and File Handling",
-            "description": "Set up media management with proper file upload configuration",
-            "dependencies": [
-              "1.3"
-            ],
-            "details": "Configure media library settings, set up file upload limits, configure allowed file types, implement basic image optimization, and set up file storage paths.",
-            "testStrategy": "Test file uploads, verify media library functionality, and check file storage and retrieval",
-            "status": "done"
-          },
-          {
-            "id": 5,
-            "title": "Set Up Basic API Configuration",
-            "description": "Configure API settings and basic middleware",
-            "dependencies": [
-              "1.4"
-            ],
-            "details": "Configure API prefix, set up CORS settings, configure basic middleware (body parser, security headers), set up API rate limiting, and configure response formatting.",
-            "testStrategy": "Test API endpoints are accessible, verify CORS works, and check security headers are properly set",
-            "status": "done"
-          }
-        ]
+        "dependencies": [],
+        "details": "Удалить объект sectionData содержащий захардкоженные секции (Product, Research, Company, Safety, Security) и заменить на реальные API вызовы для получения информации о секции по slug из URL параметра.",
+        "testStrategy": "Проверить что данные секции загружаются динамически из API и никаких хардкод данных не остается в компоненте."
       },
       {
         "id": 2,
-        "title": "Configure Content Types and Relationships",
-        "status": "done",
-        "dependencies": [
-          1
-        ],
+        "title": "Реализовать динамическую загрузку секций",
+        "description": "Добавить хук useSectionBySlug для получения данных секции по URL параметру",
+        "status": "pending",
         "priority": "high",
-        "description": "Define and implement all content types with proper relationships and validation",
-        "details": "Create content types: Articles (title, content, slug, meta description, tags, publish date), Categories (name, description, slug, parent category), Sections (name, description, slug, order), Collections (name, description, articles, featured image), Tags (name, slug, description). Set up proper relationships between content types.",
-        "testStrategy": "Verify all content types can be created, edited, and deleted through Strapi admin panel. Test relationships work correctly.",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Design Article Content Type Schema",
-            "description": "Create comprehensive Article content type with all required fields and validation",
-            "dependencies": [],
-            "details": "Define Article fields: title (text, required), content (richtext, required), slug (uid, required), metaDescription (text), publishDate (datetime), status (enumeration: draft, published, archived), featured (boolean), readingTime (number). Add field validation and constraints.\n<info added on 2025-09-04T21:43:02.991Z>\nArticle content type schema updated with all required fields: metaDescription, publishDate, status, featured. Author relation removed as requested. All articles are writing successfully with PostgreSQL via Docker Compose.\n</info added on 2025-09-04T21:43:02.991Z>",
-            "testStrategy": "Create test article, verify all fields work correctly, test validation rules, and check slug generation",
-            "status": "done"
-          },
-          {
-            "id": 2,
-            "title": "Design Category and Section Content Types",
-            "description": "Create Category and Section content types with hierarchical relationships",
-            "dependencies": [
-              "2.1"
-            ],
-            "details": "Category: name (text, required), description (text), slug (uid, required), parent (relation to self), order (number). Section: name (text, required), description (text), slug (uid, required), order (number), featured (boolean). Implement self-referencing relationship for categories.",
-            "testStrategy": "Create test categories and sections, test hierarchical relationships, verify ordering works, and check slug generation",
-            "status": "done"
-          },
-          {
-            "id": 3,
-            "title": "Design Tag Content Type",
-            "description": "Create Tag content type with proper field definitions",
-            "dependencies": [
-              "2.2"
-            ],
-            "details": "Tag: name (text, required), description (text), slug (uid, required), color (text), featured (boolean).",
-            "testStrategy": "Create test tags, verify all fields work correctly, and check slug generation",
-            "status": "done"
-          },
-          {
-            "id": 4,
-            "title": "Design Collection Content Type",
-            "description": "Create Collection content type for organizing articles",
-            "dependencies": [
-              "2.3"
-            ],
-            "details": "Collection: name (text, required), description (text), slug (uid, required), featuredImage (media), articles (relation to Article), featured (boolean), publishDate (datetime), order (number). Implement many-to-many relationship with articles.",
-            "testStrategy": "Create test collection, add articles to it, verify featured image upload, test article relationships, and check ordering",
-            "status": "done"
-          },
-          {
-            "id": 5,
-            "title": "Implement Content Type Relationships",
-            "description": "Set up all relationships between content types",
-            "dependencies": [
-              "2.4"
-            ],
-            "details": "Article -> Category (many-to-many), Article -> Tags (many-to-many), Article -> Sections (many-to-many), Collection -> Articles (many-to-many), Category -> Parent Category (many-to-one). Configure relationship display fields and populate options.",
-            "testStrategy": "Test all relationships work correctly, verify populate functionality, check relationship display in admin panel, and test bidirectional relationships",
-            "status": "done"
-          }
-        ]
+        "dependencies": [1],
+        "details": "Реализовать правильную загрузку данных секции используя существующий хук useSectionBySlug. Добавить состояния загрузки, обработку ошибок и правильные TypeScript типы.",
+        "testStrategy": "Протестировать загрузку секций с валидными и невалидными slug, проверить что состояния загрузки и обработка ошибок работают корректно."
       },
       {
         "id": 3,
-        "title": "Set Up Media Management",
-        "status": "done",
-        "dependencies": [
-          1
-        ],
-        "priority": "medium",
-        "description": "Configure image optimization, file upload handling, and alt text management",
-        "details": "Configure Strapi media library for image optimization and resizing. Set up file upload handling with proper validation. Implement alt text management for SEO compliance.",
-        "testStrategy": "Upload various image types, verify optimization works, and check alt text is properly stored and accessible via API.",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Configure Image Optimization and Resizing",
-            "description": "Set up automatic image optimization and multiple size variants",
-            "dependencies": [],
-            "details": "Configure Sharp.js for image processing, set up automatic thumbnail generation (small, medium, large), implement WebP format conversion, configure quality settings, and set up responsive image sizes.",
-            "testStrategy": "Upload test images, verify thumbnails are generated, check WebP conversion, and test responsive image delivery",
-            "status": "done"
-          },
-          {
-            "id": 2,
-            "title": "Implement File Upload Validation and Security",
-            "description": "Set up secure file upload handling with validation",
-            "dependencies": [
-              "3.1"
-            ],
-            "details": "Configure allowed file types (images: jpg, png, gif, webp; documents: pdf, doc, docx), set file size limits, implement virus scanning, add file type validation, and configure upload directory structure.",
-            "testStrategy": "Test file uploads with various types, verify size limits, test invalid file rejection, and check security measures",
-            "status": "done"
-          },
-          {
-            "id": 3,
-            "title": "Set Up Alt Text and Metadata Management",
-            "description": "Implement comprehensive alt text and metadata handling",
-            "dependencies": [
-              "3.2"
-            ],
-            "details": "Add alt text field to media items, implement automatic alt text generation using AI, add caption and description fields, set up metadata extraction (EXIF data), and implement SEO-friendly file naming.",
-            "testStrategy": "Upload images with metadata, verify alt text storage, test AI alt text generation, and check metadata extraction",
-            "status": "done"
-          },
-          {
-            "id": 4,
-            "title": "Configure Media Library Organization",
-            "description": "Set up organized media library structure and categorization",
-            "dependencies": [
-              "3.3"
-            ],
-            "details": "Implement media folders and categories, add tagging system for media, set up search and filtering, implement bulk operations (move, delete, update), and configure media permissions.",
-            "testStrategy": "Create media folders, test categorization, verify search functionality, and test bulk operations",
-            "status": "done"
-          },
-          {
-            "id": 5,
-            "title": "Implement Media API and CDN Integration",
-            "description": "Set up media API endpoints and CDN configuration",
-            "dependencies": [
-              "3.4"
-            ],
-            "details": "Create media API endpoints for listing, searching, and downloading, implement media caching, set up CDN integration (Cloudinary/AWS S3), configure media URL generation, and implement media backup system.",
-            "testStrategy": "Test media API endpoints, verify CDN delivery, check caching behavior, and test backup functionality",
-            "status": "done"
-          }
-        ]
+        "title": "Рефакторинг компонента Tabs для категорий секции",
+        "description": "Обновить компонент Tabs для получения и отображения категорий конкретной секции",
+        "status": "pending",
+        "priority": "high",
+        "dependencies": [2],
+        "details": "Модифицировать компонент Tabs чтобы принимать параметр секции и получать категории принадлежащие текущей секции. Убрать хардкод fallback категорий и реализовать правильную фильтрацию.",
+        "testStrategy": "Проверить что категории фильтруются по секции и отображаются корректно с правильными состояниями загрузки."
       },
       {
         "id": 4,
-        "title": "Implement API Endpoints and Controllers",
-        "status": "done",
-        "dependencies": [
-          2
-        ],
-        "priority": "high",
-        "description": "Create RESTful API endpoints for all content types with proper controllers and services",
-        "details": "Implement CRUD operations for articles, categories, sections, collections, and tags. Create custom controllers for complex queries, search functionality, and filtering. Implement proper error handling and validation.",
-        "testStrategy": "Test all API endpoints with various HTTP methods, verify proper response formats, error handling, and data validation.",
-        "subtasks": []
+        "title": "Удалить хардкод статей и ключевых документов",
+        "description": "Удалить массивы posts и keyDocuments и заменить на динамическую загрузку статей",
+        "status": "pending",
+        "priority": "medium",
+        "dependencies": [2],
+        "details": "Удалить хардкод массивы posts и keyDocuments. Реализовать динамическую загрузку статей на основе фильтров секции и категории используя существующий хук useArticles.",
+        "testStrategy": "Проверить что статьи загружаются динамически и никаких хардкод данных статей не остается в компоненте."
       },
       {
         "id": 5,
-        "title": "Set Up Authentication and Permissions",
-        "status": "done",
-        "dependencies": [
-          1
-        ],
+        "title": "Реализовать динамическое отображение статей",
+        "description": "Создать динамические секции статей на основе данных секции и реализовать фильтрацию по категориям",
+        "status": "pending",
         "priority": "high",
-        "description": "Configure user authentication, roles, and permissions for content management",
-        "details": "Set up JWT authentication, create user roles (admin, editor), configure permissions for different content types, implement role-based access control for API endpoints.",
-        "testStrategy": "Test authentication flow, verify role-based permissions work correctly, and ensure secure access to admin functions.",
-        "subtasks": []
+        "dependencies": [3, 4],
+        "details": "Заменить хардкод рендеринг секций на динамические секции статей. Реализовать фильтрацию по категориям внутри секций и правильный рендеринг карточек статей используя существующий компонент ArticleCard.",
+        "testStrategy": "Протестировать отображение статей с разными секциями и категориями, проверить что фильтрация работает корректно."
       },
       {
         "id": 6,
-        "title": "Configure Database and Migrations",
-        "status": "done",
-        "dependencies": [
-          1
-        ],
+        "title": "Добавить обработку ошибок и состояния загрузки",
+        "description": "Реализовать комплексную обработку ошибок и состояния загрузки для всех API операций",
+        "status": "pending",
         "priority": "medium",
-        "description": "Set up database configuration, migrations, and seed data",
-        "details": "Configure database connection (PostgreSQL/MySQL), set up migration system, create initial seed data for categories, tags, and sample content. Implement backup and restore procedures.",
-        "testStrategy": "Verify database connections, test migrations, and ensure seed data is properly loaded.",
-        "subtasks": []
+        "dependencies": [2, 3, 4],
+        "details": "Добавить правильные error boundaries, loading skeletons и сообщения об ошибках для всех API операций. Обработать случаи когда секция не существует или не имеет контента.",
+        "testStrategy": "Протестировать сценарии ошибок включая сетевые сбои, отсутствующие секции и пустые состояния контента."
       },
       {
         "id": 7,
-        "title": "Implement Search and Filtering",
-        "status": "done",
-        "dependencies": [
-          4
-        ],
+        "title": "Обновить TypeScript типы и интерфейсы",
+        "description": "Обновить типы props компонентов и state чтобы соответствовать реальной структуре API данных",
+        "status": "pending",
         "priority": "medium",
-        "description": "Add search functionality and advanced filtering options for content",
-        "details": "Implement full-text search across articles, categories, and tags. Add filtering by date, category, tags. Implement pagination and sorting options. Create search API endpoints.",
-        "testStrategy": "Test search functionality with various queries, verify filtering works correctly, and ensure performance is acceptable.",
-        "subtasks": []
+        "dependencies": [1, 2, 3, 4],
+        "details": "Обновить все TypeScript интерфейсы и props компонентов чтобы соответствовать реальной структуре Strapi API данных. Удалить хардкод определения типов и использовать существующие типы из lib/types.ts.",
+        "testStrategy": "Проверить что TypeScript компиляция проходит и все проверки типов корректны."
       },
       {
         "id": 8,
-        "title": "Set Up Caching and Performance Optimization",
-        "status": "done",
-        "dependencies": [
-          4
-        ],
-        "priority": "medium",
-        "description": "Implement caching strategies and optimize API performance",
-        "details": "Set up Redis caching for API responses, implement query optimization, add database indexing, configure response compression. Implement rate limiting and request throttling.",
-        "testStrategy": "Measure API response times, verify caching works correctly, and test performance under load.",
-        "subtasks": []
-      },
-      {
-        "id": 9,
-        "title": "Create Frontend Next.js Application",
-        "status": "done",
-        "dependencies": [],
-        "priority": "high",
-        "description": "Set up Next.js frontend application with TypeScript and Tailwind CSS",
-        "details": "Initialize Next.js project with TypeScript, configure Tailwind CSS, set up project structure, configure ESLint and Prettier, set up testing framework (Jest/Cypress).",
-        "testStrategy": "Verify Next.js development server starts, check TypeScript compilation, and ensure Tailwind CSS is working.",
-        "subtasks": []
-      },
-      {
-        "id": 10,
-        "title": "Implement Layout and Navigation Components",
-        "status": "done",
-        "dependencies": [
-          9
-        ],
-        "priority": "medium",
-        "description": "Create responsive layout components and navigation structure",
-        "details": "Build header, footer, sidebar, and navigation components. Implement responsive design, mobile menu, breadcrumbs, and search bar. Create reusable UI components with Tailwind CSS.",
-        "testStrategy": "Test responsive design across different screen sizes, verify navigation works correctly, and check accessibility.",
-        "subtasks": []
-      },
-      {
-        "id": 11,
-        "title": "Create Article Display Components",
-        "status": "done",
-        "dependencies": [
-          10
-        ],
-        "priority": "high",
-        "description": "Build components for displaying articles, categories, and related content",
-        "details": "Create article card, article detail, category list, and tag cloud components. Implement article preview, reading time calculation, and social sharing. Add related articles functionality.",
-        "testStrategy": "Test article display on different devices, verify responsive design, and check content rendering.",
-        "subtasks": []
-      },
-      {
-        "id": 12,
-        "title": "Implement Data Fetching and State Management",
-        "status": "done",
-        "dependencies": [
-          11
-        ],
-        "priority": "high",
-        "description": "Set up data fetching from Strapi API and implement state management",
-        "details": "Create API client for Strapi, implement data fetching hooks, set up state management (Zustand/Redux), handle loading states and error handling. Implement data caching and optimistic updates.",
-        "testStrategy": "Test API integration, verify data loading states, and check error handling scenarios.",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Create Strapi API Client",
-            "description": "Set up the base API client for communicating with Strapi backend",
-            "details": "Create a centralized API client that handles authentication, base URL configuration, and common request/response patterns for Strapi API calls.",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 12
-          },
-          {
-            "id": 2,
-            "title": "Implement Data Fetching Hooks",
-            "description": "Create custom React hooks for data fetching operations",
-            "details": "Implement useArticles, useCategories, useAuthors, and other data fetching hooks that provide loading states, error handling, and data caching.",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 12
-          },
-          {
-            "id": 3,
-            "title": "Set Up State Management",
-            "description": "Implement global state management solution",
-            "details": "Choose and implement either Zustand or Redux for global state management, including stores for articles, categories, authors, and user preferences.",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 12
-          },
-          {
-            "id": 4,
-            "title": "Implement Error Handling and Loading States",
-            "description": "Add comprehensive error handling and loading state management",
-            "details": "Implement error boundaries, loading spinners, retry mechanisms, and user-friendly error messages throughout the application.",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 12
-          },
-          {
-            "id": 5,
-            "title": "Implement Data Caching and Optimistic Updates",
-            "description": "Add caching layer and optimistic update patterns",
-            "details": "Implement React Query or SWR for data caching, cache invalidation strategies, and optimistic updates for better user experience.",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 12
-          }
-        ]
-      },
-      {
-        "id": 13,
-        "title": "Add Search and Filtering UI",
-        "status": "done",
-        "dependencies": [
-          12
-        ],
-        "priority": "medium",
-        "description": "Create user interface for search and filtering functionality",
-        "details": "Build search input component, filter sidebar, and results display. Implement real-time search, filter combinations, and search result highlighting. Add search history and suggestions.",
-        "testStrategy": "Test search functionality, verify filters work correctly, and ensure good user experience.",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Enhanced SearchBar Component",
-            "description": "Enhanced SearchBar component with real-time search and better suggestions",
-            "details": "Enhanced SearchBar component with real-time search and better suggestions:\n\n✅ **Completed Features:**\n- Real-time search suggestions using useSearchArticles hook\n- Search history with localStorage persistence\n- Dynamic suggestions from categories, tags, and recent searches\n- Enhanced UI with different icons for different suggestion types\n- Improved dropdown with sections for recent searches, categories, and tags\n- Better error handling and loading states\n- Support for different navigation patterns (category/tag pages vs search)\n\n**Key Improvements:**\n- Replaced mock suggestions with real API data\n- Added search history functionality with clear option\n- Implemented debounced search for better performance\n- Enhanced visual design with proper icons and sections\n- Added support for different suggestion types (recent, category, tag, article)\n- Improved accessibility and user experience",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 13
-          },
-          {
-            "id": 2,
-            "title": "Created FilterSidebar Component",
-            "description": "Created comprehensive FilterSidebar component for category, author, and date filtering",
-            "details": "Created comprehensive FilterSidebar component for category, author, and date filtering:\n\n✅ **Completed Features:**\n- Collapsible filter sections (categories, authors, tags, date range, sort)\n- Real-time data fetching for categories, authors, and tags\n- Checkbox-based filtering with article counts\n- Date range picker for filtering by publication date\n- Sort options (relevance, date, title) with ascending/descending order\n- Clear all filters functionality\n- Loading states for each filter section\n- Responsive design with proper spacing and typography\n\n**Key Features:**\n- Dynamic filter options populated from API\n- Visual indicators for active filters\n- Proper TypeScript interfaces for filter options\n- Clean, accessible UI with proper form controls\n- Integration with search results for real-time filtering\n- Mobile-friendly collapsible sections",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 13
-          },
-          {
-            "id": 3,
-            "title": "Created SearchResults Component",
-            "description": "Created comprehensive SearchResults component with highlighting and pagination",
-            "details": "Created comprehensive SearchResults component with highlighting and pagination:\n\n✅ **Completed Features:**\n- Text highlighting for search terms in titles and excerpts\n- Integration with FilterSidebar for advanced filtering\n- Pagination with page navigation controls\n- Active filter display with removal options\n- Loading states with skeleton components\n- Error handling with retry functionality\n- Responsive layout with sidebar toggle\n- Article count display and search statistics\n\n**Key Features:**\n- HighlightedText component for search term highlighting\n- Real-time filter integration with search parameters\n- Pagination controls with proper state management\n- Active filter chips with individual removal\n- Comprehensive error and loading states\n- Mobile-responsive design with collapsible sidebar\n- Integration with existing search API and hooks\n- Clean article display with metadata and categories",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 13
-          },
-          {
-            "id": 4,
-            "title": "Updated Search Page Layout",
-            "description": "Updated search page with enhanced layout and improved user experience",
-            "details": "Updated search page with enhanced layout and improved user experience:\n\n✅ **Completed Features:**\n- Integrated new SearchBar and SearchResults components\n- Added URL parameter handling for search queries\n- Enhanced search instructions and help text\n- Improved responsive layout with proper spacing\n- Added feature cards explaining search capabilities\n- Better visual hierarchy and typography\n\n**Key Improvements:**\n- Seamless integration of all new search components\n- URL-based search state management\n- Enhanced user guidance with feature explanations\n- Responsive design for all screen sizes\n- Clean, modern layout with proper spacing\n- Better accessibility and user experience",
-            "status": "done",
-            "dependencies": [],
-            "parentTaskId": 13
-          }
-        ]
-      },
-      {
-        "id": 14,
-        "title": "Implement SEO and Meta Tags",
+        "title": "Оптимизировать производительность и кэширование",
+        "description": "Реализовать правильные стратегии кэширования и оптимизации производительности используя существующую систему кэша",
         "status": "pending",
-        "dependencies": [
-          11
-        ],
-        "priority": "medium",
-        "description": "Add SEO optimization and dynamic meta tags for all pages",
-        "details": "Implement dynamic meta tags for articles, categories, and pages. Add Open Graph tags, Twitter cards, structured data (JSON-LD), and sitemap generation. Configure robots.txt and meta robots.",
-        "testStrategy": "Verify meta tags are generated correctly, check structured data validation, and test social media previews.",
-        "subtasks": []
-      },
-      {
-        "id": 15,
-        "title": "Add User Authentication Frontend",
-        "status": "pending",
-        "dependencies": [
-          12
-        ],
-        "priority": "medium",
-        "description": "Implement user authentication and profile management in frontend",
-        "details": "Create login/register forms, user profile page, and authentication context. Implement JWT token management, protected routes, and user role-based UI. Add password reset functionality.",
-        "testStrategy": "Test authentication flow, verify protected routes, and check user role permissions.",
-        "subtasks": []
-      },
-      {
-        "id": 16,
-        "title": "Implement Admin Panel and Content Management",
-        "status": "pending",
-        "dependencies": [
-          15
-        ],
-        "priority": "high",
-        "description": "Create admin interface for content management and user administration",
-        "details": "Build admin dashboard, content editor, user management, and analytics views. Implement rich text editor, media upload, and content preview. Add bulk operations and content scheduling.",
-        "testStrategy": "Test admin functionality, verify content editing works, and check user management features.",
-        "subtasks": []
-      },
-      {
-        "id": 17,
-        "title": "Add Testing and Quality Assurance",
-        "status": "pending",
-        "dependencies": [
-          16
-        ],
-        "priority": "medium",
-        "description": "Implement comprehensive testing and code quality measures",
-        "details": "Set up unit tests with Jest, integration tests with Cypress, and API tests. Configure code coverage, linting rules, and pre-commit hooks. Implement accessibility testing and performance monitoring.",
-        "testStrategy": "Run all test suites, verify code coverage, and check accessibility compliance.",
-        "subtasks": []
-      },
-      {
-        "id": 18,
-        "title": "Set Up Deployment and CI/CD",
-        "status": "pending",
-        "dependencies": [
-          17
-        ],
-        "priority": "medium",
-        "description": "Configure deployment pipeline and continuous integration",
-        "details": "Set up Docker containers for backend and frontend, configure CI/CD pipeline with GitHub Actions, implement automated testing and deployment. Configure environment variables and secrets management.",
-        "testStrategy": "Test deployment pipeline, verify automated testing, and check production deployment.",
-        "subtasks": []
-      },
-      {
-        "id": 19,
-        "title": "Implement Monitoring and Logging",
-        "status": "pending",
-        "dependencies": [
-          18
-        ],
         "priority": "low",
-        "description": "Add application monitoring, logging, and error tracking",
-        "details": "Set up application monitoring (New Relic/DataDog), implement structured logging, add error tracking (Sentry), and configure performance monitoring. Implement health checks and alerting.",
-        "testStrategy": "Verify monitoring is working, check log aggregation, and test error tracking.",
-        "subtasks": []
-      },
-      {
-        "id": 20,
-        "title": "Documentation and User Guides",
-        "status": "pending",
-        "dependencies": [
-          19
-        ],
-        "priority": "low",
-        "description": "Create comprehensive documentation and user guides",
-        "details": "Write API documentation, user guides, admin documentation, and deployment guides. Create video tutorials and troubleshooting guides. Document code architecture and development workflow.",
-        "testStrategy": "Review documentation completeness, verify accuracy, and test user guides.",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Create API Documentation",
-            "description": "Write comprehensive API documentation with examples",
-            "dependencies": [],
-            "details": "Document all API endpoints with request/response examples, add authentication documentation, implement interactive API testing (Swagger/OpenAPI), add error code documentation, implement API versioning documentation, and add rate limiting documentation.",
-            "testStrategy": "Test API documentation, verify examples, check interactive testing, test error documentation, verify versioning docs, and test rate limiting docs"
-          },
-          {
-            "id": 2,
-            "title": "Write User and Admin Guides",
-            "description": "Create comprehensive user and administrator guides",
-            "dependencies": [
-              "20.1"
-            ],
-            "details": "Write user guide for content creation and management, create admin guide for system administration, add troubleshooting guides for common issues, implement step-by-step tutorials, add FAQ sections, and create video tutorials for complex features.",
-            "testStrategy": "Test user guides, verify admin guides, check troubleshooting, test tutorials, verify FAQs, and test video tutorials"
-          },
-          {
-            "id": 3,
-            "title": "Create Deployment and Operations Documentation",
-            "description": "Document deployment procedures and operational tasks",
-            "dependencies": [
-              "20.2"
-            ],
-            "details": "Write deployment guide for different environments, create operations manual for system maintenance, add monitoring and alerting documentation, implement disaster recovery procedures, add backup and restore guides, and create performance tuning documentation.",
-            "testStrategy": "Test deployment guides, verify operations manual, check monitoring docs, test disaster recovery, verify backup guides, and test performance docs"
-          },
-          {
-            "id": 4,
-            "title": "Document Code Architecture and Development",
-            "description": "Create technical documentation for developers",
-            "dependencies": [
-              "20.3"
-            ],
-            "details": "Document system architecture and design decisions, create code style guides and conventions, add database schema documentation, implement API integration examples, add testing strategy documentation, and create contribution guidelines.",
-            "testStrategy": "Test architecture docs, verify style guides, check schema docs, test integration examples, verify testing docs, and test contribution guidelines"
-          },
-          {
-            "id": 5,
-            "title": "Implement Documentation Maintenance",
-            "description": "Set up documentation maintenance and update processes",
-            "dependencies": [
-              "20.4"
-            ],
-            "details": "Set up documentation versioning, implement documentation review process, add documentation update automation, create documentation feedback system, implement documentation analytics, and add documentation quality metrics.",
-            "testStrategy": "Test versioning system, verify review process, check update automation, test feedback system, verify analytics, and test quality metrics"
-          }
-        ]
+        "dependencies": [5, 6, 7],
+        "details": "Реализовать правильные стратегии кэширования используя существующую систему кэша. Добавить optimistic updates где это уместно и минимизировать ненужные API вызовы.",
+        "testStrategy": "Протестировать поведение кэширования и проверить улучшения производительности во времени загрузки."
       }
     ],
     "metadata": {
-      "created": "2025-09-04T21:29:50.727Z",
-      "updated": "2025-09-06T11:08:16.354Z",
-      "description": "Tasks for master context"
+      "created": "2025-09-07T11:20:21.428Z",
+      "updated": "2025-09-07T11:20:21.428Z",
+      "description": "Рефакторинг страницы [section-slug] для удаления хардкода и внедрения динамической загрузки контента"
     }
   }
 }
