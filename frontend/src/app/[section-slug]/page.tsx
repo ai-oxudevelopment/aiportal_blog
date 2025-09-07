@@ -9,9 +9,20 @@ import WriterActionAgent from "../../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
 import { getSections } from "../../lib/api";
 import { useSectionBySlug, useArticles } from "../../lib/hooks";
+import ArticleCard from "../../components/ArticleCard";
 import type { Category, Section, Article } from "../../lib/types";
 
-function Tabs({ section, loading: sectionLoading }: { section: Section | null; loading: boolean }) {
+function Tabs({ 
+  section, 
+  loading: sectionLoading, 
+  selectedCategory, 
+  onCategoryChange 
+}: { 
+  section: Section | null; 
+  loading: boolean;
+  selectedCategory: string;
+  onCategoryChange: (slug: string) => void;
+}) {
   // Get categories from the section data
   const sectionCategories = section?.attributes.categories?.data || [];
   
@@ -38,11 +49,14 @@ function Tabs({ section, loading: sectionLoading }: { section: Section | null; l
 
   return (
     <div className="flex flex-wrap gap-2 text-sm" data-oid="i469ghu">
-      {categoriesToShow.map((category, i) =>
+      {categoriesToShow.map((category) =>
         <button
           key={category.slug}
-          className={`px-3 h-8 rounded-full border transition-colors text-gray-300 hover:text-white hover:border-white/30 ${
-            i === 0 ? "border-white/30 text-white" : "border-white/10"
+          onClick={() => onCategoryChange(category.slug)}
+          className={`px-3 h-8 rounded-full border transition-colors hover:text-white hover:border-white/30 ${
+            selectedCategory === category.slug 
+              ? "border-white/30 text-white" 
+              : "border-white/10 text-gray-300"
           }`}
           data-oid="8jr82o9"
         >
@@ -74,42 +88,11 @@ function Pill({ title, subtitle }: {title: string;subtitle?: string;}) {
 
 }
 
-type Post = {
-  id: string;
-  title: string;
-  tag: string;
-  date: string;
-  tone: "blue" | "indigo" | "gray";
-  category: string;
-};
-
-
-
-type SectionPost = {
-  id: string;
-  title: string;
-  tag: string;
-  date: string;
-  tone: "blue" | "green" | "orange" | "pink" | "purple" | "teal";
-  category: string;
-};
-
-type KeyDocument = {
-  id: string;
-  title: string;
-  tag: string;
-  date: string;
-  description: string;
-  tone: "blue" | "green" | "orange" | "pink" | "purple" | "teal";
-  href?: string;
-  cover?: string;
-  ctaText?: string;
-};
 
 
 
 
-function Thumb({ tone }: {tone: Post["tone"] | SectionPost["tone"];}) {
+function Thumb({ tone }: {tone: "blue" | "indigo" | "gray" | "green" | "orange" | "pink" | "purple" | "teal";}) {
   const toneMap: Record<string, string> = {
     blue: "from-sky-400 via-sky-500 to-blue-300",
     indigo: "from-indigo-300 via-indigo-400 to-violet-300",
@@ -134,38 +117,6 @@ function Thumb({ tone }: {tone: Post["tone"] | SectionPost["tone"];}) {
 
 }
 
-function PostCard({ post }: {post: Post | SectionPost;}) {
-  // Create URL-friendly slug from title
-  const createSlug = (title: string) => {
-    return title.
-    toLowerCase().
-    replace(/[^a-z0-9]+/g, "-").
-    replace(/(^-|-$)/g, "");
-  };
-
-  const slug = createSlug(post.title);
-  const href = `/${post.category}/${slug}`;
-
-  return (
-    <a href={href} className="block" data-oid="stib5jb">
-      <Thumb tone={post.tone} data-oid="ee8_0k0" />
-      <div className="mt-3" data-oid="dijbh-e">
-        <h4 className="text-sm font-medium text-white/95" data-oid="t0a3q6k">
-          {post.title}
-        </h4>
-        <div className="mt-1 text-xs text-gray-400" data-oid="67bhjj_">
-          <span className="uppercase tracking-wide" data-oid="imgp4wc">
-            {post.tag}
-          </span>
-          <span className="mx-2" data-oid="4imwu08">
-            •
-          </span>
-          <time data-oid="55op-97">{post.date}</time>
-        </div>
-      </div>
-    </a>);
-
-}
 
 function HeroTopCard({
   title,
@@ -251,7 +202,7 @@ function HeroTopCard({
 
 }
 
-function KeyDocumentCard({ document }: {document: KeyDocument;}) {
+function KeyDocumentCard({ document }: {document: any;}) {
   const toneMap: Record<string, string> = {
     blue: "from-sky-400 via-sky-500 to-blue-300",
     green: "from-emerald-400 via-green-500 to-teal-300",
@@ -404,27 +355,17 @@ function HeroTopCards() {
 
 }
 
-function Section({ title, posts, articles, loading }: {
+function Section({ title, articles, loading, selectedCategory }: {
   title: string;
-  posts?: SectionPost[];
   articles?: Article[];
   loading?: boolean;
+  selectedCategory?: string;
 }) {
-  // Convert articles to post format if provided
-  const displayPosts = articles ? articles.map(article => ({
-    id: article.id.toString(),
-    title: article.attributes.title,
-    tag: article.attributes.categories?.data[0]?.attributes?.name || 'Article',
-    date: article.attributes.publishedAt 
-      ? new Date(article.attributes.publishedAt).toLocaleDateString('en-US', { 
-          month: 'short', 
-          day: 'numeric', 
-          year: 'numeric' 
-        })
-      : 'Recent',
-    tone: 'blue' as const,
-    category: article.attributes.categories?.data[0]?.attributes?.slug || 'general'
-  })) : (posts || []);
+  // Filter articles by selected category
+  const filteredArticles = articles ? articles.filter(article => {
+    if (!selectedCategory || selectedCategory === 'all') return true;
+    return article.attributes.categories?.data.some(cat => cat.attributes.slug === selectedCategory);
+  }) : [];
 
   return (
     <section className="mb-16" data-oid="gfd3lvk">
@@ -436,7 +377,7 @@ function Section({ title, posts, articles, loading }: {
           className="text-2xl font-semibold tracking-tight text-white"
           data-oid="75.2c_u">
 
-          {title}
+          {title} {selectedCategory !== 'all' && selectedCategory && `(${selectedCategory})`}
         </h2>
         <button
           className="text-sm text-gray-300 hover:text-white transition"
@@ -452,14 +393,25 @@ function Section({ title, posts, articles, loading }: {
             <div key={i} className="h-48 bg-gray-700 rounded-lg animate-pulse"></div>
           ))}
         </div>
-      ) : (
+      ) : filteredArticles.length > 0 ? (
         <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
           data-oid="n_-yumy">
 
-          {displayPosts.map((post) =>
-            <PostCard key={post.id} post={post} data-oid="njxyaq5" />
+          {filteredArticles.map((article) =>
+            <ArticleCard 
+              key={article.id} 
+              article={article} 
+              variant="compact"
+              showAuthor={false}
+              showReadingTime={false}
+              data-oid="njxyaq5" 
+            />
           )}
+        </div>
+      ) : (
+        <div className="text-center py-8 text-gray-400">
+          No articles found for this category.
         </div>
       )}
     </section>);
@@ -471,6 +423,7 @@ export default function SectionPage() {
   const params = useParams();
   const slug = params.sectionSlug as string;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Load section data dynamically
   const { data: section, loading: sectionLoading, error: sectionError } = useSectionBySlug(slug);
@@ -530,7 +483,13 @@ export default function SectionPage() {
                 className="mt-4 sm:mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0"
                 data-oid="s_f3k.n">
 
-                <Tabs section={section} loading={sectionLoading} data-oid="2pwvy8b" />
+                <Tabs 
+                  section={section} 
+                  loading={sectionLoading} 
+                  selectedCategory={selectedCategory}
+                  onCategoryChange={setSelectedCategory}
+                  data-oid="2pwvy8b" 
+                />
                 <div
                   className="hidden md:flex items-center gap-2 text-xs text-gray-300"
                   data-oid="hb5dtm6">
@@ -624,6 +583,7 @@ export default function SectionPage() {
                     title={section.attributes.name}
                     articles={articles || []}
                     loading={articlesLoading}
+                    selectedCategory={selectedCategory}
                     data-oid="cdmkh91" />
 
                 </section>
