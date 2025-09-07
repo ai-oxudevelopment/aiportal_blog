@@ -678,7 +678,7 @@ export default function SectionPage() {
     staleWhileRevalidate: true
   });
 
-  // Load articles for this section with caching
+  // Get articles from section data (since section → articles relationship works)
   // Filter articles by section's article_types field or infer from section slug
   const sectionArticleType = section?.attributes ? (section.attributes as any).article_types : null;
   
@@ -686,30 +686,21 @@ export default function SectionPage() {
   // we know this should show prompt-type articles
   const inferredArticleType = sectionArticleType || (slug === 'prompts' ? 'prompt' : null);
   
-  // This ensures the page doesn't break if the field is missing
-  const shouldFetchArticles = !!(section && !sectionLoading && !sectionError);
-  
-  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles(
-    {
-      filters: {
-        section: {
-          slug: {
-            $eq: slug
-          }
-        },
-        ...(inferredArticleType ? {
-          type: {
-            $eq: inferredArticleType
-          }
-        } : {})
-      }
-    }, 
-    {
-      ttl: 5 * 60 * 1000, // 5 minutes cache
-      staleWhileRevalidate: true,
-      enabled: shouldFetchArticles // Fetch articles when section is loaded
+  // Extract articles from section data and apply type filtering
+  const allSectionArticles = section?.attributes?.articles?.data || [];
+  const articles = useMemo(() => {
+    if (!inferredArticleType) {
+      return allSectionArticles;
     }
-  );
+    return allSectionArticles.filter(article => 
+      article.attributes.type === inferredArticleType
+    );
+  }, [allSectionArticles, inferredArticleType]);
+  
+  // Set loading states based on section loading state
+  const articlesLoading = sectionLoading;
+  const articlesError = sectionError;
+  const articlesStale = sectionStale;
 
   // Debug logging
   console.log('SectionPage Debug:', {

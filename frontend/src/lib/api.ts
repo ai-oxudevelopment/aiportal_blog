@@ -127,6 +127,9 @@ export const getSection = async (id: string | number): Promise<Section> => {
 export const getSectionBySlug = async (slug: string): Promise<Section | null> => {
   return await getContentBySlug('sections', slug, {
     populate: {
+      articles: {
+        populate: ['featuredImage', 'author'],
+      },
       categories: true,
     },
   });
