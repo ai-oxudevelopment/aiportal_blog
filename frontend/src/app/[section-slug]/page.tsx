@@ -521,7 +521,7 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
 
 export default function SectionPage() {
   const params = useParams();
-  const slug = params.sectionSlug as string;
+  const slug = params['section-slug'] as string;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -535,6 +535,7 @@ export default function SectionPage() {
 
   // Debug logging
   console.log('SectionPage Debug:', {
+    params,
     slug,
     section: section ? { name: section.attributes.name, categoriesCount: section.attributes.categories?.data?.length } : null,
     sectionLoading,
@@ -718,8 +719,16 @@ export default function SectionPage() {
                 </div>
               )}
 
+              {/* Debug: Show current state */}
+              {console.log('Render condition check:', {
+                hasSection: !!section,
+                hasError: !!sectionError,
+                isLoading: sectionLoading,
+                shouldRender: !!(section && !sectionError && !sectionLoading)
+              })}
+
               {/* Show section articles when loaded and no errors */}
-              {section && !sectionError && (
+              {section && !sectionError && !sectionLoading && (
                 <ErrorBoundary>
                 <section
                     id={`${section.attributes.slug}-section`}
