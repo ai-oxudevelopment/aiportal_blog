@@ -140,7 +140,7 @@ export default function PromptCard({ prompt }: PromptCardProps) {
           </div>
           
           {/* Title and Technologies */}
-          <div className="mt-auto">
+          <div className="mt-auto mb-12">
             <h3 className="text-white font-semibold text-sm mb-2 line-clamp-2 leading-tight">
               {title}
             </h3>
