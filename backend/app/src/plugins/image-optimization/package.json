@@ -1,9 +1,0 @@
-{
-  "name": "strapi-plugin-image-optimization",
-  "version": "1.0.0",
-  "description": "Image optimization plugin for Strapi",
-  "main": "index.js",
-  "keywords": ["strapi", "plugin", "image", "optimization"],
-  "author": "AI Portal Team",
-  "license": "MIT"
-}
