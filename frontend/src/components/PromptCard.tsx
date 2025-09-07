@@ -88,9 +88,9 @@ export default function PromptCard({ prompt }: PromptCardProps) {
       <div className="group relative bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden hover:border-zinc-700/50 hover:bg-zinc-800/50 transition-all duration-200 h-full flex flex-col cursor-pointer"
            onClick={handleViewFull}>
         {/* Main Content Area */}
-        <div className="p-5 flex-grow flex flex-col">
+        <div className="p-6 flex-grow flex flex-col">
           {/* Description Text - Monospace like cursor.directory */}
-          <div className="text-gray-300 text-sm leading-relaxed mb-4 flex-grow font-mono">
+          <div className="text-gray-300 text-xs leading-5 mb-5 flex-grow font-mono">
             <p className="line-clamp-4">
               {content}
             </p>
@@ -98,15 +98,15 @@ export default function PromptCard({ prompt }: PromptCardProps) {
           
           {/* Title and Technologies */}
           <div className="mt-auto">
-            <h3 className="text-white font-semibold text-base mb-2 line-clamp-2">
+            <h3 className="text-white font-semibold text-lg mb-3 line-clamp-2 leading-tight">
               {title}
             </h3>
             
             {/* Technologies/Tags - Like cursor.directory */}
-            <div className="flex items-center gap-2 text-xs text-gray-400">
+            <div className="flex items-center gap-3 text-xs text-gray-400">
               {tags?.data && tags.data.length > 0 ? (
                 <>
-                  <span className="text-gray-300">
+                  <span className="text-gray-300 font-medium">
                     {tags.data[0].attributes.name}
                   </span>
                   {tags.data.length > 1 && (
@@ -124,7 +124,7 @@ export default function PromptCard({ prompt }: PromptCardProps) {
                   )}
                 </>
               ) : (category?.data || categories?.data?.[0]) ? (
-                <span className="text-gray-300">
+                <span className="text-gray-300 font-medium">
                   {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
                 </span>
               ) : null}
@@ -133,7 +133,7 @@ export default function PromptCard({ prompt }: PromptCardProps) {
         </div>
 
         {/* Subtle Action Buttons - Only on hover */}
-        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <div className="flex gap-1">
             <button
               onClick={(e) => {
