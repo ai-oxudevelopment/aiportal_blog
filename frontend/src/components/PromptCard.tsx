@@ -19,6 +19,15 @@ interface PromptCardProps {
           };
         }>;
       };
+      categories?: {
+        data: Array<{
+          id: number;
+          attributes: {
+            name: string;
+            slug: string;
+          };
+        }>;
+      };
       category?: {
         data: {
           attributes: {
@@ -36,7 +45,7 @@ export default function PromptCard({ prompt }: PromptCardProps) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const { title, content, tags, category, publishedAt } = prompt.attributes;
+  const { title, content, tags, categories, category, publishedAt } = prompt.attributes;
   
   const handleCopy = async () => {
     try {
@@ -99,10 +108,10 @@ export default function PromptCard({ prompt }: PromptCardProps) {
           )}
           
           {/* Category */}
-          {category?.data && (
+          {(category?.data || categories?.data?.[0]) && (
             <div className="flex items-center gap-2 text-xs text-gray-400">
               <span className="bg-gray-700/50 px-2 py-1 rounded">
-                {category.data.attributes.name}
+                {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
               </span>
             </div>
           )}

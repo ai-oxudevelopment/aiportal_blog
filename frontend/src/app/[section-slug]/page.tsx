@@ -11,6 +11,7 @@ import { getSections } from "../../lib/api";
 import { useSectionBySlug, useArticles, type HookError } from "../../lib/hooks";
 import { useCachedSectionBySlug, useCachedArticles } from "../../lib/hooks/useCachedData";
 import ArticleCard from "../../components/ArticleCard";
+import PromptCard from "../../components/PromptCard";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import type { Category, Section, Article } from "../../lib/types";
 
@@ -29,6 +30,7 @@ interface SectionProps {
   selectedCategory?: string;
   articlesError?: HookError | null;
   isStale?: boolean;
+  section?: Section | null;
 }
 
 interface HeroTopCardProps {
@@ -400,7 +402,7 @@ function HeroTopCards() {
 
 }
 
-function Section({ title, articles, loading, selectedCategory, articlesError, isStale }: SectionProps) {
+function Section({ title, articles, loading, selectedCategory, articlesError, isStale, section }: SectionProps) {
   // Group articles by category with memoization for performance
   const groupedArticles = useMemo(() => {
     if (!articles) return {};
@@ -504,72 +506,88 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
                       title,
                       slug,
                       excerpt,
+                      content,
                       featuredImage,
                       categories,
-                      publishedAt
+                      publishedAt,
+                      type
                     }
                   } = article;
 
-                  const publishDate = new Date(publishedAt || new Date());
-                  const categoryName = categories?.data?.[0]?.attributes?.name || 'Article';
+                  // Determine if this is a prompt or regular article
+                  const isPrompt = type === 'prompt' || section?.attributes?.article_types === 'prompt';
 
-                  return (
-                    <a 
-                      key={id} 
-                      href={`/articles/${slug}`} 
-                      className="block group h-full" 
-                      data-oid="njxyaq5"
-                    >
-                      <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
-                        {/* Image */}
-                        {featuredImage?.data && (
-                          <div className="aspect-video relative overflow-hidden flex-shrink-0">
-                            <img
-                              src={featuredImage.data.attributes.url}
-                              alt={featuredImage.data.attributes.alternativeText || title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                          </div>
-                        )}
-                        
-                        {/* Content */}
-                        <div className="p-4 flex flex-col flex-grow">
-                          {/* Category */}
-                          {categories?.data && (
-                            <div className="mb-2 flex-shrink-0">
-                              <span className="inline-block bg-blue-600/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full">
-                                {categoryName}
-                              </span>
+                  if (isPrompt) {
+                    // Render as PromptCard
+                    return (
+                      <PromptCard 
+                        key={id} 
+                        prompt={article as any} 
+                      />
+                    );
+                  } else {
+                    // Render as regular ArticleCard
+                    const publishDate = new Date(publishedAt || new Date());
+                    const categoryName = categories?.data?.[0]?.attributes?.name || 'Article';
+
+                    return (
+                      <a 
+                        key={id} 
+                        href={`/articles/${slug}`} 
+                        className="block group h-full" 
+                        data-oid="njxyaq5"
+                      >
+                        <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
+                          {/* Image */}
+                          {featuredImage?.data && (
+                            <div className="aspect-video relative overflow-hidden flex-shrink-0">
+                              <img
+                                src={featuredImage.data.attributes.url}
+                                alt={featuredImage.data.attributes.alternativeText || title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                             </div>
                           )}
                           
-                          {/* Title */}
-                          <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 flex-shrink-0">
-                            {title}
-                          </h3>
-                          
-                          {/* Excerpt */}
-                          {excerpt && (
-                            <p className="text-gray-400 text-sm mb-3 line-clamp-2 flex-grow">
-                              {excerpt}
-                            </p>
-                          )}
-                          
-                          {/* Date */}
-                          <div className="flex items-center text-xs text-gray-500 flex-shrink-0 mt-auto">
-                            <time dateTime={publishDate.toISOString()}>
-                              {publishDate.toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric'
-                              })}
-                            </time>
+                          {/* Content */}
+                          <div className="p-4 flex flex-col flex-grow">
+                            {/* Category */}
+                            {categories?.data && (
+                              <div className="mb-2 flex-shrink-0">
+                                <span className="inline-block bg-blue-600/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full">
+                                  {categoryName}
+                                </span>
+                              </div>
+                            )}
+                            
+                            {/* Title */}
+                            <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 flex-shrink-0">
+                              {title}
+                            </h3>
+                            
+                            {/* Excerpt */}
+                            {excerpt && (
+                              <p className="text-gray-400 text-sm mb-3 line-clamp-2 flex-grow">
+                                {excerpt}
+                              </p>
+                            )}
+                            
+                            {/* Date */}
+                            <div className="flex items-center text-xs text-gray-500 flex-shrink-0 mt-auto">
+                              <time dateTime={publishDate.toISOString()}>
+                                {publishDate.toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric'
+                                })}
+                              </time>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </a>
-                  );
+                      </a>
+                    );
+                  }
                 })}
               </div>
             </div>
@@ -655,8 +673,8 @@ export default function SectionPage() {
 
   // Load section data dynamically with caching
   const { data: section, loading: sectionLoading, error: sectionError, isStale: sectionStale } = useCachedSectionBySlug(slug, {
-    ttl: 0, // Disable cache temporarily for debugging
-    staleWhileRevalidate: false
+    ttl: 10 * 60 * 1000, // 10 minutes cache for sections
+    staleWhileRevalidate: true
   });
 
   // Load articles for this section with caching
@@ -670,14 +688,27 @@ export default function SectionPage() {
   const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles(
     sectionArticleType ? {
       filters: {
+        section: {
+          slug: {
+            $eq: slug
+          }
+        },
         type: {
           $eq: sectionArticleType
         }
       }
-    } : {}, 
+    } : {
+      filters: {
+        section: {
+          slug: {
+            $eq: slug
+          }
+        }
+      }
+    }, 
     {
-      ttl: 0, // Disable cache temporarily for debugging
-      staleWhileRevalidate: false,
+      ttl: 5 * 60 * 1000, // 5 minutes cache
+      staleWhileRevalidate: true,
       enabled: shouldFetchArticles // Fetch articles when section is loaded
     }
   );
@@ -855,6 +886,7 @@ export default function SectionPage() {
                       selectedCategory={selectedCategory}
                       articlesError={articlesError}
                       isStale={articlesStale}
+                      section={section}
                     data-oid="cdmkh91" />
 
               </section>

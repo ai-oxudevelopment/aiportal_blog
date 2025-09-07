@@ -33,6 +33,14 @@
       "relation": "manyToMany",
       "target": "api::category.category",
       "mappedBy": "sections"
+    },
+    "article_types": {
+      "type": "enumeration",
+      "enum": [
+        "article",
+        "prompt"
+      ],
+      "default": "article"
     }
   }
 }

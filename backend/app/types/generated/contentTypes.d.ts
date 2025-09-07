@@ -705,6 +705,17 @@ export interface ApiArticleArticle extends Schema.CollectionType {
     status: Attribute.Enumeration<['draft', 'published', 'archived']> &
       Attribute.DefaultTo<'draft'>;
     featured: Attribute.Boolean & Attribute.DefaultTo<false>;
+    type: Attribute.Enumeration<['default', 'article', 'prompt']> &
+      Attribute.DefaultTo<'default'>;
+    promptId: Attribute.String &
+      Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    usage_count: Attribute.Integer &
+      Attribute.SetMinMax<{
+        min: 0;
+      }> &
+      Attribute.DefaultTo<0>;
     readingTime: Attribute.Integer &
       Attribute.SetMinMax<{
         min: 1;
@@ -971,6 +982,8 @@ export interface ApiSectionSection extends Schema.CollectionType {
       'manyToMany',
       'api::category.category'
     >;
+    article_types: Attribute.Enumeration<['article', 'prompt']> &
+      Attribute.DefaultTo<'article'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

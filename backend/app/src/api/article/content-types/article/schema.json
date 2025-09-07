@@ -47,6 +47,24 @@
       "type": "boolean",
       "default": false
     },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "default",
+        "article",
+        "prompt"
+      ],
+      "default": "default"
+    },
+    "promptId": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "usage_count": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
     "readingTime": {
       "type": "integer",
       "min": 1
