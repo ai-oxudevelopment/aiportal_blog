@@ -48,6 +48,9 @@ export default function PromptCard({ prompt }: PromptCardProps) {
 
   const { title, content, tags, categories, category, publishedAt } = prompt.attributes;
   
+  // Debug: log the data structure
+  console.log('PromptCard data:', { title, tags, categories, category });
+  
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(content);
@@ -130,23 +133,25 @@ export default function PromptCard({ prompt }: PromptCardProps) {
                         <span className="text-gray-500">
                           {tags.data[1].attributes.name}
                         </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowTagsDropdown(!showTagsDropdown);
-                          }}
-                          className="text-gray-500 flex items-center gap-1 hover:text-gray-400 transition-colors"
-                        >
-                          +{tags.data.length - 2} more
-                          <svg 
-                            className={`w-3 h-3 transition-transform ${showTagsDropdown ? 'rotate-180' : ''}`} 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
+                        {tags.data.length > 2 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowTagsDropdown(!showTagsDropdown);
+                            }}
+                            className="text-gray-500 flex items-center gap-1 hover:text-gray-400 transition-colors"
                           >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </button>
+                            +{tags.data.length - 2} more
+                            <svg 
+                              className={`w-3 h-3 transition-transform ${showTagsDropdown ? 'rotate-180' : ''}`} 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                        )}
                       </>
                     )}
                   </>
@@ -154,7 +159,9 @@ export default function PromptCard({ prompt }: PromptCardProps) {
                   <span className="text-gray-300 font-medium">
                     {category?.data?.attributes.name || categories?.data?.[0]?.attributes.name}
                   </span>
-                ) : null}
+                ) : (
+                  <span className="text-gray-500 text-xs">No tags</span>
+                )}
               </div>
               
               {/* Tags Dropdown */}
