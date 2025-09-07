@@ -31,6 +31,7 @@ interface SectionProps {
   articlesError?: HookError | null;
   isStale?: boolean;
   section?: Section | null;
+  inferredArticleType?: string | null;
 }
 
 interface HeroTopCardProps {
@@ -402,7 +403,7 @@ function HeroTopCards() {
 
 }
 
-function Section({ title, articles, loading, selectedCategory, articlesError, isStale, section }: SectionProps) {
+function Section({ title, articles, loading, selectedCategory, articlesError, isStale, section, inferredArticleType }: SectionProps) {
   // Group articles by category with memoization for performance
   const groupedArticles = useMemo(() => {
     if (!articles) return {};
@@ -515,7 +516,7 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
                   } = article;
 
                   // Determine if this is a prompt or regular article
-                  const isPrompt = type === 'prompt' || section?.attributes?.article_types === 'prompt';
+                  const isPrompt = type === 'prompt' || inferredArticleType === 'prompt';
 
                   if (isPrompt) {
                     // Render as PromptCard
@@ -678,32 +679,29 @@ export default function SectionPage() {
   });
 
   // Load articles for this section with caching
-  // Filter articles by section's article_types field
+  // Filter articles by section's article_types field or infer from section slug
   const sectionArticleType = section?.attributes ? (section.attributes as any).article_types : null;
   
-  // Fallback: if no article_types is specified, fetch all articles
+  // Special handling for prompts section: if article_types is null but slug is 'prompts', 
+  // we know this should show prompt-type articles
+  const inferredArticleType = sectionArticleType || (slug === 'prompts' ? 'prompt' : null);
+  
   // This ensures the page doesn't break if the field is missing
   const shouldFetchArticles = !!(section && !sectionLoading && !sectionError);
   
   const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles(
-    sectionArticleType ? {
+    {
       filters: {
         section: {
           slug: {
             $eq: slug
           }
         },
-        type: {
-          $eq: sectionArticleType
-        }
-      }
-    } : {
-      filters: {
-        section: {
-          slug: {
-            $eq: slug
+        ...(inferredArticleType ? {
+          type: {
+            $eq: inferredArticleType
           }
-        }
+        } : {})
       }
     }, 
     {
@@ -721,6 +719,7 @@ export default function SectionPage() {
       name: section.attributes.name, 
       categoriesCount: section.attributes.categories?.data?.length,
       articleTypes: sectionArticleType,
+      inferredArticleType,
       allAttributes: section.attributes // Log all attributes to see what's available
     } : null,
     sectionLoading,
@@ -887,6 +886,7 @@ export default function SectionPage() {
                       articlesError={articlesError}
                       isStale={articlesStale}
                       section={section}
+                      inferredArticleType={inferredArticleType}
                     data-oid="cdmkh91" />
 
               </section>
