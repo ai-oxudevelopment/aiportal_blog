@@ -7,6 +7,7 @@
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
+const { cleanArticleContent } = require('../../../utils/html-cleaner');
 
 module.exports = createCoreController('api::article.article', ({ strapi }) => ({
   // Custom controller methods can be added here
@@ -27,7 +28,9 @@ module.exports = createCoreController('api::article.article', ({ strapi }) => ({
       return ctx.notFound('Article not found');
     }
 
-    return this.sanitizeOutput(entity, ctx);
+    // Clean HTML tags from content
+    const cleanedEntity = cleanArticleContent(entity, 'full');
+    return this.sanitizeOutput(cleanedEntity, ctx);
   },
 
   async find(ctx) {
@@ -44,7 +47,9 @@ module.exports = createCoreController('api::article.article', ({ strapi }) => ({
       },
     });
 
-    return this.sanitizeOutput(entities, ctx);
+    // Clean HTML tags from content for all articles
+    const cleanedEntities = entities.map(entity => cleanArticleContent(entity, 'full'));
+    return this.sanitizeOutput(cleanedEntities, ctx);
   },
 
   async create(ctx) {
@@ -75,7 +80,9 @@ module.exports = createCoreController('api::article.article', ({ strapi }) => ({
       },
     });
 
-    return this.sanitizeOutput(entity, ctx);
+    // Clean HTML tags from content
+    const cleanedEntity = cleanArticleContent(entity, 'full');
+    return this.sanitizeOutput(cleanedEntity, ctx);
   },
 
   async update(ctx) {
@@ -108,7 +115,9 @@ module.exports = createCoreController('api::article.article', ({ strapi }) => ({
       },
     });
 
-    return this.sanitizeOutput(entity, ctx);
+    // Clean HTML tags from content
+    const cleanedEntity = cleanArticleContent(entity, 'full');
+    return this.sanitizeOutput(cleanedEntity, ctx);
   },
 
   // Custom method to get prompts only
@@ -130,7 +139,9 @@ module.exports = createCoreController('api::article.article', ({ strapi }) => ({
       },
     });
 
-    return this.sanitizeOutput(entities, ctx);
+    // Clean HTML tags from content for all prompts
+    const cleanedEntities = entities.map(entity => cleanArticleContent(entity, 'full'));
+    return this.sanitizeOutput(cleanedEntities, ctx);
   },
 
   // Custom method to get articles only
@@ -152,7 +163,9 @@ module.exports = createCoreController('api::article.article', ({ strapi }) => ({
       },
     });
 
-    return this.sanitizeOutput(entities, ctx);
+    // Clean HTML tags from content for all articles
+    const cleanedEntities = entities.map(entity => cleanArticleContent(entity, 'full'));
+    return this.sanitizeOutput(cleanedEntities, ctx);
   },
 
   // Increment usage count for prompts
@@ -175,6 +188,8 @@ module.exports = createCoreController('api::article.article', ({ strapi }) => ({
       }
     });
 
-    return this.sanitizeOutput(updatedEntity, ctx);
+    // Clean HTML tags from content
+    const cleanedEntity = cleanArticleContent(updatedEntity, 'full');
+    return this.sanitizeOutput(cleanedEntity, ctx);
   }
 }));
