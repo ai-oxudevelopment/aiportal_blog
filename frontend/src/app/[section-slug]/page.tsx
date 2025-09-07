@@ -55,6 +55,12 @@ function Tabs({
   const allCategories = useMemo(() => {
     const sectionCategories = section?.attributes.categories?.data || [];
     
+    console.log('Tabs Debug:', {
+      section: section ? section.attributes.name : null,
+      sectionCategories: sectionCategories.length,
+      categories: sectionCategories.map(cat => ({ name: cat.attributes.name, slug: cat.attributes.slug }))
+    });
+    
     return [
       { name: "All", slug: "all" },
       ...sectionCategories.map(cat => ({
@@ -400,9 +406,22 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
     if (!articles) return [];
     if (!selectedCategory || selectedCategory === 'all') return articles;
     
-    return articles.filter(article => 
+    const filtered = articles.filter(article => 
       article.attributes.categories?.data.some(cat => cat.attributes.slug === selectedCategory)
     );
+    
+    console.log('Section Debug:', {
+      title,
+      totalArticles: articles.length,
+      selectedCategory,
+      filteredArticles: filtered.length,
+      articles: articles.map(article => ({
+        title: article.attributes.title,
+        categories: article.attributes.categories?.data?.map(cat => cat.attributes.slug) || []
+      }))
+    });
+    
+    return filtered;
   }, [articles, selectedCategory]);
 
   return (
@@ -513,6 +532,17 @@ export default function SectionPage() {
   // Since articles are not directly linked to sections, we'll get all articles
   // and filter them by categories in the component
   const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles();
+
+  // Debug logging
+  console.log('SectionPage Debug:', {
+    slug,
+    section: section ? { name: section.attributes.name, categoriesCount: section.attributes.categories?.data?.length } : null,
+    sectionLoading,
+    sectionError,
+    articles: articles ? articles.length : null,
+    articlesLoading,
+    articlesError
+  });
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
