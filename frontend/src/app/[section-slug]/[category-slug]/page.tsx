@@ -87,7 +87,7 @@ export default function CategoryPage() {
   const [error, setError] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  const { showToast } = useToast();
+  const { addToast } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,7 +140,7 @@ export default function CategoryPage() {
       } catch (err) {
         console.error('Error fetching category data:', err);
         setError('Failed to load category data');
-        showToast('Ошибка загрузки данных категории', 'error');
+        addToast('Ошибка загрузки данных категории', 'error');
       } finally {
         setLoading(false);
       }
@@ -149,7 +149,7 @@ export default function CategoryPage() {
     if (sectionSlug && categorySlug) {
       fetchData();
     }
-  }, [sectionSlug, categorySlug, showToast]);
+  }, [sectionSlug, categorySlug, addToast]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -178,12 +178,12 @@ export default function CategoryPage() {
                 <li className="text-gray-500">/</li>
                 <li>
                   <a href={`/${sectionSlug}`} className="hover:text-white transition-colors">
-                    {section.attributes.title}
+                    {section.attributes.name}
                   </a>
                 </li>
                 <li className="text-gray-500">/</li>
                 <li className="text-white">
-                  {category.attributes.title}
+                  {category.attributes.name}
                 </li>
               </ol>
             </nav>
@@ -191,7 +191,7 @@ export default function CategoryPage() {
             {/* Category Header */}
             <div className="mb-12">
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                {category.attributes.title}
+                {category.attributes.name}
               </h1>
               {category.attributes.description && (
                 <p className="text-xl text-gray-300 max-w-3xl">
@@ -264,7 +264,7 @@ export default function CategoryPage() {
           </div>
         </main>
       </div>
-      <ToastContainer />
+      <ToastContainer toasts={[]} onRemoveToast={() => {}} />
     </div>
   );
 }

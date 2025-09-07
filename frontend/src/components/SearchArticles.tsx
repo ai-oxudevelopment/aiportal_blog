@@ -57,7 +57,7 @@ export default function SearchArticles() {
           <DataWrapper
             data={articles}
             loading={loading}
-            error={error}
+            error={error?.message || null}
             onRetry={refetch}
             emptyComponent={
               <div className="text-center py-8">
@@ -99,7 +99,7 @@ export default function SearchArticles() {
                             )}
                           </div>
                           <span>
-                            {new Date(article.attributes.createdAt).toLocaleDateString()}
+                            {new Date(article.attributes.publishedAt || article.createdAt).toLocaleDateString()}
                           </span>
                         </div>
                       </div>

@@ -41,9 +41,9 @@ export default function CategoryList({
   return (
     <div className={`${baseClasses} ${variantClasses[variant]} ${className}`}>
       <DataWrapper
-        data={displayCategories}
+        data={displayCategories || null}
         loading={loading}
-        error={error}
+        error={error?.message || null}
         onRetry={refetch}
       >
         {(categories: Category[]) => (

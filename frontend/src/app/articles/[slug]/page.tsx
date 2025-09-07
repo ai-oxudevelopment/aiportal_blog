@@ -99,7 +99,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const { title, content, excerpt, featuredImage, author, categories, tags, createdAt, updatedAt } = article.attributes;
+  const { title, content, excerpt, featuredImage, author, categories, tags, publishedAt } = article.attributes;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -138,10 +138,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </div>
             )}
             
-            <span>Published {new Date(createdAt).toLocaleDateString()}</span>
+            <span>Published {new Date(publishedAt || article.createdAt).toLocaleDateString()}</span>
             
-            {updatedAt !== createdAt && (
-              <span>Updated {new Date(updatedAt).toLocaleDateString()}</span>
+            {article.updatedAt !== article.createdAt && (
+              <span>Updated {new Date(article.updatedAt).toLocaleDateString()}</span>
             )}
           </div>
         </header>

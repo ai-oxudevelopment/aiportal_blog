@@ -37,14 +37,13 @@ export default function ArticleDetail({
       categories,
       tags,
       seo,
-      createdAt,
-      updatedAt
+      publishedAt
     }
   } = article;
 
   const readingTime = calculateReadingTime(content);
-  const publishDate = new Date(createdAt);
-  const isUpdated = updatedAt !== createdAt;
+  const publishDate = new Date(publishedAt || article.createdAt);
+  const isUpdated = article.updatedAt !== article.createdAt;
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
   
   const socialUrls = generateSocialShareUrls(
@@ -139,7 +138,7 @@ export default function ArticleDetail({
             </time>
             {isUpdated && (
               <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                Updated {formatDate(new Date(updatedAt))}
+                Updated {formatDate(new Date(article.updatedAt))}
               </span>
             )}
             <span className="flex items-center">

@@ -377,10 +377,6 @@ export default function Page() {
 
             {/* Hero Top Cards Section */}
             <section id="hero-section" data-oid="lcz75dl">
-              <h2 className="text-3xl font-bold text-white mb-8 text-center">AI Workplace Blog</h2>
-              <p className="text-gray-300 text-center mb-12 max-w-2xl mx-auto">
-                Your source for AI workplace insights, research, and industry updates
-              </p>
               <HeroTopCards data-oid="i8zhi4c" />
             </section>
 

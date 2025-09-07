@@ -91,7 +91,7 @@ export default function RelatedArticles({
       <DataWrapper
         data={articlesToShow}
         loading={isLoading}
-        error={hasError}
+        error={hasError?.message || null}
         onRetry={refetch}
       >
         {(articles: Article[]) => (

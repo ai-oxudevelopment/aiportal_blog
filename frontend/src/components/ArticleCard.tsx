@@ -37,14 +37,13 @@ export default function ArticleCard({
       categories,
       tags,
       content,
-      createdAt,
-      updatedAt
+      publishedAt
     }
   } = article;
 
   const readingTime = showReadingTime ? calculateReadingTime(content) : null;
-  const publishDate = new Date(createdAt);
-  const isUpdated = updatedAt !== createdAt;
+  const publishDate = new Date(publishedAt || article.createdAt);
+  const isUpdated = article.updatedAt !== article.createdAt;
 
   const baseClasses = "group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300";
   const variantClasses = {

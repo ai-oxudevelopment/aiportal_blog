@@ -70,9 +70,9 @@ export default function TagCloud({
   return (
     <div className={`${containerClasses[variant]} ${className}`}>
       <DataWrapper
-        data={filteredTags}
+        data={filteredTags || null}
         loading={loading}
-        error={error}
+        error={error?.message || null}
         onRetry={refetch}
       >
         {(tags: Tag[]) => (

@@ -44,7 +44,7 @@ export default function ArticlesList({
       <DataWrapper
         data={articles}
         loading={loading}
-        error={error}
+        error={error?.message || null}
         onRetry={refetch}
       >
         {(articles: Article[]) => (

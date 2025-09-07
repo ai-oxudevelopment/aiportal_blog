@@ -412,7 +412,7 @@ export default function SearchResults({ query, className = "" }: SearchResultsPr
                             )}
                             <span className="flex items-center">
                               <CalendarIcon className="w-4 h-4 mr-1" />
-                              {new Date(article.attributes.createdAt).toLocaleDateString()}
+                              {new Date(article.attributes.publishedAt || article.createdAt).toLocaleDateString()}
                             </span>
                           </div>
                         </div>
