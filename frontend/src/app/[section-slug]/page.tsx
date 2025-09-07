@@ -7,49 +7,23 @@ import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import WriterActionAgent from "../../components/WriterActionAgent";
 import ChatGPTBusinessSection from "../../components/ChatGPTBusinessSection";
-import { getCategories, getSections } from "../../lib/api";
+import { getSections } from "../../lib/api";
 import { useSectionBySlug } from "../../lib/hooks";
 import type { Category, Section } from "../../lib/types";
 
-function Tabs() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const fetchedCategories = await getCategories();
-        setCategories(fetchedCategories);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch categories');
-        console.error('Error fetching categories:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-      fetchCategories();
-  }, []);
-
-  // Fallback к hardcoded категориям если Strapi недоступен
-  const fallbackCategories = [
+function Tabs({ section, loading: sectionLoading }: { section: Section | null; loading: boolean }) {
+  // Get categories from the section data
+  const sectionCategories = section?.attributes.categories?.data || [];
+  
+  const allCategories = [
     { name: "All", slug: "all" },
-    { name: "NotFound", slug: "not-found" },
+    ...sectionCategories.map(cat => ({
+      name: cat.attributes.name,
+      slug: cat.attributes.slug
+    }))
   ];
 
-  const allCategories = error 
-    ? fallbackCategories 
-    : [
-        { name: "All", slug: "all" },
-        ...categories.map(cat => ({
-          name: cat.attributes.name,
-          slug: cat.attributes.slug
-        }))
-      ];
-
-  if (loading) {
+  if (sectionLoading) {
     return (
       <div className="flex flex-wrap gap-2 text-sm" data-oid="i469ghu">
         <div className="px-3 h-8 rounded-full border border-white/10 bg-gray-700 animate-pulse"></div>
@@ -59,9 +33,12 @@ function Tabs() {
     );
   }
 
+  // Show "All" category even if no section-specific categories exist
+  const categoriesToShow = allCategories.length > 1 ? allCategories : [{ name: "All", slug: "all" }];
+
   return (
     <div className="flex flex-wrap gap-2 text-sm" data-oid="i469ghu">
-      {allCategories.map((category, i) =>
+      {categoriesToShow.map((category, i) =>
         <button
           key={category.slug}
           className={`px-3 h-8 rounded-full border transition-colors text-gray-300 hover:text-white hover:border-white/30 ${
@@ -71,11 +48,6 @@ function Tabs() {
         >
           {category.name}
         </button>
-      )}
-      {error && (
-        <span className="px-3 h-8 flex items-center text-yellow-400 text-xs">
-          Using fallback categories
-        </span>
       )}
     </div>
   );
@@ -576,7 +548,7 @@ export default function SectionPage() {
                 className="mt-4 sm:mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0"
                 data-oid="s_f3k.n">
 
-                <Tabs data-oid="2pwvy8b" />
+                <Tabs section={section} loading={sectionLoading} data-oid="2pwvy8b" />
                 <div
                   className="hidden md:flex items-center gap-2 text-xs text-gray-300"
                   data-oid="hb5dtm6">
