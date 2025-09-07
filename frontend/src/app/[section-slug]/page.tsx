@@ -11,7 +11,6 @@ import { getSections } from "../../lib/api";
 import { useSectionBySlug, useArticles, type HookError } from "../../lib/hooks";
 import { useCachedSectionBySlug, useCachedArticles } from "../../lib/hooks/useCachedData";
 import ArticleCard from "../../components/ArticleCard";
-import PromptCard from "../../components/PromptCard";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import type { Category, Section, Article } from "../../lib/types";
 
@@ -473,7 +472,7 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p className="text-gray-400 text-sm">Failed to load articles</p>
+            <p className="text-gray-400 text-sm">Ошибка загрузки</p>
           </div>
         </div>
       ) : categories.length > 0 ? (
@@ -496,11 +495,82 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
                 </a>
               </div>
 
-              {/* Prompts Grid */}
+              {/* Articles Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                {category.articles.map((article) => (
-                  <PromptCard key={article.id} prompt={article} />
-                ))}
+                {category.articles.map((article) => {
+                  const {
+                    id,
+                    attributes: {
+                      title,
+                      slug,
+                      excerpt,
+                      featuredImage,
+                      categories,
+                      publishedAt
+                    }
+                  } = article;
+
+                  const publishDate = new Date(publishedAt || new Date());
+                  const categoryName = categories?.data?.[0]?.attributes?.name || 'Article';
+
+                  return (
+                    <a 
+                      key={id} 
+                      href={`/articles/${slug}`} 
+                      className="block group h-full" 
+                      data-oid="njxyaq5"
+                    >
+                      <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:border-white/20 hover:shadow-[0_0_80px_-20px_rgba(59,130,246,0.45)] transition-all duration-300 h-full flex flex-col">
+                        {/* Image */}
+                        {featuredImage?.data && (
+                          <div className="aspect-video relative overflow-hidden flex-shrink-0">
+                            <img
+                              src={featuredImage.data.attributes.url}
+                              alt={featuredImage.data.attributes.alternativeText || title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                          </div>
+                        )}
+                        
+                        {/* Content */}
+                        <div className="p-4 flex flex-col flex-grow">
+                          {/* Category */}
+                          {categories?.data && (
+                            <div className="mb-2 flex-shrink-0">
+                              <span className="inline-block bg-blue-600/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full">
+                                {categoryName}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {/* Title */}
+                          <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 flex-shrink-0">
+                            {title}
+                          </h3>
+                          
+                          {/* Excerpt */}
+                          {excerpt && (
+                            <p className="text-gray-400 text-sm mb-3 line-clamp-2 flex-grow">
+                              {excerpt}
+                            </p>
+                          )}
+                          
+                          {/* Date */}
+                          <div className="flex items-center text-xs text-gray-500 flex-shrink-0 mt-auto">
+                            <time dateTime={publishDate.toISOString()}>
+                              {publishDate.toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </time>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -544,12 +614,18 @@ export default function SectionPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Load section data dynamically with caching
-  const { data: section, loading: sectionLoading, error: sectionError, isStale: sectionStale } = useCachedSectionBySlug(slug);
+  const { data: section, loading: sectionLoading, error: sectionError, isStale: sectionStale } = useCachedSectionBySlug(slug, {
+    ttl: 0, // Disable cache temporarily for debugging
+    staleWhileRevalidate: false
+  });
 
   // Load articles for this section with caching
   // Since articles are not directly linked to sections, we'll get all articles
   // and filter them by categories in the component
-  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles();
+  const { data: articles, loading: articlesLoading, error: articlesError, isStale: articlesStale } = useCachedArticles({}, {
+    ttl: 0, // Disable cache temporarily for debugging
+    staleWhileRevalidate: false
+  });
 
   // Debug logging
   console.log('SectionPage Debug:', {

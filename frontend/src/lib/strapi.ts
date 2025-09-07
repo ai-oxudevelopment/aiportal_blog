@@ -358,12 +358,17 @@ export const getContentBySlug = async (
       }
     }
 
+    const url = `/${contentType}?${queryParams.toString()}`;
+    console.log('getContentBySlug request:', url);
+    
     const response = await makeRequest(
-      `/${contentType}?${queryParams.toString()}`,
+      url,
       {},
       options?.useCache ?? true,
       options?.retryConfig
     );
+    
+    console.log('getContentBySlug response:', response);
     return response.data?.[0] || null;
   } catch (error) {
     console.error(`Error fetching ${contentType} with slug ${slug}:`, error);
