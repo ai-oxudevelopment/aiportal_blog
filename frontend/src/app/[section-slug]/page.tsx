@@ -947,15 +947,6 @@ export default function SectionPage() {
               )}
             </div>
 
-            {/* Writer Action Agent Section */}
-            <section className="mb-16" data-oid="ux9afw5">
-              <WriterActionAgent data-oid="0mqtg6g" />
-            </section>
-
-            {/* ChatGPT Business Section */}
-            <section className="mb-16" data-oid="s2skcw1">
-              <ChatGPTBusinessSection data-oid="j90uroy" />
-            </section>
           </div>
         </main>
       </div>
