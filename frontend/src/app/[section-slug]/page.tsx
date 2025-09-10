@@ -13,6 +13,7 @@ import { useCachedSectionBySlug, useCachedArticles } from "../../lib/hooks/useCa
 import ArticleCard from "../../components/ArticleCard";
 import PromptCard from "../../components/PromptCard";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
+import EmptyState from "../../components/EmptyState";
 import type { Category, Section, Article } from "../../lib/types";
 
 // Component Props Interfaces
@@ -634,57 +635,10 @@ function Section({ title, articles, loading, selectedCategory, articlesError, is
           </div>
         </div>
       ) : articles && articles.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="max-w-md mx-auto">
-            {/* Animated writing illustration */}
-            <div className="w-32 h-32 mx-auto mb-6 relative">
-              <svg viewBox="0 0 200 200" className="w-full h-full">
-                {/* Background circle with subtle animation */}
-                <circle 
-                  cx="100" 
-                  cy="100" 
-                  r="90" 
-                  fill="url(#gradient)" 
-                  opacity="0.1"
-                  className="animate-pulse"
-                />
-                
-                {/* Gradient definition */}
-                <defs>
-                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#3b82f6" />
-                    <stop offset="100%" stopColor="#8b5cf6" />
-                  </linearGradient>
-                </defs>
-                
-                {/* Floating document pages */}
-                <g className="animate-bounce" style={{ animationDuration: '3s' }}>
-                  <rect x="60" y="80" width="30" height="40" rx="2" fill="#3b82f6" opacity="0.8" />
-                  <rect x="70" y="70" width="30" height="40" rx="2" fill="#6366f1" opacity="0.9" />
-                  <rect x="80" y="60" width="30" height="40" rx="2" fill="#8b5cf6" opacity="1" />
-                </g>
-                
-                {/* Writing hand/pen */}
-                <g className="animate-pulse" style={{ animationDuration: '2s' }}>
-                  <path d="M140 90 Q150 85 155 90" stroke="#fbbf24" strokeWidth="4" fill="none" strokeLinecap="round" />
-                  <circle cx="155" cy="90" r="3" fill="#fbbf24" />
-                </g>
-                
-                {/* Floating dots representing ideas */}
-                <g className="animate-ping" style={{ animationDuration: '4s' }}>
-                  <circle cx="50" cy="60" r="2" fill="#10b981" opacity="0.7" />
-                  <circle cx="160" cy="50" r="2" fill="#f59e0b" opacity="0.7" />
-                  <circle cx="40" cy="140" r="2" fill="#ef4444" opacity="0.7" />
-                  <circle cx="170" cy="130" r="2" fill="#8b5cf6" opacity="0.7" />
-                </g>
-              </svg>
-            </div>
-            
-            {/* Minimal text */}
-            <h4 className="text-xl font-semibold text-white mb-2">Coming Soon</h4>
-            <p className="text-gray-400 text-sm">Content is being prepared</p>
-          </div>
-        </div>
+        <EmptyState
+          title="Coming Soon"
+          subtitle="Content is being prepared"
+        />
       ) : (
         <div className="text-center py-8">
           <div className="max-w-sm mx-auto">
@@ -716,6 +670,17 @@ export default function SectionPage() {
     ttl: 10 * 60 * 1000, // 10 minutes cache for sections
     staleWhileRevalidate: true
   });
+
+  // Debug: Log when section state changes
+  useEffect(() => {
+    console.log('🔄 SECTION STATE CHANGED:', {
+      slug,
+      section: section ? 'EXISTS' : 'NULL',
+      sectionLoading,
+      sectionError: sectionError ? 'EXISTS' : 'NULL',
+      timestamp: new Date().toISOString()
+    });
+  }, [section, sectionLoading, sectionError, slug]);
 
   // Get articles from section data (since section → articles relationship works)
   // Filter articles by section's article_types field or infer from section slug
@@ -892,6 +857,22 @@ export default function SectionPage() {
 
               {/* Debug: Show current state */}
               {(() => {
+                const debugInfo = {
+                  slug,
+                  hasSection: !!section,
+                  hasError: !!sectionError,
+                  isLoading: sectionLoading,
+                  isStale: sectionStale,
+                  articlesCount: articles?.length || 0,
+                  shouldRender: !!(section && !sectionError && !sectionLoading),
+                  renderGateBlocks: section && !sectionError && sectionLoading,
+                  timestamp: new Date().toISOString()
+                };
+                console.log('🔍 RENDER CONDITION DEBUG:', JSON.stringify(debugInfo, null, 2));
+                return null;
+              })()}
+              {/* Debug: Show current state */}
+              {(() => {
                 console.log('Render condition check:', {
                   hasSection: !!section,
                   hasError: !!sectionError,
@@ -901,8 +882,8 @@ export default function SectionPage() {
                 return null;
               })()}
 
-              {/* Show section articles when loaded and no errors */}
-              {section && !sectionError && !sectionLoading && (
+              {/* Show section articles when available and no errors */}
+              {section && !sectionError && (
                 <ErrorBoundary>
                 <section
                     id={`${section.attributes.slug}-section`}

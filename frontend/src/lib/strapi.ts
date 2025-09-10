@@ -365,6 +365,8 @@ export const getContentBySlug = async (
 
     const url = `/${contentType}?${queryParams.toString()}`;
     console.log('getContentBySlug request:', url);
+    console.log('getContentBySlug slug filter:', slug);
+    console.log('getContentBySlug request:', url);
     
     const response = await makeRequest(
       url,

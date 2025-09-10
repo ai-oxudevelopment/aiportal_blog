@@ -90,6 +90,34 @@ function useCachedData<T>(
     if (!forceRefresh) {
       const cached = cacheManager.get<T>(cacheKey);
       if (cached) {
+        console.log('✅ CACHE HIT - Using cached data for:', cacheKey, '- Setting loading to false');
+        setData(cached);
+        setError(null);
+        setIsStale(false);
+        setLoading(false);
+        setLastFetched(new Date());
+        console.log('✅ CACHE HIT - State updated, data should be available now');
+        onSuccess?.(cached);
+        return;
+      }
+      console.log('🔍 CACHE CHECK:', { cacheKey, hasCachedData: !!cached, cachedData: cached });
+      if (cached) {
+        console.log('✅ Using cached data for:', cacheKey);
+        setData(cached);
+        setError(null);
+        setIsStale(false);
+        setLoading(false);
+        setLastFetched(new Date());
+        onSuccess?.(cached);
+        return;
+      } else {
+        console.log('❌ No cached data for:', cacheKey, '- will fetch from API');
+      }
+    }
+    // Check cache first (unless forcing refresh)
+    if (!forceRefresh) {
+      const cached = cacheManager.get<T>(cacheKey);
+      if (cached) {
         setData(cached);
         setError(null);
         setIsStale(false);
