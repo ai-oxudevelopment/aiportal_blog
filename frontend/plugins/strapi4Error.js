@@ -1,5 +1,4 @@
 export default defineNuxtPlugin((nuxtApp) => {
-  const { setSnackbar } = useSnackbarStore();
   nuxtApp.hooks.hook("strapi:error", async (e) => {
     await setSnackbar({
       show: true,

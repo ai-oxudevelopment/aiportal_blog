@@ -1,6 +1,6 @@
 <template>
   <aside
-    :class="`fixed left-0 top-14 bottom-0 w-full md:w-64 bg-black/80 backdrop-blur-sm z-30 transition-all duration-300 ease-in-out outline-none border-none ${
+    :class="`fixed left-0 top-14 bottom-0 w-full md:w-64 bg-black z-30 transition-all duration-300 ease-in-out outline-none border-none ${
       isMenuOpen ? 'translate-x-0' : '-translate-x-full'
     }`"
   >

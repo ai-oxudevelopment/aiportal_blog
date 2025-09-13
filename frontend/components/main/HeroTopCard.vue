@@ -7,10 +7,12 @@
     >
       <div
         :class="`absolute inset-0 bg-gradient-to-br ${gradientFrom} ${gradientVia} ${gradientTo} rounded-[28px]`"
-      ></div>
+      >
+      </div>
       <div
         class="absolute inset-0 rounded-[28px] opacity-70 bg-[radial-gradient(600px_380px_at_80%_-10%,rgba(255,255,255,0.6),transparent_60%)]"
-      ></div>
+      >
+      </div>
 
       <div
         class="absolute inset-x-0 bottom-0 p-4 sm:p-5 md:p-6"
