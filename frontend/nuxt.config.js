@@ -1,6 +1,7 @@
 export default defineNuxtConfig({
   ssr: false,
   modules: [
+    "@nuxtjs/tailwindcss",
     "@nuxtjs/strapi",
     "@pinia/nuxt",
     "@nuxt/devtools",
@@ -35,6 +36,7 @@ export default defineNuxtConfig({
     autoImports: ["defineStore", "acceptHMRUpdate", "storeToRefs"],
   },
   css: [
+    "~/assets/css/tailwind.css",
     "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.min.css",
   ],

@@ -1,8 +1,8 @@
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
-// import * as labs from "vuetify/labs/components";
-import { VDataTable } from "vuetify/labs/VDataTable";
+import * as labs from "vuetify/labs/components";
+// import { VDataTable } from "vuetify/labs/VDataTable";
 
 import ru from "vuetify/lib/locale/ru";
 
@@ -16,9 +16,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     theme: {
       defaultTheme: "dark",
     },
-    components: { ...components, VDataTable },
+    components: { ...components},
     directives,
-    // ...labs,
+     ...labs,
   });
 
   nuxtApp.vueApp.use(vuetify);
