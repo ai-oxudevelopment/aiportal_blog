@@ -6,25 +6,25 @@
     <!-- Main Content Area -->
     <div class="p-4 flex-grow flex flex-col">
       <!-- Description Text - Monospace like cursor.directory -->
-      <div class="text-gray-300 text-xs leading-4 mb-3 flex-grow font-mono">
-        <p class="line-clamp-4">
+      <div class="text-gray-300 text-[13px] leading-5 mb-3 flex-grow font-mono">
+        <p class="line-clamp-3">
           {{ contentText }}
         </p>
       </div>
 
       <!-- Title and Technologies -->
       <div class="mt-auto">
-        <h3 class="text-white font-semibold text-sm mb-2 line-clamp-2 leading-tight">
+        <h3 class="text-white font-semibold text-[15px] sm:text-base mb-1.5 line-clamp-2 leading-snug">
           {{ titleText }}
         </h3>
 
         <!-- Category Name -->
         <div class="relative">
-          <div class="flex items-center gap-2 text-xs text-gray-400">
-            <span v-if="categoryName" class="text-gray-300 font-medium">
+          <div class="flex items-center gap-2 text-[13px] text-gray-300">
+            <span v-if="categoryName" class="text-gray-200 font-semibold">
               {{ categoryName }}
             </span>
-            <span v-else class="text-gray-500 text-xs">No category</span>
+            <span v-else class="text-gray-500 text-[12px]">No category</span>
           </div>
         </div>
       </div>
