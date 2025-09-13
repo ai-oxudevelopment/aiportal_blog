@@ -1,22 +1,34 @@
 <template>
-  <div class="bg-zinc-900/50 border border-white/10 rounded-2xl p-4 flex flex-col justify-between h-full">
+  <div class="relative group bg-zinc-900/50 border border-white/10 rounded-2xl p-4 flex flex-col justify-between h-full">
     <div>
-      <div class="text-white/50 text-sm" v-html="prompt.attributes.content"></div>
-      <h3 class="text-white font-medium mt-2">{{ prompt.attributes.title }}</h3>
+      <p class="text-white/70 text-sm mb-2">{{ prompt.description }}</p>
+      <h3 class="text-white font-medium">{{ prompt.title }}</h3>
     </div>
-    <div class="flex justify-between items-center mt-4">
-      <span class="text-gray-400 text-xs">{{ prompt.attributes.categories.data[0].attributes.name }}</span>
-      <button class="text-gray-400 hover:text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
-          <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" />
-        </svg>
-      </button>
+
+    <div class="mt-4">
+      <div v-if="prompt.tags && prompt.tags.length" class="flex flex-wrap">
+        <Pill v-for="tag in prompt.tags" :key="tag.id">{{ tag.name }}</Pill>
+      </div>
+
+      <div class="absolute bottom-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button class="bg-gray-700/50 p-2 rounded-full hover:bg-gray-600">
+          <Upload class="h-4 w-4 text-white" />
+        </button>
+        <button class="bg-gray-700/50 p-2 rounded-full hover:bg-gray-600">
+          <Copy class="h-4 w-4 text-white" />
+        </button>
+        <button class="bg-gray-700/50 p-2 rounded-full hover:bg-gray-600">
+          <Download class="h-4 w-4 text-white" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { Upload, Copy, Download } from 'lucide-vue-next';
+import Pill from '~/components/main/Pill.vue';
+
 defineProps({
   prompt: Object,
 });
