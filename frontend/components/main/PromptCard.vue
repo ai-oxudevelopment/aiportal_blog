@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden h-full flex flex-col">
+  <div class="bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden h-full flex flex-col relative">
     <!-- Main Content Area -->
     <div class="p-3 flex-grow flex flex-col overflow-hidden">
       <!-- Description Text - Monospace like cursor.directory -->
