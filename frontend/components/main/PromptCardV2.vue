@@ -6,8 +6,8 @@
     <!-- Main Content Area -->
     <div class="p-4 flex-grow flex flex-col overflow-hidden">
       <!-- Description Text - Monospace like cursor.directory -->
-      <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3 mb-3 flex-grow">
-        <code class="block text-gray-300 text-xs leading-4 font-mono">
+      <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-2 mb-3 flex-grow">
+        <code class="block text-gray-300 text-[10px] leading-3 font-mono">
           <p class="line-clamp-4">
             {{ contentText }}
           </p>
@@ -133,7 +133,7 @@
 
       <!-- Modal Content -->
       <div class="p-4 overflow-y-auto max-h-[60vh]">
-        <pre class="text-gray-300 text-sm font-mono whitespace-pre-wrap leading-relaxed">{{ contentText }}</pre>
+        <pre class="text-gray-300 text-xs font-mono whitespace-pre-wrap leading-snug">{{ contentText }}</pre>
       </div>
 
       <!-- Modal Actions -->
@@ -176,9 +176,9 @@
       <!-- Modal Content -->
       <div class="p-4 space-y-4 max-h-[50vh] overflow-y-auto">
         <!-- Prompt Display -->
-        <div class="bg-zinc-800/50 rounded-lg p-3 border border-zinc-700/50">
+        <div class="bg-zinc-800/50 rounded-lg p-2 border border-zinc-700/50">
           <h4 class="text-white text-sm font-medium mb-2">Prompt:</h4>
-          <pre class="text-gray-300 text-xs font-mono whitespace-pre-wrap leading-relaxed">{{ contentText }}</pre>
+          <pre class="text-gray-300 text-[10px] font-mono whitespace-pre-wrap leading-snug">{{ contentText }}</pre>
         </div>
 
         <!-- User Input -->
@@ -193,9 +193,9 @@
         </div>
 
         <!-- AI Response -->
-        <div v-if="aiResponse" class="bg-zinc-800/50 rounded-lg p-3 border border-zinc-700/50">
+        <div v-if="aiResponse" class="bg-zinc-800/50 rounded-lg p-2 border border-zinc-700/50">
           <h4 class="text-white text-sm font-medium mb-2">AI Response:</h4>
-          <pre class="text-gray-300 text-xs font-mono whitespace-pre-wrap leading-relaxed">{{ aiResponse }}</pre>
+          <pre class="text-gray-300 text-[10px] font-mono whitespace-pre-wrap leading-snug">{{ aiResponse }}</pre>
         </div>
 
         <!-- Loading State -->
