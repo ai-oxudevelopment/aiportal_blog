@@ -15,10 +15,15 @@
 
         <!-- Prompt Content -->
         <div class="flex-1 relative group">
-          <div 
-            class="text-sm text-gray-200 p-6 overflow-auto h-full leading-relaxed bg-gray-950/30 rounded-xl m-4 prose prose-invert prose-sm max-w-none"
-            v-html="parsedPromptContent"
-          ></div>
+          <div class="text-sm text-gray-200 p-6 overflow-auto h-full leading-relaxed bg-gray-950/30 rounded-xl m-4 prose prose-invert prose-sm max-w-none">
+            <vue-markdown 
+              :source="promptContent"
+              :html="true"
+              :breaks="true"
+              :linkify="true"
+              :typographer="true"
+            />
+          </div>
 
           <!-- Hover overlay: Try in chat button inside code area -->
           <button
@@ -108,12 +113,10 @@
 
 <script setup lang="ts">
 import { useFetchOneArticle } from '~/composables/useFetchOneArticle';
-import { useMarkdown } from '~/composables/useMarkdown';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const { article: prompt, error, loading, fetchArticle } = useFetchOneArticle();
-const { parseMarkdown } = useMarkdown();
 const slug = useRoute().params.promptSlug;
 
 onMounted(() => {
@@ -123,7 +126,6 @@ onMounted(() => {
 const promptTitle = computed(() => prompt.value?.title);
 const categoryName = computed(() => prompt.value?.categories?.[0]?.name);
 const promptContent = computed(() => prompt.value?.body);
-const parsedPromptContent = computed(() => parseMarkdown(promptContent.value || ''));
 
 // Action handlers
 const copied = ref(false);

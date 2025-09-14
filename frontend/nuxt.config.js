@@ -5,19 +5,19 @@ export default defineNuxtConfig({
     "@nuxtjs/strapi",
     "@pinia/nuxt",
     "@nuxt/devtools",
-    "nuxt-socket-io",
+    //"nuxt-socket-io",
   ],
   devtools: {
     enabled: false,
   },
-  // io: {
-  //   sockets: [
-  //     {
-  //       name: "main",
-  //       url: process.env.STRAPI_URL || "http://127.0.0.1:1337",
-  //     },
-  //   ],
-  // },
+  io: {
+    sockets: [
+      {
+        name: "main",
+        url: process.env.STRAPI_URL || "http://127.0.0.1:1337",
+      },
+    ],
+  },
   strapi: {
     url: process.env.STRAPI_URL || "http://127.0.0.1:1337",
     prefix: "/api",
