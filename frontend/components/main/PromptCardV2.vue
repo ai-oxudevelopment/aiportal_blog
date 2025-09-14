@@ -1,30 +1,32 @@
 <template>
   <div
-    class="group relative bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden hover:border-zinc-700/50 hover:bg-zinc-800/50 transition-all duration-200 h-full flex flex-col cursor-pointer will-change-transform hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.35)]"
+    class="group relative bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden hover:border-zinc-700/50 hover:bg-zinc-800/50 transition-all duration-200 h-full flex flex-col cursor-pointer"
     @click="handleViewFull"
   >
     <!-- Main Content Area -->
-    <div class="p-4 flex-grow flex flex-col">
+    <div class="p-4 flex-grow flex flex-col overflow-hidden">
       <!-- Description Text - Monospace like cursor.directory -->
-      <div class="text-gray-300 text-[13px] leading-5 mb-3 flex-grow font-mono">
-        <p class="line-clamp-3">
-          {{ contentText }}
-        </p>
+      <div class="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3 mb-3 flex-grow">
+        <code class="block text-gray-300 text-xs leading-4 font-mono">
+          <p class="line-clamp-4">
+            {{ contentText }}
+          </p>
+        </code>
       </div>
 
       <!-- Title and Technologies -->
       <div class="mt-auto">
-        <h3 class="text-white font-semibold text-[15px] sm:text-base mb-1.5 line-clamp-2 leading-snug">
+        <p class="text-white font-semibold text-xs mb-2 line-clamp-2 leading-tight truncate">
           {{ titleText }}
-        </h3>
+        </p>
 
         <!-- Category Name -->
         <div class="relative">
-          <div class="flex items-center gap-2 text-[13px] text-gray-300">
-            <span v-if="categoryName" class="text-gray-200 font-semibold">
+          <div class="flex items-center gap-2 text-[10px] text-gray-400">
+            <span v-if="categoryName" class="text-gray-300 font-medium">
               {{ categoryName }}
             </span>
-            <span v-else class="text-gray-500 text-[12px]">No category</span>
+            <span v-else class="text-gray-500 text-xs">No category</span>
           </div>
         </div>
       </div>
@@ -70,7 +72,7 @@
     </div>
 
     <!-- Subtle Action Buttons - Only on hover -->
-    <div class="hidden absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+    <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
       <div class="flex gap-1">
         <button
           @click.stop="handleCopy"

@@ -7,12 +7,15 @@
         <div class="h-3 bg-gray-700 rounded w-1/2"></div>
       </div>
     </div>
-    <div v-else-if="articles && articles.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    
+    <div v-else-if="articles && articles.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"> 
+      
       <PromptCard 
         v-for="article in articles" 
-        :key="article.id" 
-        :prompt="article" 
+        :key="article.slug" 
+        :prompt=article
       />
+
     </div>
     <div v-else class="text-center py-8">
       <div class="max-w-sm mx-auto">
@@ -31,10 +34,20 @@
 </template>
 
 <script setup>
-import PromptCard from './PromptCard.vue';
+import { onMounted } from 'vue';
+
+const { articles, loading, error, fetchArticles } = useFetchArticles();
+
+import PromptCard from '~/components/main/PromptCardV2.vue';
+
+onMounted(() => {
+  fetchArticles();
+});
 
 defineProps({
   articles: Array,
   loading: Boolean,
 });
+
+
 </script>

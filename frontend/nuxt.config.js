@@ -21,16 +21,27 @@ export default defineNuxtConfig({
   strapi: {
     url: process.env.STRAPI_URL || "http://127.0.0.1:1337",
     prefix: "/api",
-    version: "v4",
+    version: "v5",
     cookieName: "strapi_jwt",
     key: "authToken",
+    entities: ['categories', 'articles'],
     cookie: {
       maxAge: 7 * 24 * 3600 * 1000,
       sameSite: "lax",
-      secure: true,
+      secure: false,
       path: "/",
       httpOnly: false,
     },
+  },
+  runtimeConfig: {
+    strapi: { // nuxt/strapi options available server-side
+      url: process.env.STRAPI_URL || "http://127.0.0.1:1337"
+    },
+    public: {
+      strapi: { // nuxt/strapi options available client-side
+        url: process.env.STRAPI_URL || "http://127.0.0.1:1337"
+      }
+    }
   },
   pinia: {
     autoImports: ["defineStore", "acceptHMRUpdate", "storeToRefs"],
@@ -49,6 +60,6 @@ export default defineNuxtConfig({
     },
   },
   imports: {
-    dirs: ["stores"],
+    dirs: ["stores", "composables"],
   },
 });
