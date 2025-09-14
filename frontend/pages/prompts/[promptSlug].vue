@@ -16,8 +16,8 @@
         <!-- Prompt Content -->
         <div class="flex-1 relative group">
           <div class="text-sm text-gray-200 p-6 overflow-auto h-full leading-relaxed bg-gray-950/30 rounded-xl m-4 prose prose-invert prose-sm max-w-none">
-            <vue-markdown 
-              :source="promptContent"
+            <markdown-it-vue 
+              :content="promptContent"
               :html="true"
               :breaks="true"
               :linkify="true"

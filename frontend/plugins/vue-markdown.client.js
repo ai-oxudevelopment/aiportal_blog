@@ -1,5 +1,5 @@
-import VueMarkdown from 'vue-markdown'
+import MarkdownItVue from 'markdown-it-vue'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.component('vue-markdown', VueMarkdown)
+  nuxtApp.vueApp.component('markdown-it-vue', MarkdownItVue)
 })

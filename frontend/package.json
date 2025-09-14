@@ -26,11 +26,11 @@
     "@pinia/nuxt": "^0.4.6",
     "@tailwindcss/typography": "^0.5.16",
     "caniuse-lite": "^1.0.30001741",
+    "markdown-it-vue": "^1.1.7",
     "marked": "^16.3.0",
     "nuxt-socket-io": "^3.0.12",
     "pinia": "^2.0.30",
     "sass": "^1.58.0",
-    "vue-markdown": "^2.2.4",
     "vuetify": "^3.1.4"
   },
   "overrides": {

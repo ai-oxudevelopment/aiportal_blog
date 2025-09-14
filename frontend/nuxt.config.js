@@ -52,12 +52,20 @@ export default defineNuxtConfig({
     "@mdi/font/css/materialdesignicons.min.css",
   ],
   build: {
-    transpile: ["vuetify"],
+    transpile: ["vuetify", "markdown-it-vue"],
   },
   vite: {
     define: {
       "process.env.DEBUG": false,
     },
+    optimizeDeps: {
+      include: ["markdown-it-vue"]
+    },
+    build: {
+      commonjsOptions: {
+        transformMixedEsModules: true
+      }
+    }
   },
   imports: {
     dirs: ["stores", "composables"],
