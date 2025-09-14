@@ -15,9 +15,10 @@
 
         <!-- Prompt Content -->
         <div class="flex-1 relative group">
-          <pre class="text-sm text-gray-200 p-6 overflow-auto h-full font-mono leading-relaxed bg-gray-950/30 rounded-xl m-4 whitespace-pre-wrap">
-            {{ promptContent }}
-          </pre>
+          <div 
+            class="text-sm text-gray-200 p-6 overflow-auto h-full leading-relaxed bg-gray-950/30 rounded-xl m-4 prose prose-invert prose-sm max-w-none"
+            v-html="parsedPromptContent"
+          ></div>
 
           <!-- Hover overlay: Try in chat button inside code area -->
           <button
@@ -107,74 +108,190 @@
 
 <script setup lang="ts">
 import { useFetchOneArticle } from '~/composables/useFetchOneArticle';
+import { useMarkdown } from '~/composables/useMarkdown';
+import { onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
-// Get slug from route
-const route = useRoute();
-const slug = route.params.promptSlug as string;
+const { article: prompt, error, loading, fetchArticle } = useFetchOneArticle();
+const { parseMarkdown } = useMarkdown();
+const slug = useRoute().params.promptSlug;
 
-// Use the composable
-const { article, error, loading, fetchArticle } = useFetchOneArticle(slug);
-
-// Computed properties for template
-const promptTitle = computed(() => article.value?.title || '');
-const promptContent = computed(() => article.value?.body || '');
-const categoryName = computed(() => article.value?.categories?.data?.[0]?.attributes?.name || '');
-
-// Fetch article on mount
 onMounted(() => {
-  fetchArticle();
+  fetchArticle(slug);
 });
 
-// Copy functionality
+const promptTitle = computed(() => prompt.value?.title);
+const categoryName = computed(() => prompt.value?.categories?.[0]?.name);
+const promptContent = computed(() => prompt.value?.body);
+const parsedPromptContent = computed(() => parseMarkdown(promptContent.value || ''));
+
+// Action handlers
 const copied = ref(false);
+
 const handleCopy = async () => {
   try {
-    await navigator.clipboard.writeText(promptContent.value);
+    await navigator.clipboard.writeText(promptContent.value || '');
     copied.value = true;
-    setTimeout(() => copied.value = false, 2000);
+    setTimeout(() => {
+      copied.value = false;
+    }, 2000);
   } catch (err) {
-    console.error('Failed to copy:', err);
+    console.error('Failed to copy text: ', err);
   }
 };
 
-// Share functionality
 const handleShare = async () => {
   if (navigator.share) {
     try {
       await navigator.share({
         title: promptTitle.value,
         text: promptContent.value,
-        url: window.location.href
+        url: window.location.href,
       });
     } catch (err) {
-      console.error('Error sharing:', err);
+      console.error('Error sharing: ', err);
     }
   } else {
     // Fallback: copy URL to clipboard
-    await navigator.clipboard.writeText(window.location.href);
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      // You could show a toast notification here
+    } catch (err) {
+      console.error('Failed to copy URL: ', err);
+    }
   }
 };
 
-// Download functionality
 const handleDownload = () => {
-  const blob = new Blob([promptContent.value], { type: 'text/plain' });
+  const content = promptContent.value || '';
+  const blob = new Blob([content], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${slug}.txt`;
+  a.download = `${promptTitle.value || 'prompt'}.txt`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 };
 
-// Handle prompt try (placeholder)
 const handlePromptTry = () => {
-  // Implement your prompt try logic here
-  console.log('Try prompt:', promptContent.value);
+  // This would typically open a chat interface or redirect to a chat page
+  // For now, we'll just copy the prompt to clipboard
+  handleCopy();
 };
+
+
+
 </script>
 
 <style scoped>
-/* Additional custom styles if needed */
+/* Custom markdown styling for dark theme */
+.prose-invert {
+  --tw-prose-body: #e5e7eb;
+  --tw-prose-headings: #f9fafb;
+  --tw-prose-lead: #d1d5db;
+  --tw-prose-links: #60a5fa;
+  --tw-prose-bold: #f9fafb;
+  --tw-prose-counters: #9ca3af;
+  --tw-prose-bullets: #4b5563;
+  --tw-prose-hr: #374151;
+  --tw-prose-quotes: #f9fafb;
+  --tw-prose-quote-borders: #374151;
+  --tw-prose-captions: #9ca3af;
+  --tw-prose-code: #f9fafb;
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-pre-bg: #1f2937;
+  --tw-prose-th-borders: #374151;
+  --tw-prose-td-borders: #374151;
+}
+
+.prose-invert h1,
+.prose-invert h2,
+.prose-invert h3,
+.prose-invert h4,
+.prose-invert h5,
+.prose-invert h6 {
+  color: #f9fafb;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose-invert h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.prose-invert h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.prose-invert h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.prose-invert p {
+  margin-bottom: 1em;
+  line-height: 1.7;
+}
+
+.prose-invert ul,
+.prose-invert ol {
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.prose-invert li {
+  margin-bottom: 0.25em;
+}
+
+.prose-invert code {
+  background-color: #374151;
+  color: #f9fafb;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.prose-invert pre {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.prose-invert pre code {
+  background-color: transparent;
+  padding: 0;
+  color: #e5e7eb;
+}
+
+.prose-invert blockquote {
+  border-left: 4px solid #4b5563;
+  padding-left: 1rem;
+  margin: 1em 0;
+  font-style: italic;
+  color: #d1d5db;
+}
+
+.prose-invert strong {
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.prose-invert a {
+  color: #60a5fa;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-invert a:hover {
+  color: #93c5fd;
+}
 </style>
