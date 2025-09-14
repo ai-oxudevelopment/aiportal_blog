@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     "@nuxtjs/strapi",
     "@pinia/nuxt",
     "@nuxt/devtools",
+    "@nuxtjs/markdownit",
     //"nuxt-socket-io",
   ],
   devtools: {
@@ -52,14 +53,14 @@ export default defineNuxtConfig({
     "@mdi/font/css/materialdesignicons.min.css",
   ],
   build: {
-    transpile: ["vuetify", "markdown-it-vue"],
+    transpile: ["vuetify"],
   },
   vite: {
     define: {
       "process.env.DEBUG": false,
     },
     optimizeDeps: {
-      include: ["markdown-it-vue"]
+      include: []
     },
     build: {
       commonjsOptions: {
@@ -69,5 +70,13 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ["stores", "composables"],
+  },
+  markdownit: {
+    runtime: true,
+    preset: 'default',
+    linkify: true,
+    breaks: true,
+    html: true,
+    typographer: true
   },
 });
