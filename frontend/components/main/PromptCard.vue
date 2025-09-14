@@ -1,7 +1,7 @@
 <template>
   <div class="bg-zinc-900/90 border border-zinc-800/50 rounded-lg overflow-hidden h-full flex flex-col cursor-pointer" @click="goToPrompt">
     <!-- Main Content Area -->
-    <div class="p-3 flex-grow flex flex-col overflow-hidden" @click="navigateTo(`/prompts/${prompt.slug}`)">
+    <div class="p-3 flex-grow flex flex-col overflow-hidden">
       <!-- Description Text - Monospace like cursor.directory -->
       <div class="group relative bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-2 mb-3 flex-grow overflow-hidden">
         <code class="block text-gray-300 text-[12px] font-mono">
@@ -47,20 +47,10 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-type Category = { id?: number; name: string };
-type Prompt = {
-  id?: number | string;
-  title?: string;
-  description?: string;
-  categories: Category[];
-  [key: string]: unknown;
-};
+import type { PromptPreview, Category } from '~/types/article';
 
-const props = defineProps<{ prompt: Prompt }>();
-const emit = defineEmits<{ (e: 'try', prompt: Prompt): void }>();
-
+const props = defineProps<{ prompt: PromptPreview }>();
 const router = useRouter();
-const slug = computed(() => (props.prompt as any)?.slug ?? (props.prompt as any)?.attributes?.slug ?? (props.prompt as any)?.id ?? '');
 
 const categoryName = computed(() => {
   const categories = props.prompt.categories || [];
@@ -75,7 +65,7 @@ const handleTryPrompt = (): void => {
 };
 
 const goToPrompt = (): void => {
-  const s = String(slug.value || '').trim();
+  const s = props.prompt.slug;
   if (!s) return;
   router.push({ path: `/prompts/${encodeURIComponent(s)}` });
 };
