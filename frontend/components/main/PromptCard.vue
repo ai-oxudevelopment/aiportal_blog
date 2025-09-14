@@ -51,21 +51,21 @@ type Maybe<T> = T | null | undefined;
 
 interface CategoryAttributes { name?: string }
 
-interface SingleRelation<T> { data?: Maybe<{ attributes?: Maybe<T> }>; }
-interface ManyRelation<T> { data?: Maybe<Array<Maybe<{ attributes?: Maybe<T> }>>>; }
+// Simplified relation shape to cover both single and many relations
+interface Relation<T> { data?: { attributes?: Maybe<T> } | Array<{ attributes?: Maybe<T> }>; }
 
 interface PromptLike {
   title?: string;
   description?: string;
   content?: string;
-  category?: Maybe<{ name?: string }> | Maybe<SingleRelation<CategoryAttributes>>;
-  categories?: Maybe<ManyRelation<CategoryAttributes>>;
+  category?: { name?: string } | Relation<CategoryAttributes>;
+  categories?: Relation<CategoryAttributes>;
   attributes?: {
     title?: string;
     description?: string;
     content?: string;
-    category?: Maybe<SingleRelation<CategoryAttributes>>;
-    categories?: Maybe<ManyRelation<CategoryAttributes>>;
+    category?: Relation<CategoryAttributes>;
+    categories?: Relation<CategoryAttributes>;
   };
 }
 
@@ -75,36 +75,50 @@ const emit = defineEmits<{
   (e: 'try', prompt: PromptLike): void;
 }>();
 
-const titleText = computed(() =>
-  props.prompt?.title ?? props.prompt?.attributes?.title ?? ''
-);
-
-const contentText = computed(() =>
-  props.prompt?.content ?? props.prompt?.description ?? props.prompt?.attributes?.content ?? props.prompt?.attributes?.description ?? ''
-);
-
-const categoryName = computed(() => {
-  const direct = (props.prompt as any)?.category?.name as Maybe<string>;
-  if (direct) return direct;
-
-  const singleRel = props.prompt?.category as Maybe<SingleRelation<CategoryAttributes>>;
-  const fromSingle = singleRel?.data?.attributes?.name;
-  if (fromSingle) return fromSingle;
-
-  const manyRel = props.prompt?.categories as Maybe<ManyRelation<CategoryAttributes>>;
-  const firstName = manyRel?.data?.[0]?.attributes?.name;
-  if (firstName) return firstName;
-
-  const singleInAttrs = props.prompt?.attributes?.category as Maybe<SingleRelation<CategoryAttributes>>;
-  const fromAttrsSingle = singleInAttrs?.data?.attributes?.name;
-  if (fromAttrsSingle) return fromAttrsSingle;
-
-  const manyInAttrs = props.prompt?.attributes?.categories as Maybe<ManyRelation<CategoryAttributes>>;
-  const firstAttrsName = manyInAttrs?.data?.[0]?.attributes?.name;
-  if (firstAttrsName) return firstAttrsName;
-
+function firstNonEmpty(...values: Array<Maybe<string>>): string {
+  for (const value of values) {
+    if (typeof value === 'string' && value.trim() !== '') return value;
+  }
   return '';
-});
+}
+
+function getCategoryName(prompt: PromptLike): string {
+  const category = prompt.category as Maybe<{ name?: string } | Relation<CategoryAttributes>>;
+  const categories = prompt.categories as Maybe<Relation<CategoryAttributes>>;
+  const attrs = prompt.attributes;
+
+  const nameFromCategory = (category && !Array.isArray((category as Relation<CategoryAttributes>).data))
+    ? (category as Relation<CategoryAttributes>)?.data?.attributes?.name
+    : (category as { name?: string })?.name;
+
+  const nameFromCategories = Array.isArray(categories?.data)
+    ? categories?.data?.[0]?.attributes?.name
+    : undefined;
+
+  const nameFromAttrCategory = !Array.isArray(attrs?.category?.data)
+    ? attrs?.category?.data?.attributes?.name
+    : undefined;
+
+  const nameFromAttrCategories = Array.isArray(attrs?.categories?.data)
+    ? attrs?.categories?.data?.[0]?.attributes?.name
+    : undefined;
+
+  return firstNonEmpty(nameFromCategory, nameFromCategories, nameFromAttrCategory, nameFromAttrCategories);
+}
+
+const titleText = computed(() => firstNonEmpty(
+  props.prompt?.title,
+  props.prompt?.attributes?.title,
+));
+
+const contentText = computed(() => firstNonEmpty(
+  props.prompt?.content,
+  props.prompt?.description,
+  props.prompt?.attributes?.content,
+  props.prompt?.attributes?.description,
+));
+
+const categoryName = computed(() => getCategoryName(props.prompt));
 
 function handleTryPrompt() {
   emit('try', props.prompt);
