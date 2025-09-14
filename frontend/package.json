@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@mdi/font": "^7.1.96",
-    "@nuxtjs/markdownit": "^2.0.0",
     "@nuxtjs/strapi": "^2.1.1",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@pinia/nuxt": "^0.4.6",

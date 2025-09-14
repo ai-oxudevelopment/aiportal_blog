@@ -5,7 +5,6 @@ export default defineNuxtConfig({
     "@nuxtjs/strapi",
     "@pinia/nuxt",
     "@nuxt/devtools",
-    "@nuxtjs/markdownit",
     //"nuxt-socket-io",
   ],
   devtools: {
@@ -70,13 +69,5 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ["stores", "composables"],
-  },
-  markdownit: {
-    runtime: true,
-    preset: 'default',
-    linkify: true,
-    breaks: true,
-    html: true,
-    typographer: true
   },
 });

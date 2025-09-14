@@ -1,6 +1,7 @@
+import { useMarkdown } from '~/composables/useMarkdown'
+
 export default defineNuxtPlugin((nuxtApp) => {
-  // Markdownit is automatically available via the module
-  // We can create a simple markdown component
+  // Create a simple markdown component using our composable
   nuxtApp.vueApp.component('MarkdownRenderer', {
     props: {
       content: {
@@ -9,9 +10,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     },
     setup(props) {
-      const { $md } = useNuxtApp()
+      const { renderMarkdown } = useMarkdown()
       const renderedContent = computed(() => {
-        return $md.render(props.content || '')
+        return renderMarkdown(props.content || '')
       })
       
       return {
