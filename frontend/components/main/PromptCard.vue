@@ -28,6 +28,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Blue Try Button - Bottom Right Corner -->
+    <div class="absolute bottom-3 right-3">
+      <button
+        @click.stop="handleTryPrompt"
+        class="w-7 h-7 rounded-md bg-zinc-700/50 hover:bg-zinc-600/70 text-gray-300 hover:text-blue-400 flex items-center justify-center transition-all duration-200 hover:scale-105"
+        title="Try AI Chat"
+      >
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -57,6 +70,10 @@ interface PromptLike {
 }
 
 const props = defineProps<{ prompt: PromptLike }>();
+
+const emit = defineEmits<{
+  (e: 'try', prompt: PromptLike): void;
+}>();
 
 const titleText = computed(() =>
   props.prompt?.title ?? props.prompt?.attributes?.title ?? ''
@@ -88,6 +105,10 @@ const categoryName = computed(() => {
 
   return '';
 });
+
+function handleTryPrompt() {
+  emit('try', props.prompt);
+}
 </script>
 
 <style scoped>
