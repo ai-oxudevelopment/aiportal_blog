@@ -16,8 +16,12 @@
         <!-- Prompt Content -->
         <div class="flex-1 relative group">
           <div class="text-sm text-gray-200 p-6 overflow-auto h-full leading-relaxed bg-gray-950/30 rounded-xl m-4 prose prose-invert prose-sm max-w-none">
-            <MarkdownRenderer :content="promptContent" />
+            <!-- <div v-html="promptContent"></div> -->
+            <NuxtMarkdown :content="promptContent" />
+
           </div>
+
+
 
           <!-- Hover overlay: Try in chat button inside code area -->
           <button
@@ -151,7 +155,6 @@ const handleShare = async () => {
     // Fallback: copy URL to clipboard
     try {
       await navigator.clipboard.writeText(window.location.href);
-      // You could show a toast notification here
     } catch (err) {
       console.error('Failed to copy URL: ', err);
     }
@@ -172,8 +175,6 @@ const handleDownload = () => {
 };
 
 const handlePromptTry = () => {
-  // This would typically open a chat interface or redirect to a chat page
-  // For now, we'll just copy the prompt to clipboard
   handleCopy();
 };
 

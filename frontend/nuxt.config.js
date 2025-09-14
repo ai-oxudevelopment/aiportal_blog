@@ -1,6 +1,7 @@
 export default defineNuxtConfig({
   ssr: false,
   modules: [
+    "nuxt-markdown-render",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/strapi",
     "@pinia/nuxt",
