@@ -77,7 +77,7 @@
       <div class="sticky left-0 top-20 overflow-y-auto rounded-md" :style="{ maxHeight: 'calc(-135px + 100vh)' }">
         <div class="flex flex-col gap-3 p-0 pb-[90px]">
           <!-- Prompt Section -->
-          <PromptViewComponent v-if="prompt" :content="prompt" :isExpanded="isPromptExpanded" @onToggle="setIsPromptExpanded(!isPromptExpanded)" />
+          <PromptViewComponent :content="prompt" :isExpanded="isPromptExpanded" @onToggle="setIsPromptExpanded(!isPromptExpanded)" />
 
           <!-- Uploaded Files Section -->
           <div v-if="uploadedFiles && uploadedFiles.length > 0">
@@ -137,26 +137,23 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-interface Props {
+const props = defineProps<{
   query: string;
   repository: string;
   content?: string | null;
   thoughtProcess: string;
   prompt?: string | null;
-  uploadedFiles?: Array<any> | null;
+  uploadedFiles?: Array<unknown> | null;
   additionalText?: string | null;
-  files?: Array<any> | null;
-}
-
-const props = defineProps<Props>();
-
-console.log(props.prompt);
+  files?: Array<unknown> | null;
+}>();
 
 const isThoughtProcessOpen = ref(false);
 const isPromptExpanded = ref(false);
 const isFilesExpanded = ref(false);
 const isAdditionalTextExpanded = ref(false);
 const expandedFiles = ref<Record<string, boolean>>({});
+
 
 function setIsThoughtProcessOpen(value: boolean) {
   isThoughtProcessOpen.value = value;
