@@ -4,7 +4,7 @@
       <!-- Header -->
       <div class="bg-neutral-800 sticky top-0 z-10 flex w-full items-center justify-between px-3 py-1.5 text-sm text-neutral-300 rounded-t-sm">
         <div class="flex min-w-0 grow items-center gap-2">
-          <button v-if="onToggle" @click="onToggle">
+          <button @click="emitToggle">
             <ChevronRight :class="`h-3 w-3 transition-transform ${isExpanded ? 'rotate-90' : ''}`" />
           </button>
           <div class="size-4 flex-shrink-0" style="fill: '#3b82f6'">
@@ -38,16 +38,19 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps } from 'vue';
+<script setup lang="ts">
 import { ChevronRight, Copy } from 'lucide-vue-next';
-
 const props = defineProps<{
-  content?: string | null;
-  isExpanded?: boolean;
-  onToggle?: () => void;
+  content?: string | null,
+  isExpanded?: boolean,
 }>();
 
-console.log('Prompt content:', props.content);
+const emit = defineEmits<{ (e: 'onToggle'): void }>();
+
+function emitToggle(): void {
+  emit('onToggle');
+}
+
+console.log('Prompt View:', props.content);
 
 </script>
