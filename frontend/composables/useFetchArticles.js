@@ -8,10 +8,11 @@ export function useFetchArticles() {
 
   const { find } = useStrapi()
 
-  const fetchArticles = async () => {
+  const fetchArticles = async (filter = {}) => {
     loading.value = true;
     try {
       const response = await find('articles', {
+        filters: { ...filter }, 
         fields: ['title', 'description', 'slug'],
         populate: ['categories']
       });
@@ -20,6 +21,5 @@ export function useFetchArticles() {
       loading.value = false;
     }
   };
-
   return { articles, loading, error, fetchArticles };
 }

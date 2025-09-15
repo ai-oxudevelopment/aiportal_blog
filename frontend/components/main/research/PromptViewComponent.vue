@@ -20,10 +20,17 @@
       </div>
       
       <!-- Content -->
-      <div v-if="isExpanded" class="overflow-auto scroll-smooth">
+      <div v-if="isExpanded && content" class="overflow-auto scroll-smooth">
         <div class="relative w-full min-w-max overflow-hidden bg-neutral-800/80">
           <div class="p-4 prose-custom prose-custom-md prose-custom-gray !max-w-none text-neutral-300 [overflow-wrap:anywhere]">
             <div v-html="content" />
+          </div>
+        </div>
+      </div>
+      <div v-else-if="isExpanded && !content" class="overflow-auto scroll-smooth">
+        <div class="relative w-full min-w-max overflow-hidden bg-neutral-800/80">
+          <div class="p-4 text-neutral-500 text-sm">
+            Загрузка контента...
           </div>
         </div>
       </div>
@@ -31,16 +38,16 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { defineProps } from 'vue';
 import { ChevronRight, Copy } from 'lucide-vue-next';
 
-interface Props {
-  content: string;
+const props = defineProps<{
+  content?: string | null;
   isExpanded?: boolean;
   onToggle?: () => void;
-}
+}>();
 
-const props = defineProps<Props>();
+console.log('Prompt content:', props.content);
 
 </script>

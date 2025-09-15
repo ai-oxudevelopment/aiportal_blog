@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     "@nuxtjs/strapi",
     "@pinia/nuxt",
     "@nuxt/devtools",
+    "@nuxtjs/mdc",
     //"nuxt-socket-io",
   ],
   devtools: {
@@ -70,5 +71,8 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ["stores", "composables"],
+  },
+  server: {
+    port: 8080 // или process.env.PORT
   },
 });

@@ -30,17 +30,28 @@
 <script setup>
 import DialogSection from '@/components/main/research/DialogSection.vue';
 import { useSamplePrompt, useSampleUploadedFiles, useSampleAdditionalText, useSampleFiles, useSampleAiResponse } from '@/composables/mockApi';
+import { ref } from 'vue';
 
-// Load data immediately
-const { sampleResponse } = await useSampleAiResponse();
+const sampleContent = ref(null);
+const samplePrompt = ref(null);
+const sampleUploadedFiles = ref(null);
+const sampleAdditionalText = ref(null);
+const sampleFiles = ref(null);
+
 const { samplePrompt: promptData } = useSamplePrompt();
 const { sampleUploadedFiles: uploadedFilesData } = useSampleUploadedFiles();
 const { sampleAdditionalText: additionalTextData } = useSampleAdditionalText();
 const { sampleFiles: filesData } = useSampleFiles();
 
-const sampleContent = sampleResponse.value.data;
-const samplePrompt = promptData.value;
-const sampleUploadedFiles = uploadedFilesData.value;
-const sampleAdditionalText = additionalTextData.value;
-const sampleFiles = filesData.value;
+// Синхронные данные устанавливаем сразу
+samplePrompt.value = promptData.value;
+sampleUploadedFiles.value = uploadedFilesData.value;
+sampleAdditionalText.value = additionalTextData.value;
+sampleFiles.value = filesData.value;
+
+// Асинхронные данные загружаем отдельно
+(async () => {
+  const { sampleResponse } = await useSampleAiResponse();
+  sampleContent.value = sampleResponse.value?.data || null;
+})();
 </script>

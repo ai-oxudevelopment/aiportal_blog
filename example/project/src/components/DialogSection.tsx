@@ -15,6 +15,9 @@
             <div class="flex flex-col items-start gap-2 text-white">
               <span class="text-xl xl:text-2xl w-full [overflow-wrap:break-word] group">
                 {{ query }}
+                <button class="relative ml-2 cursor-pointer align-baseline text-gray-400 opacity-0 transition-opacity hover:text-blue-400 focus:opacity-100 group-hover:opacity-100" aria-label="Copy link to query">
+                  <ExternalLink class="h-4 w-4" />
+                </button>
               </span>
             </div>
           </div>
@@ -31,6 +34,9 @@
                 Deep
               </div>
             </div>
+            <div class="flex w-full items-center justify-between gap-2">
+              <div>Searched across {{ repository }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -41,31 +47,31 @@
           <!-- Thought Process -->
           <div v-if="thoughtProcess" class="mb-4">
             <div class="flex flex-col gap-2">
-              <button type="button" aria-controls="radix-r1" aria-expanded="true" data-state="open" @click="setIsThoughtProcessOpen(!isThoughtProcessOpen)" class="flex w-fit items-center gap-1.5 text-sm text-neutral-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 256 256" :class="`size-4 transition-transform ${isThoughtProcessOpen ? 'rotate-90' : ''}`">
-                  <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                </svg>
-                <span>Размышления</span>
+              <button type="button" @click="setIsThoughtProcessOpen(!isThoughtProcessOpen)" class="flex w-fit items-center gap-1.5 text-sm text-neutral-300">
+                <ChevronRight :class="`size-4 transition-transform ${isThoughtProcessOpen ? 'rotate-90' : ''}`" />
+                <span>Thought Process</span>
               </button>
-              <div v-if="isThoughtProcessOpen" data-state="open" id="radix-r1" class="relative flex flex-col gap-1 text-neutral-400">
-                <div class="absolute left-[7px] top-0 h-full w-[2px] rounded-md bg-neutral-700"></div>
-                <div class="pl-5 text-sm italic" v-for="line in thoughtProcess.split('\n')" :key="line">
-                  {{ line }}
-                </div>
+              <div v-if="isThoughtProcessOpen" class="mt-2 p-3 rounded bg-neutral-800/50 text-sm text-neutral-300">
+                {{ thoughtProcess }}
               </div>
             </div>
           </div>
 
-          <NuxtMarkdown v-if="content" :source="content" />
+          {{ content }}
 
           <!-- Action Buttons -->
           <div class="mt-4 flex justify-end gap-2">
-            <button @click="handleCopyResponse" class="border-border hover:border-border-hover bg-surface hover:border-border-hover hover:bg-component flex cursor-pointer items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium text-white transition-all" aria-label="Copy Response">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15V5a2 2 0 0 1 2-2h8"></path>
-              </svg>
-              <span>Копировать ответ</span>
+            <button @click="handleCopyResponse" class="flex cursor-pointer items-center gap-1.5 rounded-md border border-neutral-700 bg-neutral-800 hover:border-neutral-600 hover:bg-neutral-700 px-3 py-1.5 text-sm font-medium text-white transition-all" aria-label="Copy Response">
+              <Copy class="h-4 w-4" />
+              <span>Copy Response</span>
+            </button>
+            <button @click="handleCopyThread" class="flex cursor-pointer items-center gap-1.5 rounded-md border border-neutral-700 bg-neutral-800 hover:border-neutral-600 hover:bg-neutral-700 px-3 py-1.5 text-sm font-medium text-white transition-all">
+              <Copy class="h-4 w-4" />
+              <span>Copy thread</span>
+            </button>
+            <button @click="handleShare" class="flex items-center rounded-md cursor-pointer transition-all border border-neutral-700 bg-neutral-800 hover:border-neutral-600 hover:bg-neutral-700 gap-1.5 px-3 py-1.5 text-sm" aria-label="Share">
+              <Share2 class="h-4 w-4" />
+              <span>Share</span>
             </button>
           </div>
         </div>
@@ -74,10 +80,10 @@
 
     <!-- File Sidebar -->
     <div class="min-w-0 flex-1 xl:[flex-grow:3]">
-      <div class="sticky left-0 top-20 overflow-y-auto rounded-md" :style="{ maxHeight: 'calc(-135px + 100vh)' }">
+      <div class="sticky left-0 top-20 overflow-y-auto rounded-md" style="maxHeight: 'calc(-135px + 100vh)'}}">
         <div class="flex flex-col gap-3 p-0 pb-[90px]">
           <!-- Prompt Section -->
-          <PromptViewComponent :content="prompt" :isExpanded="isPromptExpanded" @onToggle="setIsPromptExpanded(!isPromptExpanded)" />
+          <PromptViewComponent v-if="prompt" :content="prompt" :isExpanded="isPromptExpanded" @onToggle="setIsPromptExpanded(!isPromptExpanded)" />
 
           <!-- Uploaded Files Section -->
           <div v-if="uploadedFiles && uploadedFiles.length > 0">
@@ -90,7 +96,7 @@
           </div>
 
           <!-- Code Files -->
-          <div v-for="file in (files || [])" :key="file.id" class="flex flex-col gap-2 scroll-smooth rounded-md">
+          <div v-for="file in files" :key="file.id" class="flex flex-col gap-2 scroll-smooth rounded-md">
             <div class="relative w-full p-0 ring-1 ring-neutral-800 rounded-sm">
               <!-- File Header -->
               <div class="bg-neutral-800 sticky top-0 z-10 flex w-full items-center justify-between px-3 py-1.5 text-sm text-neutral-300 rounded-t-sm">
@@ -133,60 +139,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-
-const props = defineProps<{
-  query: string;
-  repository: string;
-  content?: string | null;
-  thoughtProcess: string;
-  prompt?: string | null;
-  uploadedFiles?: Array<unknown> | null;
-  additionalText?: string | null;
-  files?: Array<unknown> | null;
-}>();
-
-const isThoughtProcessOpen = ref(false);
-const isPromptExpanded = ref(false);
-const isFilesExpanded = ref(false);
-const isAdditionalTextExpanded = ref(false);
-const expandedFiles = ref<Record<string, boolean>>({});
-
-onMounted(() => {
-  console.log('Prompt:', props.prompt);
-});
-
-function setIsThoughtProcessOpen(value: boolean) {
-  isThoughtProcessOpen.value = value;
-}
-
-function setIsPromptExpanded(value: boolean) {
-  isPromptExpanded.value = value;
-}
-
-function setIsFilesExpanded(value: boolean) {
-  isFilesExpanded.value = value;
-}
-
-function setIsAdditionalTextExpanded(value: boolean) {
-  isAdditionalTextExpanded.value = value;
-}
-
-function toggleFile(fileId: string) {
-  expandedFiles.value[fileId] = !expandedFiles.value[fileId];
-}
-
-function handleCopyResponse() {
-  // Implement copy response logic
-}
-
-function handleCopyThread() {
-  // Implement copy thread logic
-}
-
-function handleShare() {
-  // Implement share logic
-}
-</script>

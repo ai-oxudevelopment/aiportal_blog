@@ -2,8 +2,6 @@
   <div class="min-h-screen bg-black text-gray-100">
 
     <div class="flex">
-      <Sidebar />
-
       <main class="pt-14 w-full">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10">
 

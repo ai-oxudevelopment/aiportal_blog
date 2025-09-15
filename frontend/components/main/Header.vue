@@ -3,7 +3,7 @@
     <div class="w-full px-4 md:px-8 h-14 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <div class="flex items-center gap-2 text-white">
-          <span class="text-lg font-bold tracking-tight">AIWORKPLACE BLOG</span>
+          <router-link to="/" class="text-lg font-bold tracking-tight">AIWORKPLACE BLOG</router-link>
         </div>
         <button
           class="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
