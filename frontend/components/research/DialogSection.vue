@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col gap-6 pt-8 xl:flex-row" data-query-display="true">
+  <div class="flex flex-col gap-3 pt-8 lg:flex-row" data-query-display="true">
     <!-- Main Content Section -->
-    <div class="flex max-h-fit min-w-0 flex-shrink-0 flex-col xl:basis-2/3">
+    <div class="flex max-h-fit min-w-0 flex-1 flex-shrink-0 flex-col xl:[flex-grow:4]">
       <!-- Header -->
       <div class="mb-4">
         <div class="flex flex-col">
@@ -73,7 +73,7 @@
     </div>
 
     <!-- File Sidebar -->
-    <div class="min-w-0 flex-shrink-0 xl:basis-1/3">
+    <div class="min-w-0 flex-1 xl:[flex-grow:3]">
       <div class="sticky left-0 top-20 overflow-y-auto rounded-md" :style="{ maxHeight: 'calc(-135px + 100vh)' }">
         <div class="flex flex-col gap-3 p-0 pb-[90px]">
           <!-- Prompt Section -->
@@ -137,16 +137,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import PromptViewComponent from './PromptViewComponent.vue';
-import FileUploadedComponent from './FileUploadedComponent.vue';
-import TextViewComponent from './TextViewComponent.vue';
+// import FileUploadedComponent from './FileUploadedComponent.vue';
+// import TextViewComponent from './TextViewComponent.vue';
 import { ChevronRight, Copy } from 'lucide-vue-next';
-
-type CodeFile = {
-  id: string;
-  path: string;
-  content: string;
-  lineStart: number;
-};
 
 const props = defineProps<{
   query: string;
@@ -156,7 +149,7 @@ const props = defineProps<{
   prompt?: string | null;
   uploadedFiles?: Array<unknown> | null;
   additionalText?: string | null;
-  files?: Array<CodeFile> | null;
+  files?: Array<unknown> | null;
 }>();
 
 const promptContent = ref(props.prompt);

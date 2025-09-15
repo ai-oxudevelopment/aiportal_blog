@@ -38,7 +38,7 @@ import { onMounted } from 'vue';
 
 const { articles, loading, error, fetchArticles } = useFetchArticles();
 
-import PromptCard from '~/components/main/PromptCard.vue';
+import PromptCard from '~/components/prompt/PromptCard.vue';
 
 onMounted(() => {
   fetchArticles();

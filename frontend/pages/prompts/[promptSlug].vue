@@ -101,7 +101,7 @@ import { useFetchArticles } from '~/composables/useFetchArticles';
 import { useFetchOneArticle } from '~/composables/useFetchOneArticle';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
-import PromptCard from '~/components/main/PromptCard.vue';
+import PromptCard from '~/components/prompt/PromptCard.vue';
 
 
 // main content

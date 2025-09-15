@@ -28,7 +28,7 @@
 
 
 <script setup>
-import DialogSection from '@/components/main/research/DialogSection.vue';
+import DialogSection from '@/components/research/DialogSection.vue';
 import { useSamplePrompt, useSampleUploadedFiles, useSampleAdditionalText, useSampleFiles, useSampleAiResponse } from '@/composables/mockApi';
 import { ref } from 'vue';
 
