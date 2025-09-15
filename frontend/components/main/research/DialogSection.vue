@@ -77,7 +77,7 @@
       <div class="sticky left-0 top-20 overflow-y-auto rounded-md" :style="{ maxHeight: 'calc(-135px + 100vh)' }">
         <div class="flex flex-col gap-3 p-0 pb-[90px]">
           <!-- Prompt Section -->
-          <PromptViewComponent :content="prompt" :isExpanded="isPromptExpanded" @onToggle="setIsPromptExpanded(!isPromptExpanded)" />
+          <PromptViewComponent :content="promptContent" :isExpanded="isPromptExpanded" @onToggle="setIsPromptExpanded(!isPromptExpanded)" />
 
           <!-- Uploaded Files Section -->
           <div v-if="uploadedFiles && uploadedFiles.length > 0">
@@ -96,7 +96,9 @@
               <div class="bg-neutral-800 sticky top-0 z-10 flex w-full items-center justify-between px-3 py-1.5 text-sm text-neutral-300 rounded-t-sm">
                 <div class="flex min-w-0 grow items-center gap-2">
                   <button @click="toggleFile(file.id)">
-                    <ChevronRight :class="`h-3 w-3 transition-transform ${expandedFiles[file.id] ? 'rotate-90' : ''}`" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 256 256" :class="`size-4 transition-transform ${expandedFiles[file.id] ? 'rotate-90' : ''}`">
+                      <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                    </svg>
                   </button>
                   <div class="size-4 flex-shrink-0" style="fill: '#a074c4'">
                     <svg viewBox="0 0 32 32">
@@ -136,6 +138,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import PromptViewComponent from './PromptViewComponent.vue';
+// import FileUploadedComponent from './FileUploadedComponent.vue';
+// import TextViewComponent from './TextViewComponent.vue';
+import { Copy } from 'lucide-vue-next';
 
 const props = defineProps<{
   query: string;
@@ -148,15 +154,14 @@ const props = defineProps<{
   files?: Array<unknown> | null;
 }>();
 
+const promptContent = ref(props.prompt);
 const isThoughtProcessOpen = ref(false);
 const isPromptExpanded = ref(false);
 const isFilesExpanded = ref(false);
 const isAdditionalTextExpanded = ref(false);
 const expandedFiles = ref<Record<string, boolean>>({});
 
-onMounted(() => {
-  console.log('Prompt:', props.prompt);
-});
+
 
 function setIsThoughtProcessOpen(value: boolean) {
   isThoughtProcessOpen.value = value;
