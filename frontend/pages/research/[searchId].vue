@@ -17,6 +17,9 @@
         repository="chatwoot/chatwoot"
         :content="sampleContent"
         thoughtProcess="First, I need to understand the structure of Captain AI in Chatwoot. Looking at the codebase, I can see it's an enterprise feature with two main components: Assistants and Copilot. I'll examine the configuration files, models, and services to provide a comprehensive overview."
+        :prompt="samplePrompt"
+        :uploadedFiles="sampleUploadedFiles"
+        :additionalText="sampleAdditionalText"
         :files="sampleFiles"
       />
     </div>
@@ -48,6 +51,7 @@ const sampleFiles = ref(null);
   sampleAdditionalText.value = additionalTextData.value;
   sampleFiles.value = filesData.value;
   
-  console.log(sampleContent.value);
+  console.log('Sample prompt:', samplePrompt.value);
+  console.log('Sample content:', sampleContent.value);
 })();
 </script>
