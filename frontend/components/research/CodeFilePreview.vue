@@ -25,7 +25,7 @@
       <div class="relative w-full min-w-max overflow-hidden bg-neutral-800/80">
         <div class="code-container">
           <div class="code-header"></div>
-          <div class="code-block" v-html="highlightedHtml" :style="{ '--line-start': String(file.lineStart || 1) }"></div>
+          <div class="code-block" v-html="highlightedHtml" :style="{ '--line-start': String((file.lineStart || 1) - 1) }"></div>
         </div>
       </div>
     </div>
@@ -118,11 +118,11 @@ onMounted(async () => {
   overflow: auto;
   font-size: 12px;
 }
-/* VS Code-like line numbers */
-.shiki { background: #1e1e1e !important; }
-.shiki code { counter-reset: shiki-line var(--line-start, 1); display: block; }
-.shiki code .line { display: block; }
-.shiki code .line::before {
+/* VS Code-like line numbers (deep selectors so they apply to v-html) */
+:deep(.shiki) { background: #1e1e1e !important; }
+:deep(.shiki code) { counter-reset: shiki-line var(--line-start, 0); display: block; }
+:deep(.shiki code .line) { display: block; }
+:deep(.shiki code .line::before) {
   counter-increment: shiki-line;
   content: counter(shiki-line);
   display: inline-block;
