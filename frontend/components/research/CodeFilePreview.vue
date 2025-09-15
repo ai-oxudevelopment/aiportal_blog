@@ -117,11 +117,12 @@ onMounted(async () => {
   padding: 8px 0;
   overflow: auto;
   font-size: 12px;
+  line-height: 1.2;
 }
 /* VS Code-like line numbers (deep selectors so they apply to v-html) */
 :deep(.shiki) { background: #1e1e1e !important; }
 :deep(.shiki code) { counter-reset: shiki-line var(--line-start, 0); display: block; }
-:deep(.shiki code .line) { display: block; }
+:deep(.shiki code .line) { display: block; line-height: 1.2; }
 :deep(.shiki code .line::before) {
   counter-increment: shiki-line;
   content: counter(shiki-line);
@@ -132,5 +133,6 @@ onMounted(async () => {
   color: #008000; /* green like screenshot */
   font-style: italic;
   user-select: none;
+  line-height: 1.2;
 }
 </style>
