@@ -125,9 +125,9 @@ onMounted(async () => {
 <style scoped>
 .code-wrapper{font-family:'Fira Mono','Menlo','Consolas',monospace}
 ::deep(pre.shiki){background:transparent!important;margin:0;padding:16px;overflow-x:auto;font-size:12px;line-height:1.6;color:#d1d5db}
-::deep(pre.shiki code){counter-reset:shiki-line var(--line-start,0);display:block}
-::deep(pre.shiki code .line){display:block;white-space:pre}
-::deep(pre.shiki code .line::before){counter-increment:shiki-line;content:counter(shiki-line);display:inline-block;width:2.25em;margin-right:1rem;text-align:right;color:#6b7280;font-size:12px;user-select:none}
+::deep(pre.shiki code){counter-reset:shiki-line var(--line-start,0);display:block;padding-left:24px;padding-right:16px}
+::deep(pre.shiki code .line){display:block;white-space:pre;line-height:1.4;padding-right:12px}
+::deep(pre.shiki code .line::before){counter-increment:shiki-line;content:counter(shiki-line);display:inline-block;width:2.5em;margin-left:-2.5em;margin-right:1.2em;text-align:right;color:#6b7280;font-size:12px;user-select:none;opacity:.8}
 ::deep(pre.shiki::-webkit-scrollbar){height:8px}
 ::deep(pre.shiki::-webkit-scrollbar-thumb){background:#232527;border-radius:8px}
 ::deep(pre.shiki::-webkit-scrollbar-track){background:transparent}
