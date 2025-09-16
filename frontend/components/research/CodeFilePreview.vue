@@ -14,21 +14,23 @@
         </div>
         <a href="#" class="cursor-pointer truncate text-neutral-500 hover:underline">{{ repository }}</a>
         <a href="#" class="cursor-pointer truncate text-white hover:underline">{{ file.path }}</a>
-        <button>
+        <button @click="copyToClipboard(file.content)">
           <Copy class="h-4 w-4 text-neutral-500" />
         </button>
       </div>
     </div>
 
     <!-- File Content -->
-    <div v-if="expandedFiles[file.id]" class="scrollbar-hide grid overflow-auto scroll-smooth">
+    <div v-if="expandedFiles[file.id]" class="overflow-auto scroll-smooth">
       <div class="relative w-full min-w-max overflow-hidden bg-neutral-800/80">
-        <div class="code-container">
-          <div class="code-header"></div>
-          <div class="code-block" v-html="highlightedHtml" :style="{ '--line-start': String((file.lineStart || 1) - 1) }"></div>
-        </div>
+        <div
+          class="code-wrapper"
+          v-html="highlightedHtml"
+          :style="{ '--line-start': String((file.lineStart || 1) - 1) }"
+        />
       </div>
     </div>
+
   </div>
 </template>
 
@@ -51,6 +53,25 @@ const emit = defineEmits<{ (e: 'onToggle', id: string): void }>();
 
 function toggleFile(id: string): void {
   emit('onToggle', id);
+}
+
+async function copyToClipboard(text: string): Promise<void> {
+  try {
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  } catch {
+    // no-op
+  }
 }
 
 // --- Shiki highlighting ---
@@ -102,37 +123,13 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.code-container {
-  background: #1e1e1e;
-  border: 1px solid #2a2a2a;
-  border-radius: 4px;
-}
-.code-header {
-  height: 6px;
-  background: #151515;
-  border-bottom: 1px solid #2a2a2a;
-}
-.code-block {
-  margin: 0;
-  padding: 8px 0;
-  overflow: auto;
-  font-size: 12px;
-  line-height: 1.2;
-}
-/* VS Code-like line numbers (deep selectors so they apply to v-html) */
-:deep(.shiki) { background: #1e1e1e !important; }
-:deep(.shiki code) { counter-reset: shiki-line var(--line-start, 0); display: block; }
-:deep(.shiki code .line) { display: block; line-height: 1.2; }
-:deep(.shiki code .line::before) {
-  counter-increment: shiki-line;
-  content: counter(shiki-line);
-  display: inline-block;
-  width: 3ch;
-  margin-right: 1ch;
-  text-align: right;
-  color: #008000; /* green like screenshot */
-  font-style: italic;
-  user-select: none;
-  line-height: 1.2;
-}
+.code-wrapper{font-family:'Fira Mono','Menlo','Consolas',monospace}
+::deep(pre.shiki){background:transparent!important;margin:0;padding:16px;overflow-x:auto;font-size:12px;line-height:1.6;color:#d1d5db}
+::deep(pre.shiki code){counter-reset:shiki-line var(--line-start,0);display:block}
+::deep(pre.shiki code .line){display:block;white-space:pre}
+::deep(pre.shiki code .line::before){counter-increment:shiki-line;content:counter(shiki-line);display:inline-block;width:2.25em;margin-right:1rem;text-align:right;color:#6b7280;font-size:12px;user-select:none}
+::deep(pre.shiki::-webkit-scrollbar){height:8px}
+::deep(pre.shiki::-webkit-scrollbar-thumb){background:#232527;border-radius:8px}
+::deep(pre.shiki::-webkit-scrollbar-track){background:transparent}
+
 </style>
