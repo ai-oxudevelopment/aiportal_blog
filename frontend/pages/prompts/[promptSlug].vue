@@ -21,7 +21,7 @@
             </div>
             <button
               @click="handlePromptTry?.()"
-              class="absolute top-6 right-8 flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/80 text-gray-200 border border-gray-700/70 shadow-sm backdrop-blur-sm opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 hover:bg-gray-700/80 hover:text-blue-300"
+              class="prompt-action-btn absolute top-6 right-8 flex items-center gap-2 backdrop-blur-sm opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200"
               title="Попробовать в чате"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,7 +32,7 @@
             <div class="absolute bottom-6 right-6 flex space-x-3">
               <button
                 @click="handleCopy"
-                class="p-3 bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl transition-all duration-200 group shadow-lg hover:shadow-xl backdrop-blur-sm border border-gray-700/50"
+                class="prompt-secondary-btn bg-gray-800/80 text-gray-300 hover:text-white transition-all duration-200 group border border-gray-700/50"
                 :title="copied ? 'Copied!' : 'Copy to clipboard'"
               >
                 <svg v-if="copied" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@
               </button>
               <button
                 @click="handleShare"
-                class="p-3 bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl transition-all duration-200 group shadow-lg hover:shadow-xl backdrop-blur-sm border border-gray-700/50"
+                class="prompt-secondary-btn bg-gray-800/80 text-gray-300 hover:text-white transition-all duration-200 group border border-gray-700/50"
                 title="Share prompt"
               >
                 <svg class="h-5 w-5 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@
               </button>
               <button
                 @click="handleDownload"
-                class="p-3 bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl transition-all duration-200 group shadow-lg hover:shadow-xl backdrop-blur-sm border border-gray-700/50"
+                class="prompt-secondary-btn bg-gray-800/80 text-gray-300 hover:text-white transition-all duration-200 group border border-gray-700/50"
                 title="Download prompt"
               >
                 <svg class="h-5 w-5 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@
           </div>
 
           <div class="mt-8 text-center">
-            <button class="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-200 hover:shadow-lg">
+            <button class="cta-primary-btn">
               Смотреть все
             </button>
           </div>
@@ -92,16 +92,22 @@
       
       </main>
     </div>
+
+    <AiChatForm />
 </div>
 
 </template>
 
 <script setup lang="ts">
+import AiChatForm from '~/components/research/AiChatForm.vue';
 import { useFetchArticles } from '~/composables/useFetchArticles';
 import { useFetchOneArticle } from '~/composables/useFetchOneArticle';
 import { useRoute } from 'vue-router';
-import { onMounted } from 'vue';
+import { onMounted, ref, computed } from 'vue';
+import { useAsyncData } from 'nuxt/app';
 import PromptCard from '~/components/prompt/PromptCard.vue';
+import type { Ref } from 'vue';
+import type { PromptPreview } from '~/types/article';
 
 
 // main content
@@ -115,7 +121,10 @@ const categoryName = computed(() => promptItem.value?.categories?.[0]?.name || '
 const categoryId = computed(() => promptItem.value?.categories?.data?.[0]?.id);
 
 
-const { articles: relevantPrompts, loading, fetchArticles } = useFetchArticles();
+const fetchCtx = useFetchArticles();
+const relevantPrompts = fetchCtx.articles as unknown as Ref<PromptPreview[]>;
+const loading = fetchCtx.loading;
+const fetchArticles = fetchCtx.fetchArticles;
 
 onMounted(() => {
   const filter = categoryId.value ? { categories: { id: categoryId.value } } : { categories: { $null: true } };
