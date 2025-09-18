@@ -21,7 +21,7 @@
         <button
           class="h-8 px-4 rounded-full bg-gradient-to-r from-pink-500 via-orange-500 to-blue-500 hover:from-pink-600 hover:via-orange-600 hover:to-blue-600 border-0 text-white text-xs font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-gradient-chaos"
         >
-          О продукте
+          <a href="https://aiworkplace.ru" target="_blank" rel="noopener noreferrer">О продукте</a>
         </button>
       </div>
     </div>

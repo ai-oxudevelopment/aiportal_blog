@@ -10,6 +10,7 @@
         :uploadedFiles="sampleUploadedFiles"
         :additionalText="sampleAdditionalText"
         :files="sampleFiles"
+        return_to="/"
       />
 
       <DialogSection
@@ -21,6 +22,7 @@
         :uploadedFiles="sampleUploadedFiles"
         :additionalText="sampleAdditionalText"
         :files="sampleFiles"
+        return_to="/"
       />
 
       <FullAiChat
@@ -45,6 +47,7 @@ const sampleUploadedFiles = ref(null);
 const sampleAdditionalText = ref(null);
 const sampleFiles = ref(null);
 const isLoading = ref(false);
+const return_to = ref('/');
 
 
 const { samplePrompt: promptData } = useSamplePrompt();

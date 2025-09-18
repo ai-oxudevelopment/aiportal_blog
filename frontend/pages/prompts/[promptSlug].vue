@@ -73,7 +73,7 @@
             </span>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             <PromptCard 
               v-for="prompt in relevantPrompts.slice(0, 6)" 
               :key="prompt.id" 
@@ -82,72 +82,74 @@
             />
           </div>
 
-          <div class="mt-8 text-center">
-            <button class="cta-primary-btn">
-              Смотреть все
-            </button>
-          </div>
-
         </div>
       
       </main>
+
     </div>
 
-    <SimpleAiChat
-      :static-text="'Попробовать в чате...'"
-    />
 </div>
+
+  <SimpleAiChat
+    :static-text="'Попробовать в чате...'"
+    :default-text="'Эффективно решаю задачи'"
+    />
 
 </template>
 
 <script setup lang="ts">
-import SimpleAiChat from '~/components/research/SimpleAiChat.vue';
-import { useFetchArticles } from '~/composables/useFetchArticles';
-import { useFetchOneArticle } from '~/composables/useFetchOneArticle';
-import { useRoute } from 'vue-router';
-import { onMounted, ref, computed } from 'vue';
-import { useAsyncData } from 'nuxt/app';
-import PromptCard from '~/components/prompt/PromptCard.vue';
-import type { Ref } from 'vue';
-import type { PromptPreview } from '~/types/article';
+import SimpleAiChat from '~/components/research/SimpleAiChat.vue'
+import PromptCard from '~/components/prompt/PromptCard.vue'
+import { useFetchArticles } from '~/composables/useFetchArticles'
+import { useFetchOneArticle } from '~/composables/useFetchOneArticle'
+import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, watch } from 'vue'
+import { useAsyncData } from 'nuxt/app'
+import type { Ref } from 'vue'
+import type { PromptPreview } from '~/types/article'
 
+const route = useRoute()
+const router = useRouter()
 
-// main content
-const slug = useRoute().params.promptSlug;
+const copied = ref(false)
+
+const slug = computed(() => route.params.promptSlug as string)
+
 const { fetchArticle } = useFetchOneArticle()
-const { data: prompt, pending, error } = await useAsyncData('article', () => fetchArticle(slug))
-const promptItem = computed(() => prompt.value?.data?.[0]);
-const promptTitle = computed(() => promptItem.value?.title);
-const promptContent = computed(() => promptItem.value?.body);
-const categoryName = computed(() => promptItem.value?.categories?.[0]?.name || 'без категорий');
-const categoryId = computed(() => promptItem.value?.categories?.data?.[0]?.id);
+const { data: prompt, pending, error } = useAsyncData(
+  'article',
+  () => fetchArticle(slug.value),
+  { watch: [slug] }
+)
 
+const promptItem = computed(() => prompt.value?.data?.[0] ?? null)
+const promptTitle = computed(() => promptItem.value?.title ?? '')
+const promptContent = computed(() => promptItem.value?.body ?? '')
+const categoryId = computed(() => promptItem.value?.categories?.data?.[0]?.id ?? null)
 
-const fetchCtx = useFetchArticles();
-const relevantPrompts = fetchCtx.articles as unknown as Ref<PromptPreview[]>;
-const loading = fetchCtx.loading;
-const fetchArticles = fetchCtx.fetchArticles;
+const fetchCtx = useFetchArticles()
+const relevantPrompts = fetchCtx.articles as Ref<PromptPreview[]>
+const { loading, fetchArticles } = fetchCtx
 
-onMounted(() => {
-  const filter = categoryId.value ? { categories: { id: categoryId.value } } : { categories: { $null: true } };
-  fetchArticles(filter);
-});
+const filterCategory = () => {
+  fetchArticles(
+    categoryId.value
+      ? { categories: { id: categoryId.value } }
+      : { categories: { $null: true } }
+  )
+}
 
-
-// Action handlers
-const copied = ref(false);
+watch([categoryId, slug], filterCategory, { immediate: true })
 
 const handleCopy = async () => {
   try {
-    await navigator.clipboard.writeText(promptContent.value || '');
-    copied.value = true;
-    setTimeout(() => {
-      copied.value = false;
-    }, 2000);
+    await navigator.clipboard.writeText(promptContent.value)
+    copied.value = true
+    setTimeout(() => (copied.value = false), 2000)
   } catch (err) {
-    console.error('Failed to copy text: ', err);
+    console.error('Failed to copy text:', err)
   }
-};
+}
 
 const handleShare = async () => {
   if (navigator.share) {
@@ -156,43 +158,41 @@ const handleShare = async () => {
         title: promptTitle.value,
         text: promptContent.value,
         url: window.location.href,
-      });
+      })
     } catch (err) {
-      console.error('Error sharing: ', err);
+      console.error('Error sharing:', err)
     }
   } else {
-    // Fallback: copy URL to clipboard
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(window.location.href)
     } catch (err) {
-      console.error('Failed to copy URL: ', err);
+      console.error('Failed to copy URL:', err)
     }
   }
-};
+}
 
 const handleDownload = () => {
-  const content = promptContent.value || '';
-  const blob = new Blob([content], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${promptTitle.value || 'prompt'}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-};
+  const blob = new Blob([promptContent.value], { type: 'text/plain' })
+  const url = URL.createObjectURL(blob)
+  const a = Object.assign(document.createElement('a'), {
+    href: url,
+    download: `${promptTitle.value || 'prompt'}.txt`,
+  })
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
 
-const handlePromptTry = () => {
-  handleCopy();
-};
+const handlePromptTry = handleCopy
 
-const handleViewPrompt = (prompt: any) => {
-  // This function is not implemented in the original script,
-  // but it's called by PromptCard.vue.
-  // For now, we'll just log the prompt.
-};
+const goToPrompt = (s: string) => {
+  if (s) router.push(`/prompts/${encodeURIComponent(s)}`)
+}
 
+const handleViewPrompt = (prompt: { slug?: string }) => {
+  if (prompt.slug) goToPrompt(prompt.slug)
+}
 
 </script>
 

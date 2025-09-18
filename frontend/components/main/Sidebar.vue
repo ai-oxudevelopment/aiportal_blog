@@ -7,14 +7,14 @@
     <nav class="flex flex-col h-full px-6 py-8">
       <ul class="space-y-2">
         <li v-for="(item, idx) in items" :key="item">
-          <a
-            :href="item === 'News' ? '/prompts/sample-prompt' : '#'"
+          <NuxtLink
+            :to="'/'"
             :class="`flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors rounded-md ${
               idx === items.length - 1 ? 'bg-white/10 text-white' : ''
             }`"
           >
             {{ item }}
-          </a>
+          </NuxtLink>
         </li>
       </ul>
     </nav>
@@ -27,12 +27,10 @@ defineProps({
 });
 
 const items = [
-  "Research",
-  "Safety",
-  "For Business",
-  "For Developers",
-  "Stories",
-  "Company",
-  "News"
+  "Инструкции",
+  "AI-агенты",
+  "MCP-сервисы",
+  "Исследования",
+  "Кейсы внедрения"
 ];
 </script>

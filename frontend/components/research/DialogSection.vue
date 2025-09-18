@@ -5,12 +5,17 @@
       <!-- Header -->
       <div class="mb-4">
         <div class="flex flex-col">
-          <a class="flex items-center gap-2 text-base text-neutral-400 transition-colors hover:text-white mb-3" href="#">
+            <NuxtLink
+              :to="return_to"
+              class="flex items-center gap-2 text-base text-neutral-400 transition-colors hover:text-white mb-3"
+            >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
               <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
             </svg>
             return to {{ repository }}
-          </a>
+
+          </NuxtLink>
+
           <div class="min-w-0 flex-1">
             <div class="flex flex-col items-start gap-2 text-white">
               <span class="text-xl xl:text-2xl w-full [overflow-wrap:break-word] group">
@@ -118,7 +123,6 @@ import { ChevronRight, Copy } from 'lucide-vue-next';
 import { codeToHtml } from 'shiki';
 
 
-
 type CodeFile = {
   id: string;
   path: string;
@@ -133,6 +137,7 @@ const props = defineProps<{
   thoughtProcess: string;
   prompt?: string | null;
   uploadedFiles?: Array<unknown> | null;
+  return_to?: string | '/';
   additionalText?: string | null;
   files?: Array<CodeFile> | null;
 }>();
@@ -143,7 +148,6 @@ const isPromptExpanded = ref(false);
 const isFilesExpanded = ref(false);
 const isAdditionalTextExpanded = ref(false);
 const expandedFiles = ref<Record<string, boolean>>({});
-
 
 const highlightedContent = ref<string>('');
 
