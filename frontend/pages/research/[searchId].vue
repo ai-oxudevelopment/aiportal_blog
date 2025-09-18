@@ -22,6 +22,12 @@
         :additionalText="sampleAdditionalText"
         :files="sampleFiles"
       />
+
+      <FullAiChat
+        :is-loading="isLoading"
+        placeholder="Попробуйте в действии"
+        @submit="handleChatSubmit"
+      />
     </div>
   </div>
 </template>
@@ -29,6 +35,7 @@
 
 <script setup>
 import DialogSection from '@/components/research/DialogSection.vue';
+import FullAiChat from '@/components/research/FullAiChat.vue';
 import { useSamplePrompt, useSampleUploadedFiles, useSampleAdditionalText, useSampleFiles, useSampleAiResponse } from '@/composables/mockApi';
 import { ref } from 'vue';
 
@@ -37,6 +44,8 @@ const samplePrompt = ref(null);
 const sampleUploadedFiles = ref(null);
 const sampleAdditionalText = ref(null);
 const sampleFiles = ref(null);
+const isLoading = ref(false);
+
 
 const { samplePrompt: promptData } = useSamplePrompt();
 const { sampleUploadedFiles: uploadedFilesData } = useSampleUploadedFiles();
@@ -48,6 +57,17 @@ samplePrompt.value = promptData.value;
 sampleUploadedFiles.value = uploadedFilesData.value;
 sampleAdditionalText.value = additionalTextData.value;
 sampleFiles.value = filesData.value;
+
+// Handle chat form submission
+const handleChatSubmit = (data) => {
+  console.log('Chat form submitted:', data)
+  
+  // Simulate loading
+  isLoading.value = true
+  setTimeout(() => {
+    isLoading.value = false
+  }, 2000)
+}
 
 // Асинхронные данные загружаем отдельно
 (async () => {

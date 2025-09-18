@@ -1,13 +1,13 @@
 export default defineNuxtConfig({
   ssr: false,
+  css: [
+    'github-markdown-css/github-markdown-light.css',  // либо github-markdown-dark.css
+  ],
   modules: [
     "nuxt-markdown-render",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/strapi",
     "@pinia/nuxt",
-    "@nuxt/devtools",
-    "@nuxtjs/mdc",
-    //"nuxt-socket-io",
   ],
   devtools: {
     enabled: false,
@@ -50,6 +50,8 @@ export default defineNuxtConfig({
   },
   css: [
     "~/assets/css/tailwind.css",
+    "~/assets/css/perplexity-theme.css",
+    "~/assets/css/iridescent-accents.css",
     "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.min.css",
   ],

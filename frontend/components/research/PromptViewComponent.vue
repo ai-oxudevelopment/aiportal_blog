@@ -47,7 +47,4 @@ const emit = defineEmits<{ (e: 'onToggle'): void }>();
 function emitToggle(): void {
   emit('onToggle');
 }
-
-console.log('Prompt View:', props.content);
-
 </script>

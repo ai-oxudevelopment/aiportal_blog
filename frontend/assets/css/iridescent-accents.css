@@ -1,0 +1,260 @@
+/* Iridescent Accent Design System */
+/* This file contains the CSS for dynamic iridescent bright color accents */
+/* while maintaining the minimalist black theme throughout the platform */
+
+/* ========================================
+   IRIDESCENT COLOR VARIABLES
+   ======================================== */
+
+:root {
+  /* Primary Iridescent Gradient Colors - Standard Tailwind */
+  --iridescent-pink: #ec4899;
+  --iridescent-orange: #f97316;
+  --iridescent-blue: #3b82f6;
+  
+  /* Hover State Colors */
+  --iridescent-pink-hover: #db2777;
+  --iridescent-orange-hover: #ea580c;
+  --iridescent-blue-hover: #2563eb;
+  
+  /* Primary Gradient Definitions */
+  --iridescent-primary: linear-gradient(45deg, var(--iridescent-pink), var(--iridescent-orange), var(--iridescent-blue));
+  --iridescent-primary-hover: linear-gradient(45deg, var(--iridescent-pink-hover), var(--iridescent-orange-hover), var(--iridescent-blue-hover));
+  
+  /* Secondary Gradients (Subtle) */
+  --iridescent-secondary: linear-gradient(45deg, rgba(236, 72, 153, 0.2), rgba(249, 115, 22, 0.2), rgba(59, 130, 246, 0.2));
+  --iridescent-tertiary: linear-gradient(45deg, rgba(236, 72, 153, 0.1), rgba(249, 115, 22, 0.1), rgba(59, 130, 246, 0.1));
+}
+
+/* ========================================
+   KEYFRAME ANIMATIONS
+   ======================================== */
+
+@keyframes gradient-chaos {
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+
+@keyframes gradient-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes iridescent-glow {
+  0%, 100% {
+    box-shadow: 
+      0 4px 12px rgba(236, 72, 153, 0.15),
+      0 2px 6px rgba(249, 115, 22, 0.15),
+      0 1px 3px rgba(59, 130, 246, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 8px 24px rgba(236, 72, 153, 0.25),
+      0 4px 12px rgba(249, 115, 22, 0.25),
+      0 2px 6px rgba(59, 130, 246, 0.25);
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Primary Iridescent Button - Clean Style */
+.btn-iridescent-primary {
+  background: linear-gradient(to right, #ec4899, #f97316, #3b82f6);
+  background-size: 200% 200%;
+  color: white;
+  border: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  animation: gradient-chaos 3s ease infinite;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-iridescent-primary:hover {
+  background: linear-gradient(to right, #db2777, #ea580c, #2563eb);
+  transform: scale(1.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.btn-iridescent-primary:disabled {
+  animation: none;
+  background-size: 100% 100%;
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-iridescent-primary:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Secondary Iridescent Button (Subtle) */
+.btn-iridescent-secondary {
+  background: transparent;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.btn-iridescent-secondary:hover {
+  background: var(--iridescent-tertiary);
+  border-color: rgba(236, 72, 153, 0.5);
+  box-shadow: 
+    0 4px 12px rgba(236, 72, 153, 0.1),
+    0 2px 6px rgba(249, 115, 22, 0.1),
+    0 1px 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Iridescent Background Active State */
+.bg-iridescent-active {
+  background: var(--iridescent-secondary);
+  background-size: 200% 200%;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  animation: gradient-chaos 3s ease infinite;
+}
+
+/* Iridescent Text Effect */
+.text-iridescent {
+  background: var(--iridescent-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-chaos 3s ease infinite;
+}
+
+/* Animation Classes */
+.animate-gradient-chaos {
+  background-size: 200% 200%;
+  animation: gradient-chaos 3s ease infinite;
+}
+
+.animate-gradient-pulse {
+  animation: gradient-pulse 2s ease-in-out infinite;
+}
+
+.animate-iridescent-glow {
+  animation: iridescent-glow 2s ease-in-out infinite;
+}
+
+/* Shadow Effects - Standard Tailwind */
+.shadow-iridescent {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-iridescent-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-iridescent-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC CLASSES
+   ======================================== */
+
+/* Chat Form Submit Button - Clean Reference Style */
+.chat-submit-btn {
+  @apply h-8 px-4 rounded-full;
+  @apply bg-gradient-to-r from-pink-500 via-orange-500 to-blue-500;
+  @apply hover:from-pink-600 hover:via-orange-600 hover:to-blue-600;
+  @apply border-0 text-white text-xs font-medium;
+  @apply transition-all duration-300 transform hover:scale-105;
+  @apply animate-gradient-chaos;
+  background-size: 200% 200%;
+}
+
+/* Mode Selector Active State */
+.mode-selector-active {
+  @apply bg-iridescent-active;
+  @apply rounded-lg shadow-lg;
+  @apply transition-all duration-300;
+}
+
+/* Prompt Action Button */
+.prompt-action-btn {
+  @apply btn-iridescent-primary;
+  @apply px-3 py-2 rounded-lg;
+  @apply text-xs font-medium;
+  @apply shadow-lg hover:shadow-xl;
+}
+
+/* Prompt Secondary Button */
+.prompt-secondary-btn {
+  @apply btn-iridescent-secondary;
+  @apply p-3 rounded-xl;
+  @apply shadow-lg hover:shadow-xl;
+  @apply backdrop-blur-sm;
+}
+
+/* Primary CTA Button */
+.cta-primary-btn {
+  @apply btn-iridescent-primary;
+  @apply px-8 py-3 rounded-xl;
+  @apply font-semibold;
+  @apply shadow-lg hover:shadow-xl;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient-chaos,
+  .animate-gradient-pulse,
+  .animate-iridescent-glow {
+    animation: none;
+  }
+  
+  .btn-iridescent-primary:hover,
+  .btn-iridescent-secondary:hover {
+    transform: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .btn-iridescent-primary:hover,
+  .btn-iridescent-secondary:hover {
+    transform: scale(1.02); /* Reduced scale for mobile */
+  }
+  
+  .shadow-iridescent-lg,
+  .shadow-iridescent-xl {
+    box-shadow: 
+      0 4px 12px rgba(236, 72, 153, 0.15),
+      0 2px 6px rgba(249, 115, 22, 0.15),
+      0 1px 3px rgba(59, 130, 246, 0.15);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-iridescent-primary {
+    border: 2px solid white;
+  }
+  
+  .btn-iridescent-secondary {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Dark mode specific adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --iridescent-secondary: linear-gradient(45deg, rgba(236, 72, 153, 0.15), rgba(249, 115, 22, 0.15), rgba(59, 130, 246, 0.15));
+    --iridescent-tertiary: linear-gradient(45deg, rgba(236, 72, 153, 0.08), rgba(249, 115, 22, 0.08), rgba(59, 130, 246, 0.08));
+  }
+}

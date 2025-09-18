@@ -93,13 +93,15 @@
       </main>
     </div>
 
-    <AiChatForm />
+    <SimpleAiChat
+      :static-text="'Попробовать в чате...'"
+    />
 </div>
 
 </template>
 
 <script setup lang="ts">
-import AiChatForm from '~/components/research/AiChatForm.vue';
+import SimpleAiChat from '~/components/research/SimpleAiChat.vue';
 import { useFetchArticles } from '~/composables/useFetchArticles';
 import { useFetchOneArticle } from '~/composables/useFetchOneArticle';
 import { useRoute } from 'vue-router';
