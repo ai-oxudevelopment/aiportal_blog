@@ -9,19 +9,6 @@
             {{ prompt.description }}
           </p>
         </code>
-
-        <!-- Hover overlay: Try in chat -->
-        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-900/0 to-zinc-900/0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
-        <button
-          @click.stop="handleTryPrompt"
-          class="pointer-events-auto absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-zinc-800/80 text-gray-200 border border-zinc-700/70 shadow-sm backdrop-blur-sm opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 hover:bg-zinc-700/80 hover:text-blue-300"
-          title="Попробовать в чате"
-        >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          <span class="text-[10px] font-medium hidden sm:inline">Попробовать</span>
-        </button>
       </div>
 
       <!-- Title and Technologies -->
@@ -47,6 +34,7 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
+
 import type { PromptPreview, Category } from '~/types/article';
 
 const props = defineProps<{ prompt: PromptPreview }>();
@@ -67,7 +55,8 @@ const handleTryPrompt = (): void => {
 const goToPrompt = (): void => {
   const s = props.prompt.slug;
   if (!s) return;
-  router.push({ path: `/prompts/${encodeURIComponent(s)}` });
+  navigateTo(`/prompts/${encodeURIComponent(s)}`);
+
 };
 
 </script>

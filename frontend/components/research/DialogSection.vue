@@ -5,12 +5,17 @@
       <!-- Header -->
       <div class="mb-4">
         <div class="flex flex-col">
-          <a class="flex items-center gap-2 text-base text-neutral-400 transition-colors hover:text-white mb-3" href="#">
+            <NuxtLink
+              :to="return_to"
+              class="flex items-center gap-2 text-base text-neutral-400 transition-colors hover:text-white mb-3"
+            >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
               <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
             </svg>
             return to {{ repository }}
-          </a>
+
+          </NuxtLink>
+
           <div class="min-w-0 flex-1">
             <div class="flex flex-col items-start gap-2 text-white">
               <span class="text-xl xl:text-2xl w-full [overflow-wrap:break-word] group">
@@ -56,7 +61,11 @@
             </div>
           </div>
 
-          <div v-if="content" v-html="content"></div>
+          <div v-if="content" class="markdown-content">
+            <div class="prose prose-invert max-w-none markdown-body">
+              <NuxtMarkdown :source="content" class="markdown-content" />
+            </div>
+          </div>
 
           <!-- Action Buttons -->
           <div class="mt-4 flex justify-end gap-2">
@@ -91,42 +100,12 @@
 
           <!-- Code Files -->
           <div v-for="file in (files || [])" :key="file.id" class="flex flex-col gap-2 scroll-smooth rounded-md">
-            <div class="relative w-full p-0 ring-1 ring-neutral-800 rounded-sm">
-              <!-- File Header -->
-              <div class="bg-neutral-800 sticky top-0 z-10 flex w-full items-center justify-between px-3 py-1.5 text-sm text-neutral-300 rounded-t-sm">
-                <div class="flex min-w-0 grow items-center gap-2">
-                  <button @click="toggleFile(file.id)">
-                    <ChevronRight :class="`h-3 w-3 transition-transform ${expandedFiles[file.id] ? 'rotate-90' : ''}`" />
-                  </button>
-                  <div class="size-4 flex-shrink-0" style="fill: '#a074c4'">
-                    <svg viewBox="0 0 32 32">
-                      <path fill-rule="evenodd" d="M17.1 19.3c-.5 0-.8.1-1.1.1h-1.8c.4-4.3.7-8.5 1.1-12.8 1.2 0 2.2-.1 3.2 0 .3 0 .7.5.6.8-.3 2.3-.8 4.7-1.2 7-.2 1.6-.5 3.2-.8 4.9zm.4 4c.1 1.1-.8 2.1-2.1 2.2-1.3.1-2.5-.7-2.6-1.8-.1-1.2.8-2.1 2.2-2.2 1.4-.1 2.4.6 2.5 1.8z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                  <a href="#" class="cursor-pointer truncate text-neutral-500 hover:underline">{{ repository }}</a>
-                  <a href="#" class="cursor-pointer truncate text-white hover:underline">{{ file.path }}</a>
-                  <button>
-                    <Copy class="h-4 w-4 text-neutral-500" />
-                  </button>
-                </div>
-              </div>
-
-              <!-- File Content -->
-              <div v-if="expandedFiles[file.id]" class="overflow-auto scroll-smooth">
-                <div class="relative w-full min-w-max overflow-hidden bg-neutral-800/80">
-                  <pre class="text-xs p-4 text-neutral-300 font-mono leading-relaxed">
-                    <code>
-                      <div v-for="(line, index) in file.content.split('\n')" :key="index" class="flex">
-                        <span class="inline-block min-w-[2.25em] pr-4 text-right select-none text-neutral-500 text-xs">
-                          {{ file.lineStart + index }}
-                        </span>
-                        <span>{{ line }}</span>
-                      </div>
-                    </code>
-                  </pre>
-                </div>
-              </div>
-            </div>
+            <CodeFileComponent 
+              :file="file"
+              :repository="repository" 
+              :expandedFiles="expandedFiles"
+              @onToggle="toggleFile"
+            />
           </div>
         </div>
       </div>
@@ -137,9 +116,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import PromptViewComponent from './PromptViewComponent.vue';
+import CodeFileComponent from './CodeFilePreview.vue'; 
 // import FileUploadedComponent from './FileUploadedComponent.vue';
 // import TextViewComponent from './TextViewComponent.vue';
 import { ChevronRight, Copy } from 'lucide-vue-next';
+import { codeToHtml } from 'shiki';
+
+
+type CodeFile = {
+  id: string;
+  path: string;
+  content: string;
+  lineStart: number;
+};
 
 const props = defineProps<{
   query: string;
@@ -148,8 +137,9 @@ const props = defineProps<{
   thoughtProcess: string;
   prompt?: string | null;
   uploadedFiles?: Array<unknown> | null;
+  return_to?: string | '/';
   additionalText?: string | null;
-  files?: Array<unknown> | null;
+  files?: Array<CodeFile> | null;
 }>();
 
 const promptContent = ref(props.prompt);
@@ -159,7 +149,20 @@ const isFilesExpanded = ref(false);
 const isAdditionalTextExpanded = ref(false);
 const expandedFiles = ref<Record<string, boolean>>({});
 
+const highlightedContent = ref<string>('');
 
+async function renderHighlight() {
+  if (props.content) {
+    highlightedContent.value = await codeToHtml(props.content, {
+      lang: 'md',
+      theme: 'github-dark',
+    });
+  }
+}
+
+onMounted(async () => {
+  await renderHighlight();
+});
 
 function setIsThoughtProcessOpen(value: boolean) {
   isThoughtProcessOpen.value = value;
@@ -193,3 +196,43 @@ function handleShare() {
   // Implement share logic
 }
 </script>
+
+<style> 
+
+.markdown-body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background: transparent;
+  color: #e5e5e5;
+}
+
+.markdown-body pre {
+  background-color: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 16px;
+  overflow: auto;
+}
+
+.markdown-body code {
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-size: 14px;
+  background-color: rgba(110, 118, 129, 0.4);
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: #e5e5e5;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+</style>
