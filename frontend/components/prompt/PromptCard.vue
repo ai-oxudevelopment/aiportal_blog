@@ -56,7 +56,6 @@ const goToPrompt = (): void => {
   const s = props.prompt.slug;
   if (!s) return;
   navigateTo(`/prompts/${encodeURIComponent(s)}`);
-
 };
 
 </script>
