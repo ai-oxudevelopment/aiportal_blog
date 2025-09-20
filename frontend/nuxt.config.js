@@ -16,12 +16,12 @@ export default defineNuxtConfig({
     sockets: [
       {
         name: "main",
-        url: process.env.STRAPI_URL || "http://127.0.0.1:1337",
+        url: process.env.STRAPI_URL,
       },
     ],
   },
   strapi: {
-    url: process.env.STRAPI_URL || "http://127.0.0.1:1337",
+    url: process.env.STRAPI_URL,
     prefix: "/api",
     version: "v5",
     cookieName: "strapi_jwt",
@@ -37,11 +37,11 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     strapi: { // nuxt/strapi options available server-side
-      url: process.env.STRAPI_URL || "http://127.0.0.1:1337"
+      url: process.env.STRAPI_URL
     },
     public: {
       strapi: { // nuxt/strapi options available client-side
-        url: process.env.STRAPI_URL || "http://127.0.0.1:1337"
+        url: process.env.STRAPI_URL
       }
     }
   },
