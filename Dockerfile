@@ -1,15 +1,15 @@
 # syntax = docker/dockerfile:1
 
-# Указываем необходимые build-args
-ARG STRAPI_URL
-ENV STRAPI_URL=$STRAPI_URL
-
 # Stage 1: Build the application
 FROM node:20-slim AS build
 WORKDIR /frontend
 RUN corepack enable
 COPY frontend/package.json frontend/yarn.lock ./
 RUN yarn install --frozen-lockfile
+
+# Указываем необходимые build-args
+ARG STRAPI_URL
+ENV STRAPI_URL=$STRAPI_URL
 
 COPY frontend/ .
 COPY .env ./frontend/.env
