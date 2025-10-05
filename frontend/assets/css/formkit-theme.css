@@ -1,0 +1,270 @@
+/* ========================================
+   FORMKIT GLOBAL THEME INTEGRATION
+   ======================================== */
+
+/* FormKit Base Styling - Integrates with Perplexity Theme */
+
+/* FormKit Wrapper and Structure */
+.formkit-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+/* Labels */
+.formkit-label {
+  @apply text-sm font-medium mb-2 block;
+  color: oklch(var(--foreground-color)) !important;
+}
+
+/* Help Text */
+.formkit-help {
+  @apply text-xs mt-1;
+  color: oklch(var(--foreground-quiet-color)) !important;
+}
+
+/* Error Messages */
+.formkit-messages {
+  @apply text-xs mt-1;
+}
+
+.formkit-message {
+  color: oklch(var(--negative-color)) !important;
+}
+
+/* Input Fields - Text, Email, Password, Number, Textarea */
+.formkit-input[type="text"],
+.formkit-input[type="email"],
+.formkit-input[type="password"],
+.formkit-input[type="number"],
+.formkit-input[type="tel"],
+.formkit-input[type="url"],
+.formkit-input[type="search"],
+.formkit-input[type="date"],
+.formkit-input[type="datetime-local"],
+.formkit-input[type="time"],
+.formkit-textarea {
+  @apply w-full px-4 py-3 rounded-lg border transition-all duration-200;
+  background-color: oklch(var(--background-raised-color)) !important;
+  border-color: oklch(var(--foreground-subtler-color)) !important;
+  color: oklch(var(--foreground-color)) !important;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.formkit-input[type="text"]::placeholder,
+.formkit-input[type="email"]::placeholder,
+.formkit-input[type="password"]::placeholder,
+.formkit-input[type="number"]::placeholder,
+.formkit-input[type="tel"]::placeholder,
+.formkit-input[type="url"]::placeholder,
+.formkit-input[type="search"]::placeholder,
+.formkit-textarea::placeholder {
+  color: oklch(var(--foreground-quiet-color)) !important;
+}
+
+.formkit-input[type="text"]:focus,
+.formkit-input[type="email"]:focus,
+.formkit-input[type="password"]:focus,
+.formkit-input[type="number"]:focus,
+.formkit-input[type="tel"]:focus,
+.formkit-input[type="url"]:focus,
+.formkit-input[type="search"]:focus,
+.formkit-input[type="date"]:focus,
+.formkit-input[type="datetime-local"]:focus,
+.formkit-input[type="time"]:focus,
+.formkit-textarea:focus {
+  outline: none !important;
+  border-color: oklch(var(--super-color)) !important;
+  box-shadow: 0 0 0 3px oklch(var(--super-color) / 0.15) !important;
+}
+
+.formkit-input[type="text"]:hover:not(:focus),
+.formkit-input[type="email"]:hover:not(:focus),
+.formkit-input[type="password"]:hover:not(:focus),
+.formkit-input[type="number"]:hover:not(:focus),
+.formkit-input[type="tel"]:hover:not(:focus),
+.formkit-input[type="url"]:hover:not(:focus),
+.formkit-input[type="search"]:hover:not(:focus),
+.formkit-input[type="date"]:hover:not(:focus),
+.formkit-input[type="datetime-local"]:hover:not(:focus),
+.formkit-input[type="time"]:hover:not(:focus),
+.formkit-textarea:hover:not(:focus) {
+  border-color: oklch(var(--foreground-subtler-color)) !important;
+}
+
+/* Select Dropdowns */
+.formkit-input[type="select"],
+select.formkit-input {
+  @apply w-full px-4 py-3 rounded-lg border transition-all duration-200 cursor-pointer;
+  background-color: oklch(var(--background-raised-color)) !important;
+  border-color: oklch(var(--foreground-subtler-color)) !important;
+  color: oklch(var(--foreground-color)) !important;
+  font-size: 14px;
+  line-height: 1.5;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.formkit-input[type="select"]:focus,
+select.formkit-input:focus {
+  outline: none !important;
+  border-color: oklch(var(--super-color)) !important;
+  box-shadow: 0 0 0 3px oklch(var(--super-color) / 0.15) !important;
+}
+
+/* Select Options */
+.formkit-input[type="select"] option,
+select.formkit-input option {
+  background-color: oklch(var(--background-raised-color)) !important;
+  color: oklch(var(--foreground-color)) !important;
+  padding: 8px 12px;
+}
+
+/* Checkboxes */
+.formkit-input[type="checkbox"] {
+  @apply w-5 h-5 rounded border-2 transition-all duration-200 cursor-pointer;
+  background-color: oklch(var(--background-raised-color)) !important;
+  border-color: oklch(var(--foreground-subtler-color)) !important;
+  color: oklch(var(--super-color)) !important;
+}
+
+.formkit-input[type="checkbox"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px oklch(var(--super-color) / 0.15) !important;
+}
+
+.formkit-input[type="checkbox"]:checked {
+  background-color: oklch(var(--super-color)) !important;
+  border-color: oklch(var(--super-color)) !important;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+}
+
+/* Radio Buttons */
+.formkit-input[type="radio"] {
+  @apply w-5 h-5 rounded-full border-2 transition-all duration-200 cursor-pointer;
+  background-color: oklch(var(--background-raised-color)) !important;
+  border-color: oklch(var(--foreground-subtler-color)) !important;
+}
+
+.formkit-input[type="radio"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px oklch(var(--super-color) / 0.15) !important;
+}
+
+.formkit-input[type="radio"]:checked {
+  background-color: oklch(var(--super-color)) !important;
+  border-color: oklch(var(--super-color)) !important;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+}
+
+/* File Inputs */
+.formkit-input[type="file"] {
+  @apply w-full px-4 py-3 rounded-lg border transition-all duration-200 cursor-pointer;
+  background-color: oklch(var(--background-raised-color)) !important;
+  border-color: oklch(var(--foreground-subtler-color)) !important;
+  color: oklch(var(--foreground-color)) !important;
+  font-size: 14px;
+}
+
+.formkit-input[type="file"]:focus {
+  outline: none !important;
+  border-color: oklch(var(--super-color)) !important;
+  box-shadow: 0 0 0 3px oklch(var(--super-color) / 0.15) !important;
+}
+
+/* Range Sliders */
+.formkit-input[type="range"] {
+  @apply w-full h-2 rounded-lg cursor-pointer;
+  background-color: oklch(var(--background-subtler-color)) !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.formkit-input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  @apply w-5 h-5 rounded-full cursor-pointer border-0;
+  background-color: oklch(var(--super-color)) !important;
+  box-shadow: 0 2px 6px oklch(var(--super-color) / 0.3);
+}
+
+.formkit-input[type="range"]::-moz-range-thumb {
+  @apply w-5 h-5 rounded-full cursor-pointer border-0;
+  background-color: oklch(var(--super-color)) !important;
+  box-shadow: 0 2px 6px oklch(var(--super-color) / 0.3);
+}
+
+.formkit-input[type="range"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px oklch(var(--super-color) / 0.15) !important;
+}
+
+/* FormKit Field Groups */
+.formkit-fieldset {
+  @apply border rounded-lg p-4;
+  border-color: oklch(var(--foreground-subtlest-color)) !important;
+  background-color: oklch(var(--background-subtler-color)) !important;
+}
+
+.formkit-legend {
+  @apply font-semibold px-2;
+  color: oklch(var(--foreground-color)) !important;
+  background-color: oklch(var(--background-raised-color)) !important;
+}
+
+/* FormKit Actions */
+.formkit-actions {
+  @apply mt-6 flex gap-3;
+}
+
+/* Enhanced Styling for Better UX */
+.formkit-outer {
+  @apply mb-6;
+}
+
+.formkit-inner {
+  @apply relative;
+}
+
+/* Loading States */
+.formkit-input:disabled {
+  @apply opacity-50 cursor-not-allowed;
+  background-color: oklch(var(--background-subtler-color)) !important;
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+  .formkit-input[type="text"],
+  .formkit-input[type="email"],
+  .formkit-input[type="password"],
+  .formkit-input[type="number"],
+  .formkit-input[type="tel"],
+  .formkit-input[type="url"],
+  .formkit-input[type="search"],
+  .formkit-input[type="date"],
+  .formkit-input[type="datetime-local"],
+  .formkit-input[type="time"],
+  .formkit-textarea,
+  .formkit-input[type="select"],
+  select.formkit-input,
+  .formkit-input[type="file"] {
+    border-width: 2px !important;
+  }
+  
+  .formkit-input[type="checkbox"],
+  .formkit-input[type="radio"] {
+    border-width: 3px !important;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .formkit-input,
+  .formkit-input[type="checkbox"],
+  .formkit-input[type="radio"],
+  .formkit-input[type="range"] {
+    transition: none !important;
+  }
+}

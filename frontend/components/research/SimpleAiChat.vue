@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-10 right-0 left-0 z-50 mx-auto h-[48px] w-[300px] transition [transition:transform_500ms,opacity_200ms,left_200ms,width_400ms] focus-within:w-[400px] hover:scale-105 focus-within:hover:scale-100 translate-y-0 opacity-100 pointer-events-auto">
+  <div class="fixed bottom-10 right-0 left-0 z-50 mx-auto h-[48px] w-[325px] transition [transition:transform_500ms,opacity_200ms,left_200ms,width_400ms] focus-within:w-[400px] hover:scale-105 focus-within:hover:scale-100 translate-y-0 opacity-100 pointer-events-auto">
     <form class="relative animate-gradient-background" @submit.prevent="handleSubmit">
       <label class="shadow-black-4 bg-gradient-animated relative flex w-full rounded-[24px] p-2 shadow-sm backdrop-blur-xl hover:shadow-iridescent transition-shadow duration-300 items-center">
         <input
@@ -24,7 +24,7 @@
         </div>
 
         <button
-          class="ml-2 flex-none rounded-full h-10 w-10 bg-offset text-foreground/80 hover:bg-offset-plus hover:text-foreground transition shadow-sm hover:shadow-iridescent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          class="ml-2 flex-none rounded-[20px] h-10 w-10 bg-offset text-foreground/80 hover:bg-offset-plus hover:text-foreground transition shadow-sm hover:shadow-iridescent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           type="submit"
           @click="handleSubmit"
           aria-label="Send prompt to Chat"
@@ -50,7 +50,7 @@ const props = defineProps({
   },
   previewText: {
     type: String,
-    default: 'Эффективно решаю задачи'
+    default: 'Создать AI-агента'
   }
 })
 

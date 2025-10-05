@@ -20,6 +20,7 @@
     "nuxt": "^3.2.0"
   },
   "dependencies": {
+    "@formkit/vue": "^1.6.9",
     "@mdi/font": "^7.1.96",
     "@nuxtjs/mdc": "^0.17.4",
     "@nuxtjs/strapi": "^2.1.1",
@@ -40,8 +41,5 @@
     "vite": "^7.1.5",
     "vue": "3",
     "vuetify": "^3.1.4"
-  },
-  "overrides": {
-    "vue": "latest"
   }
 }

@@ -52,6 +52,7 @@ export default defineNuxtConfig({
     "~/assets/css/tailwind.css",
     "~/assets/css/perplexity-theme.css",
     "~/assets/css/iridescent-accents.css",
+    "~/assets/css/formkit-theme.css",
     "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.min.css",
   ],
