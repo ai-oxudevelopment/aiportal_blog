@@ -1,6 +1,6 @@
 <template>
   <div class="fixed bottom-10 right-0 left-0 z-50 mx-auto h-[48px] w-[325px] transition [transition:transform_500ms,opacity_200ms,left_200ms,width_400ms] focus-within:w-[400px] hover:scale-105 focus-within:hover:scale-100 translate-y-0 opacity-100 pointer-events-auto">
-    <form class="relative animate-gradient-background" @submit.prevent="handleSubmit">
+    <form class="relative animate-gradient-background rounded-[24px]" @submit.prevent="handleSubmit">
       <label class="shadow-black-4 bg-gradient-animated relative flex w-full rounded-[24px] p-2 shadow-sm backdrop-blur-xl hover:shadow-iridescent transition-shadow duration-300 items-center">
         <input
           ref="editorRef"

@@ -74,7 +74,7 @@
           </div>
 
           <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            <PromptCard 
+            <EnhancedPromptCard 
               v-for="prompt in relevantPrompts.slice(0, 6)" 
               :key="prompt.id" 
               :prompt="prompt" 
@@ -105,7 +105,7 @@
 <script setup lang="ts">
 import SimpleAiChat from '~/components/research/SimpleAiChat.vue'
 import AiPlatformSelector from '~/components/research/AiPlatformSelector.vue'
-import PromptCard from '~/components/prompt/PromptCard.vue'
+import EnhancedPromptCard from '~/components/prompt/EnhancedPromptCard.vue'
 import { useFetchArticles } from '~/composables/useFetchArticles'
 import { useFetchOneArticle } from '~/composables/useFetchOneArticle'
 import { useRoute, useRouter } from 'vue-router'
@@ -131,8 +131,8 @@ const { data: prompt, pending, error } = useAsyncData(
 const promptItem = computed(() => prompt.value?.data?.[0] ?? null)
 const promptTitle = computed(() => promptItem.value?.title ?? '')
 const promptContent = computed(() => promptItem.value?.body ?? '')
-const categoryId = computed(() => promptItem.value?.categories?.data?.[0]?.id ?? null)
-const categoryName = computed(() => promptItem.value?.categories?.data?.[0]?.name ?? 'Uncategorized')
+const categoryId = computed(() => promptItem.value?.categories?.[0]?.id ?? null)
+const categoryName = computed(() => promptItem.value?.categories?.[0]?.name ?? 'Без категории')
 
 const fetchCtx = useFetchArticles()
 const relevantPrompts = fetchCtx.articles as Ref<PromptPreview[]>

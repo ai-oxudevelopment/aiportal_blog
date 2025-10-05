@@ -10,13 +10,18 @@ export function useFetchArticles() {
 
   const fetchArticles = async (filter = {}) => {
     loading.value = true;
+    error.value = null;
     try {
       const response = await find('articles', {
-        filters: { ...filter }, 
+        filters: { ...filter },
         fields: ['title', 'description', 'slug'],
         populate: ['categories']
       });
-      articles.value = response.data;
+      articles.value = response.data || [];
+    } catch (err) {
+      console.error('Failed to fetch articles:', err);
+      error.value = err;
+      articles.value = [];
     } finally {
       loading.value = false;
     }

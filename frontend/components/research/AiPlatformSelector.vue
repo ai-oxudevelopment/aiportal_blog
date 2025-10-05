@@ -1,6 +1,6 @@
 <template>
   <div class="fixed bottom-24 right-0 left-0 z-40 mx-auto h-[48px] w-[325px] transition-all duration-300 hover:w-[350px] hover:scale-105 translate-y-0 opacity-100 pointer-events-auto">
-    <div class="relative animate-gradient-background">
+    <div class="relative animate-gradient-background rounded-[24px]">
       <div class="shadow-black-4 bg-gradient-animated relative flex w-full rounded-[24px] p-2 shadow-sm backdrop-blur-xl hover:shadow-iridescent transition-shadow duration-300 items-center justify-between gap-2">
         
         <!-- ChatGPT Button -->
