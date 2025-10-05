@@ -4,11 +4,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10">
       <div class="text-center py-16 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-lg shadow-xl mb-8">
         <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white">
-          ChatGPT Prompts Library
+          Библиотека агентов
         </h1>
         <p class="mt-8 text-lg md:text-xl text-gray-400">
-          Browse hundreds of tested ChatGPT prompts for writing, coding, marketing, and creative projects.<br>
-          Find the right prompt to get better AI responses every time.
+          Добро пожаловать в aiworkplace — платформу для операционных сотрудников.<br>
+          Здесь вы найдете готовые инструкции для AI-моделей и сможете использовать их в своей работе.
         </p>
       </div>
 
