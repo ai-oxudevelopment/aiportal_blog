@@ -12,14 +12,26 @@ export function useFetchArticles() {
     loading.value = true;
     error.value = null;
     try {
-      const response = await find('articles', {
-        filters: { ...filter },
-        fields: ['title', 'description', 'slug'],
-        populate: ['categories']
-      });
+      // Use our server-side API endpoint to bypass CORS issues
+      const response = await $fetch('/api/articles');
+      
       articles.value = response.data || [];
+      
+      // Log for debugging
+      console.log(`Fetched ${articles.value.length} articles via server-side proxy`);
+      if (articles.value.length > 0) {
+        console.log('Sample article:', articles.value[0]);
+        
+        // Log available categories for debugging
+        const categories = new Set();
+        articles.value.forEach(article => {
+          article.categories?.forEach(cat => categories.add(cat.name));
+        });
+        console.log('Available categories:', Array.from(categories));
+      }
     } catch (err) {
-      console.error('Failed to fetch articles:', err);
+      console.error('Failed to fetch articles via proxy:', err);
+      console.error('Error details:', err.message || err);
       error.value = err;
       articles.value = [];
     } finally {
