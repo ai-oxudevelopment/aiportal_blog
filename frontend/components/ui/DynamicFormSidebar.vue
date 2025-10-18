@@ -35,7 +35,9 @@
                 @click="handleClose"
                 class="p-2 hover:bg-subtler rounded-lg transition-all duration-200 ml-4 flex-shrink-0"
               >
-                <X class="h-4 w-4 text-foreground" />
+                <svg class="h-4 w-4 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
           </slot>
@@ -185,9 +187,8 @@ import { ref, computed, watch, nextTick } from 'vue'
 import { FormKit } from '@formkit/vue'
 
 // Icons from lucide-vue-next
-import { 
-  Settings, 
-  X, 
+import {
+  Settings,
   AlertCircle,
   Loader2,
   FileText

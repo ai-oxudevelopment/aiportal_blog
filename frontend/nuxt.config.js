@@ -1,5 +1,17 @@
 export default defineNuxtConfig({
   ssr: false,
+  app: {
+    head: {
+      title: 'AI PORTAL | библиотека полезных инструментов для работы',
+      meta: [
+        { name: 'description', content: 'Библиотека полезных инструментов для работы с AI' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+      ]
+    }
+  },
   css: [
     'github-markdown-css/github-markdown-light.css',  // либо github-markdown-dark.css
   ],
