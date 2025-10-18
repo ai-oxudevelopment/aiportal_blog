@@ -19,16 +19,7 @@
                 <code>{{ promptContent }}</code>
               </pre>
             </div>
-            <button
-              @click="handlePromptTry?.()"
-              class="prompt-action-btn absolute top-6 right-8 flex items-center gap-2 backdrop-blur-sm opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200"
-              title="Попробовать в чате"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span class="text-xs font-medium">Попробовать</span>
-            </button>
+            
             <div class="absolute bottom-6 right-6 flex space-x-3">
               <button
                 @click="handleCopy"
@@ -95,10 +86,10 @@
     :prompt-text="promptContent"
   />
 
-  <SimpleAiChat
+  <!-- <SimpleAiChat
     :static-text="'Попробовать в чате...'"
     :default-text="'Эффективно решаю задачи'"
-    />
+    /> -->
 
 </template>
 
