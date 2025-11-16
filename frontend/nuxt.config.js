@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/strapi",
     "@pinia/nuxt",
+    "@artmizu/yandex-metrika-nuxt"
   ],
   devtools: {
     enabled: false,
