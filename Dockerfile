@@ -2,8 +2,10 @@
 FROM node:20-slim AS build
 WORKDIR /frontend
 RUN corepack enable
-COPY frontend/package.json frontend/yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc.yml ./
+RUN yarn install --immutable
+# Clear esbuild cache and force rebuild
+RUN rm -rf node_modules/esbuild/bin && yarn add esbuild --force
 
 # Указываем необходимые build-args
 ARG STRAPI_URL
