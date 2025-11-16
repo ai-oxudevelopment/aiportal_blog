@@ -1,5 +1,3 @@
-# syntax = docker/dockerfile:1
-
 # Stage 1: Build the application
 FROM node:20-slim AS build
 WORKDIR /frontend
@@ -12,7 +10,6 @@ ARG STRAPI_URL
 ENV STRAPI_URL=$STRAPI_URL
 
 COPY frontend/ .
-COPY .env ./frontend/.env
 
 RUN yarn build
 
