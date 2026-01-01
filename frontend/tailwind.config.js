@@ -8,6 +8,14 @@ module.exports = {
     "./nuxt.config.{js,ts}",
   ],
   theme: {
+    screens: {
+      'xs': '320px',  // iPhone SE, small phones
+      'sm': '375px',  // iPhone 12/13, standard phones
+      'md': '768px',  // iPad, tablets
+      'lg': '1024px', // desktop
+      'xl': '1280px', // large desktop
+      '2xl': '1536px' // extra large desktop
+    },
     extend: {
       animation: {
         'gradient-chaos': 'gradient-chaos 3s ease infinite',

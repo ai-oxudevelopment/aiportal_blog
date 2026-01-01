@@ -19,6 +19,16 @@ export default defineNuxtPlugin((nuxtApp) => {
     components: { ...components},
     directives,
      ...labs,
+    display: {
+      mobileBreakpoint: 'sm',
+      thresholds: {
+        xs: 0,
+        sm: 375,
+        md: 768,
+        lg: 1024,
+        xl: 1280,
+      }
+    },
   });
 
   nuxtApp.vueApp.use(vuetify);

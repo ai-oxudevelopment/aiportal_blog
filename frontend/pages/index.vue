@@ -1,21 +1,21 @@
 <template>
   <div class="min-h-screen bg-black text-gray-100 pt-16">
     <!-- Hero Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10">
-      <div class="text-center py-16 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-lg shadow-xl mb-8">
-        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white">
+    <div class="max-w-7xl mx-auto px-4 xs:px-6 sm:px-8 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10">
+      <div class="text-center py-8 xs:py-12 sm:py-16 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-lg shadow-xl mb-4 xs:mb-6 sm:mb-8">
+        <h1 class="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white">
           Библиотека агентов
         </h1>
-        <p class="mt-8 text-lg md:text-xl text-gray-400">
-          Добро пожаловать в aiworkplace — платформу для операционных сотрудников.<br>
+        <p class="mt-4 xs:mt-6 sm:mt-8 text-base xs:text-lg sm:text-xl text-gray-400">
+          Добро пожаловать в aiworkplace — платформу для операционных сотрудников.<br class="hidden xs:block">
           Здесь вы найдете готовые инструкции для AI-моделей и сможете использовать их в своей работе.
         </p>
       </div>
 
       <!-- Main Layout -->
-      <div class="flex gap-8">
-        <!-- Categories Sidebar -->
-        <aside class="w-64 flex-shrink-0 hidden lg:block">
+      <div class="flex flex-col md:flex-row gap-4 md:gap-8">
+        <!-- Categories Sidebar (Desktop) -->
+        <aside class="w-full md:w-64 flex-shrink-0 hidden lg:block">
           <CategoriesFilter
             :categories="categories"
             :selected-categories="selectedCategories"
@@ -24,9 +24,9 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1">
+        <main class="flex-1 w-full">
           <!-- Search Bar -->
-          <div class="mb-8">
+          <div class="mb-6 xs:mb-8">
             <PromptSearch
               v-model="searchQuery"
               placeholder="Поиск по базе prompt"
@@ -34,7 +34,7 @@
           </div>
 
           <!-- Mobile Categories (Horizontal Scroll) -->
-          <div class="lg:hidden mb-6">
+          <div class="lg:hidden mb-4 xs:mb-6">
             <MobileCategoriesFilter
               :categories="categories"
               :selected-categories="selectedCategories"
