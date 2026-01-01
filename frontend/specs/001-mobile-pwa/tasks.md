@@ -41,7 +41,7 @@
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [X] T006 Configure PWA module in frontend/nuxt.config.ts with manifest, service worker, and runtime caching strategies
-- [X] T007 [P] Add iOS-specific meta tags to frontend/app.vue or root layout for PWA installation (apple-touch-icon, mobile-web-app-capable, theme-color)
+- [X] T007 [P] Add iOS-specific meta tags to nuxt.config.js app.head for PWA installation (FIX: Moved from app.vue to avoid breaking layout structure)
 - [X] T008 [P] Create frontend/composables/usePwaInstall.ts composable for handling PWA install prompts (beforeinstallprompt event, iOS detection, install/dismiss methods)
 - [X] T009 [P] Create frontend/composables/useOfflineStatus.ts composable for tracking online/offline status (navigator.onLine/offline events, isOnline ref, isOffline computed)
 - [X] T010 [P] Create frontend/composables/useMobileDetect.ts composable for device detection using Vuetify's useDisplay() (mobile breakpoint detection, viewport width tracking)
