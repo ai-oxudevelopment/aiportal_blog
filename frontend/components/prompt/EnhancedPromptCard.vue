@@ -51,7 +51,9 @@ const categoryName = computed(() => {
 
 const goToPrompt = async () => {
   if (props.prompt.slug) {
-    await router.push(`/prompts/${encodeURIComponent(props.prompt.slug)}`)
+    // Navigate to the correct route based on type
+    const route = props.prompt.type === 'speckit' ? '/speckits' : '/prompts'
+    await router.push(`${route}/${encodeURIComponent(props.prompt.slug)}`)
   }
 }
 

@@ -13,7 +13,7 @@
               {{ categoryName }}
             </p>
           </div>
-          <div class="flex-1 relative group">
+          <div class="flex-1 relative group pb-32">
             <div class="text-sm text-gray-200 p-2 overflow-auto h-full leading-relaxed bg-gray-950/30 rounded-xl prose prose-invert prose-sm max-w-none">
               <pre class="text-sm text-gray-200 whitespace-pre-wrap font-mono leading-relaxed">
                 <code>{{ promptContent }}</code>
