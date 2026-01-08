@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-08",
+  "language": "ru",
+  "categories": [
+    {
+      "id": "getting-started",
+      "title": "Начало работы",
+      "order": 1,
+      "questions": [
+        {
+          "id": "what-is-speckit",
+          "question": "Что такое Speckit?",
+          "answer": "Speckit - это готовая конфигурация для вашего проекта, которая помогает структурировать работу с AI-ассистентами.",
+          "order": 1
+        },
+        {
+          "id": "how-to-download",
+          "question": "Как скачать Speckit?",
+          "answer": "Нажмите кнопку **Скачать** внизу страницы или скопируйте команду wget и выполните её в терминале.",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "environment-setup",
+      "title": "Настройка окружения",
+      "order": 2,
+      "questions": [
+        {
+          "id": "system-requirements",
+          "question": "Какие системные требования?",
+          "answer": "Для работы со Speckit вам потребуется Node.js 18+, текстовый редактор (VS Code, Vim) и доступ к терминалу.",
+          "order": 1
+        }
+      ]
+    }
+  ]
+}

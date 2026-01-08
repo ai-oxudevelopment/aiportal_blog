@@ -4,11 +4,11 @@
     <div class="max-w-7xl mx-auto px-4 xs:px-6 sm:px-8 md:px-8 lg:px-12 xl:px-16 py-6 sm:py-8 md:py-10">
       <div class="text-center py-8 xs:py-12 sm:py-16 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-lg shadow-xl mb-4 xs:mb-6 sm:mb-8">
         <h1 class="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white">
-          IDE инструкции
+          Для проектирования
         </h1>
         <p class="mt-4 xs:mt-6 sm:mt-8 text-base xs:text-lg sm:text-xl text-gray-400">
-          Speckit инструкции, шаблоны и примеры для эффективной работы с Claude Code.<br class="hidden xs:block">
-          Здесь вы найдете ресурсы для быстрого старта и лучших практик.
+          Speckit - готовые конфигурации для структурирования работы с AI-ассистентами.<br class="hidden xs:block">
+          Конституции проектов, шаблоны планирования и лучшие практики для разработки.
         </p>
       </div>
 

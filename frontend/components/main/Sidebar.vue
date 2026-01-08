@@ -6,14 +6,16 @@
   >
     <nav class="flex flex-col h-full px-6 py-8">
       <ul class="space-y-2">
-        <li v-for="(item, idx) in items" :key="item">
+        <li v-for="item in menuItems" :key="item.label">
           <NuxtLink
-            :to="'/'"
-            :class="`flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors rounded-md ${
-              idx === items.length - 1 ? 'bg-white/10 text-white' : ''
+            :to="item.path"
+            :class="`flex items-center px-3 py-2 text-sm transition-colors rounded-md ${
+              isActive(item.path)
+                ? 'bg-white/10 text-white font-medium'
+                : 'text-gray-300 hover:bg-white/5 hover:text-white'
             }`"
           >
-            {{ item }}
+            {{ item.label }}
           </NuxtLink>
         </li>
       </ul>
@@ -26,11 +28,17 @@ defineProps({
   isMenuOpen: Boolean,
 });
 
-const items = [
-  "Инструкции",
-  "AI-агенты",
-  "MCP-сервисы",
-  "Исследования",
-  "Кейсы внедрения"
+const route = useRoute();
+
+const menuItems = [
+  { label: "Для исследований", path: "/" },
+  { label: "Для проектирования", path: "/speckits" }
 ];
+
+const isActive = (path) => {
+  if (path === '/') {
+    return route.path === '/' || route.path.startsWith('/prompts');
+  }
+  return route.path.startsWith(path);
+};
 </script>

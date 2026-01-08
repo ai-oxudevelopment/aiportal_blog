@@ -1,10 +1,9 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-20 bg-black">
     <div class="w-full px-4 md:px-8 h-14 flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 text-white">
-          <router-link to="/" class="text-lg font-bold tracking-tight">AIWORKPLACE BLOG</router-link>
-        </div>
+      <!-- Left: Logo and menu button -->
+      <div class="flex items-center gap-4 h-full">
+        <router-link to="/" class="text-lg font-bold tracking-tight text-white h-full flex items-center">AIWORKPLACE BLOG</router-link>
         <button
           class="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
           title="Toggle menu"
@@ -17,6 +16,7 @@
         </button>
       </div>
 
+      <!-- Right: Product button -->
       <div class="flex items-center gap-3">
         <button
           class="h-8 px-4 rounded-full bg-gradient-to-r from-pink-500 via-orange-500 to-blue-500 hover:from-pink-600 hover:via-orange-600 hover:to-blue-600 border-0 text-white text-xs font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-gradient-chaos"
