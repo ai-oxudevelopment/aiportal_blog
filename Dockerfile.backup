@@ -1,3 +1,13 @@
+# DOCKERFILE BACKUP - Pre-fix version
+# Issues identified (2026-01-09):
+# - Line 35: COPY --from=build /frontend/node_modules ./node_modules
+#   This causes #internal/nuxt/paths import errors because .output should be self-contained
+# - Line 36: COPY --from=build /frontend/package.json ./package.json
+#   Unnecessary - .output should be standalone
+# - Line 17: RUN yarn build
+#   Should clean .nuxt before build to ensure fresh build
+# Root cause: Nuxt .output bundle should include all dependencies, not rely on node_modules copy
+
 # Stage 1: Build the application
 FROM node:20-slim AS build
 WORKDIR /frontend
