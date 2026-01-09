@@ -25,9 +25,9 @@
 
 **Purpose**: Document current state and prepare for Dockerfile fixes
 
-- [ ] T001 Document current Dockerfile issues in Dockerfile.backup notes
-- [ ] T002 [P] Create .dockerignore file at repository root
-- [ ] T003 [P] Backup current Dockerfile to Dockerfile.pre-fix
+- [X] T001 Document current Dockerfile issues in Dockerfile.backup notes
+- [X] T002 [P] Create .dockerignore file at repository root
+- [X] T003 [P] Backup current Dockerfile to Dockerfile.pre-fix
 
 ---
 
@@ -37,10 +37,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Remove incorrect node_modules copy from Dockerfile runner stage (line 35)
-- [ ] T005 Remove incorrect package.json copy from Dockerfile runner stage (line 36)
-- [ ] T006 Add .nuxt cleanup before build step in Dockerfile (before line 17: `RUN yarn build`)
-- [ ] T007 Verify Dockerfile follows official Nuxt Docker pattern (copy only .output to runner stage)
+- [X] T004 Remove incorrect node_modules copy from Dockerfile runner stage (line 35)
+- [X] T005 Remove incorrect package.json copy from Dockerfile runner stage (line 36)
+- [X] T006 Add .nuxt cleanup before build step in Dockerfile (before line 17: `RUN yarn build`)
+- [X] T007 Verify Dockerfile follows official Nuxt Docker pattern (copy only .output to runner stage)
 
 **Checkpoint**: Dockerfile is fixed and ready for testing
 
@@ -54,13 +54,13 @@
 
 ### Build Verification
 
-- [ ] T008 [P] [US1] Clean any existing Docker build artifacts: `docker system prune -af` and `rm -rf frontend/.nuxt frontend/.output`
-- [ ] T009 [US1] Run Docker build with required arguments: `docker build --build-arg STRAPI_URL=http://localhost:1337 -t aiportal-frontend:latest .`
-- [ ] T010 [US1] Verify build completes successfully (exit code 0)
-- [ ] T011 [US1] Check build logs for #internal/nuxt/paths errors (should be NONE)
-- [ ] T012 [US1] Check build logs for missing dependency warnings (should be NONE)
-- [ ] T013 [US1] Verify .output/server/index.mjs was created in build stage
-- [ ] T014 [US1] Measure build time and verify under 5 minutes
+- [X] T008 [P] [US1] Clean any existing Docker build artifacts: `docker system prune -af` and `rm -rf frontend/.nuxt frontend/.output`
+- [X] T009 [US1] Run Docker build with required arguments: `docker build --build-arg STRAPI_URL=http://localhost:1337 -t aiportal-frontend:latest .`
+- [X] T010 [US1] Verify build completes successfully (exit code 0)
+- [X] T011 [US1] Check build logs for #internal/nuxt/paths errors (should be NONE)
+- [X] T012 [US1] Check build logs for missing dependency warnings (should be NONE)
+- [X] T013 [US1] Verify .output/server/index.mjs was created in build stage
+- [X] T014 [US1] Measure build time and verify under 5 minutes
 
 **Checkpoint**: User Story 1 complete - Docker build works without errors
 
@@ -74,21 +74,21 @@
 
 ### Container Runtime Testing
 
-- [ ] T015 [P] [US2] Run container with environment variables: `docker run -d --name aiportal-test -p 8080:8080 -e STRAPI_URL=http://localhost:1337 aiportal-frontend:latest`
-- [ ] T016 [US2] Wait for container to start (max 30 seconds): `sleep 30`
-- [ ] T017 [US2] Check container startup logs: `docker logs aiportal-test`
-- [ ] T018 [US2] Verify no #internal/nuxt/paths errors in startup logs
-- [ ] T019 [US2] Verify no module resolution failures in startup logs
-- [ ] T020 [US2] Check container is running: `docker ps | grep aiportal-test`
+- [X] T015 [P] [US2] Run container with environment variables: `docker run -d --name aiportal-test -p 8080:8080 -e STRAPI_URL=http://localhost:1337 aiportal-frontend:latest`
+- [X] T016 [US2] Wait for container to start (max 30 seconds): `sleep 30`
+- [X] T017 [US2] Check container startup logs: `docker logs aiportal-test`
+- [X] T018 [US2] Verify no #internal/nuxt/paths errors in startup logs
+- [X] T019 [US2] Verify no module resolution failures in startup logs
+- [X] T020 [US2] Check container is running: `docker ps | grep aiportal-test`
 
 ### HTTP Endpoint Testing
 
-- [ ] T021 [P] [US2] Test root endpoint returns HTTP response: `curl -i http://localhost:8080`
-- [ ] T022 [US2] Verify response status code is 2xx or 3xx (not 500)
-- [ ] T023 [US2] Test API proxy endpoint: `curl -i http://localhost:8080/api/articles`
-- [ ] T024 [US2] Verify API responses include data (not empty error responses)
-- [ ] T025 [US2] Check container logs for runtime errors: `docker logs aiportal-test 2>&1 | grep -i error`
-- [ ] T026 [US2] Verify no 500 errors in application logs
+- [X] T021 [P] [US2] Test root endpoint returns HTTP response: `curl -i http://localhost:8080`
+- [X] T022 [US2] Verify response status code is 2xx or 3xx (not 500)
+- [X] T023 [US2] Test API proxy endpoint: `curl -i http://localhost:8080/api/articles`
+- [X] T024 [US2] Verify API responses include data (not empty error responses)
+- [X] T025 [US2] Check container logs for runtime errors: `docker logs aiportal-test 2>&1 | grep -i error`
+- [X] T026 [US2] Verify no 500 errors in application logs
 
 **Checkpoint**: User Story 2 complete - Container runs and serves HTTP successfully
 
@@ -125,11 +125,11 @@
 - [ ] T038 [P] Document Docker build troubleshooting in docs/docker-troubleshooting.md
 - [ ] T039 [P] Update CI/CD pipeline configuration with fixed Dockerfile (if applicable)
 - [ ] T040 [P] Add healthcheck to Dockerfile (if not present)
-- [ ] T041 Run all quickstart.md validation steps
-- [ ] T042 Verify all success criteria from spec.md are met
-- [ ] T043 Update feature spec status from "Draft" to "Complete"
-- [ ] T044 Create git commit with all changes
-- [ ] T045 Clean up test containers: `docker rm -f aiportal-test`
+- [X] T041 Run all quickstart.md validation steps
+- [X] T042 Verify all success criteria from spec.md are met
+- [X] T043 Update feature spec status from "Draft" to "Complete"
+- [X] T044 Create git commit with all changes
+- [X] T045 Clean up test containers: `docker rm -f aiportal-test`
 
 ---
 
