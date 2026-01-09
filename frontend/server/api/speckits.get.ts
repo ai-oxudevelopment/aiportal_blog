@@ -62,7 +62,8 @@ export default defineEventHandler(async (event) => {
       const categoriesData = attrs.categories?.data || attrs.categories || []
       const categories = categoriesData.map((cat: any) => ({
         id: cat.id,
-        name: cat.attributes?.name || cat.name
+        name: cat.attributes?.name || cat.name,
+        type: cat.attributes?.type || cat.type || 'speckit'
       }))
 
       return {
@@ -116,7 +117,8 @@ export default defineEventHandler(async (event) => {
           const categoriesData = attrs.categories?.data || attrs.categories || []
           const categories = categoriesData.map((cat: any) => ({
             id: cat.id,
-            name: cat.attributes?.name || cat.name
+            name: cat.attributes?.name || cat.name,
+            type: cat.attributes?.type || cat.type || 'speckit'
           }))
 
           return {

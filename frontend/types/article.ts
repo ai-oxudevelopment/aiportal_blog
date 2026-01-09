@@ -2,6 +2,7 @@
 export interface Category {
     id: number;
     name: string;
+    type: 'prompt' | 'speckit';
   }
   
 export interface ArticleBase {

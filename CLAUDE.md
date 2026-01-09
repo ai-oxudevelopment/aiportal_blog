@@ -18,6 +18,7 @@ Auto-generated from all feature plans. Last updated: 2026-01-03
 - TypeScript 5.9.2, Vue 3.4.21 (Nuxt 3.2.0) + Nuxt 3.2.0, Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia (006-fix-speckits-positioning)
 - N/A (static build artifacts + Strapi v5 CMS as backend) (006-fix-speckits-positioning)
 - JavaScript ES2022 + TypeScript 5.9.2 (Nuxt 3.2.0, Vue 3.4.21) + Nuxt 3.2.0, Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia, @nuxtjs/mdc, Mermaid 11.0.0 (001-pagespeed-optimization)
+- Strapi v5 CMS (backend for speckits and categories) (001-speckit-category-filter)
 
 - (001-fix-docker-build)
 
@@ -38,9 +39,9 @@ tests/
 : Follow standard conventions
 
 ## Recent Changes
+- 001-speckit-category-filter: Added TypeScript 5.9.2, JavaScript ES2022 + Nuxt 3.2.0 (Vue 3.4.21), Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia
 - 001-pagespeed-optimization: Added JavaScript ES2022 + TypeScript 5.9.2 (Nuxt 3.2.0, Vue 3.4.21) + Nuxt 3.2.0, Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia, @nuxtjs/mdc, Mermaid 11.0.0
 - 006-fix-speckits-positioning: Added TypeScript 5.9.2, Vue 3.4.21 (Nuxt 3.2.0) + Nuxt 3.2.0, Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia
-- 005-fix-nuxt-build: Added JavaScript ES2022 + TypeScript 5.9.2 (Nuxt 3.2.0, Vue 3.4.21) + Nuxt 3.2.0, Node.js 22 (via Docker), Yarn package manager
 
 
 <!-- MANUAL ADDITIONS START -->

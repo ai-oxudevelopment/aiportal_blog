@@ -127,7 +127,15 @@ const categories = computed(() => {
     const uniqueCategories = new Map<number, Category>()
     speckits.value.forEach((speckit: any) => {
       speckit.categories?.forEach((cat: Category) => {
-        uniqueCategories.set(cat.id, cat)
+        // Debug: log categories without type or with wrong type
+        if (!cat.type) {
+          console.warn('[speckits/index] Category missing type field:', cat)
+        } else if (cat.type !== 'speckit') {
+          console.log('[speckits/index] Excluding non-speckit category:', cat)
+        } else if (cat.type === 'speckit') {
+          // Only include categories with type="speckit"
+          uniqueCategories.set(cat.id, cat)
+        }
       })
     })
     return Array.from(uniqueCategories.values())

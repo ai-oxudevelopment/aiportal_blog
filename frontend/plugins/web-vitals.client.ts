@@ -1,4 +1,4 @@
-import { onCLS, onFID, onLCP, onFCP, onTTFB } from 'web-vitals'
+import { onCLS, onINP, onLCP, onFCP, onTTFB } from 'web-vitals'
 
 export default defineNuxtPlugin(() => {
   const sendToAnalytics = (metric: any) => {
@@ -29,7 +29,7 @@ export default defineNuxtPlugin(() => {
   }
 
   onCLS(sendToAnalytics)
-  onFID(sendToAnalytics)
+  onINP(sendToAnalytics)
   onLCP(sendToAnalytics)
   onFCP(sendToAnalytics)
   onTTFB(sendToAnalytics)
