@@ -18,8 +18,8 @@
         <aside v-if="categories.length > 0" class="w-full md:w-64 flex-shrink-0 hidden lg:block">
           <CategoriesFilter
             :categories="categories"
-            :selected-categories="selectedCategory"
-            @update:selected-categories="updateSelectedCategory"
+            :selected-categories="selectedCategories"
+            @update:selected-categories="updateSelectedCategories"
           />
         </aside>
 
@@ -37,8 +37,8 @@
           <div v-if="categories.length > 0" class="lg:hidden mb-4 xs:mb-6">
             <MobileCategoriesFilter
               :categories="categories"
-              :selected-categories="selectedCategory"
-              @update:selected-categories="updateSelectedCategory"
+              :selected-categories="selectedCategories"
+              @update:selected-categories="updateSelectedCategories"
             />
           </div>
 
@@ -76,7 +76,7 @@
           <!-- Speckit Cards Grid -->
           <PromptGrid
             v-else
-            :prompts="filteredSpeckits"
+            :prompts="filteredSpeckits as unknown as (PromptPreview | SpeckitPreview)[]"
             :loading="false"
           />
         </main>
@@ -86,9 +86,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useFetchSpeckits } from '~/composables/useFetchSpeckits'
-import type { Category } from '~/types/article'
+import { ref, computed } from 'vue'
+import type { Category, PromptPreview, SpeckitPreview } from '~/types/article'
+
+// Nuxt composables (auto-imported in Nuxt 3, but needed for TypeScript)
+declare function useAsyncData(key: string, fn: () => Promise<any>): any
 
 // Components
 import CategoriesFilter from '~/components/prompt/CategoriesFilter.vue'
@@ -108,20 +110,41 @@ interface SpeckitItem {
 
 // State
 const searchQuery = ref('')
-const selectedCategory = ref<string | null>(null)
-const categories = ref<Category[]>([])
+const selectedCategories = ref<number[]>([])
 
-// Data fetching
-const { speckits, loading, error, refresh } = useFetchSpeckits()
+// Data fetching with SSR support
+const { data: speckits, pending: loading, error, refresh } = await useAsyncData(
+  'speckits-list',
+  async () => {
+    const response = await $fetch('/api/speckits') as any
+    return response.data || []
+  }
+)
+
+// Computed: Extract categories reactively (works on both server AND client for SSR)
+const categories = computed(() => {
+  if (speckits.value && speckits.value.length > 0) {
+    const uniqueCategories = new Map<number, Category>()
+    speckits.value.forEach((speckit: any) => {
+      speckit.categories?.forEach((cat: Category) => {
+        uniqueCategories.set(cat.id, cat)
+      })
+    })
+    return Array.from(uniqueCategories.values())
+  }
+  return []
+})
 
 // Computed
 const filteredSpeckits = computed(() => {
   let filtered = speckits.value as unknown as SpeckitItem[]
 
-  // Filter by category
-  if (selectedCategory.value) {
+  // Filter by categories - if nothing selected, show all
+  if (selectedCategories.value.length > 0) {
     filtered = filtered.filter((speckit: SpeckitItem) =>
-      speckit.categories?.some((cat: Category) => cat.name === selectedCategory.value)
+      speckit.categories?.some((cat: Category) =>
+        selectedCategories.value.includes(cat.id)
+      )
     )
   }
 
@@ -138,42 +161,11 @@ const filteredSpeckits = computed(() => {
 })
 
 // Methods
-const updateSelectedCategory = (category: string | null) => {
-  selectedCategory.value = category
+const updateSelectedCategories = (newCategories: number[]) => {
+  selectedCategories.value = newCategories
 }
 
 const retryFetch = () => {
   refresh()
 }
-
-// Lifecycle
-onMounted(async () => {
-  console.log('[speckits/index] Component mounted, waiting for data...')
-
-  // Wait for data to load
-  await new Promise(resolve => setTimeout(resolve, 100))
-
-  console.log('[speckits/index] Speckits value:', speckits.value)
-  console.log('[speckits/index] Speckits length:', speckits.value?.length)
-
-  // If we have data, extract categories
-  if (speckits.value && speckits.value.length > 0) {
-    console.log('[speckits/index] Extracting categories from speckits...')
-
-    const uniqueCategories = new Map()
-    speckits.value.forEach((speckit: any) => {
-      console.log(`[speckits/index] Processing speckit: ${speckit.title}, categories:`, speckit.categories)
-
-      speckit.categories?.forEach((cat: Category) => {
-        console.log(`[speckits/index] Adding category: ${cat.name}`)
-        uniqueCategories.set(cat.id, cat)
-      })
-    })
-
-    categories.value = Array.from(uniqueCategories.values())
-    console.log('[speckits/index] Final categories array:', categories.value)
-  } else {
-    console.log('[speckits/index] No speckits found, categories will remain empty')
-  }
-})
 </script>

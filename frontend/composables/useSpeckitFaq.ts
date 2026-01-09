@@ -4,7 +4,7 @@
  * Loads static FAQ content from public/speckit-faq.json
  */
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, type Ref } from 'vue'
 import type { SpeckitFaqData, SpeckitFaqCategory } from '~/types/article'
 
 export interface UseSpeckitFaqReturn {

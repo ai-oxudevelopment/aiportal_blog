@@ -46,18 +46,18 @@
       class="bg-gray-950/30 rounded-xl border border-gray-800 overflow-hidden"
     >
       <div
-        :id="elementId"
+        ref="diagramElement"
         class="diagram-container p-6 flex items-center justify-center min-h-[200px]"
         :aria-label="'Mermaid diagram: ' + (diagramType || 'flowchart')"
       >
-        <!-- Mermaid SVG will be rendered here -->
+        <!-- Mermaid SVG will be rendered here via Intersection Observer -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, watch, type Ref } from 'vue'
 import { useMermaidDiagram } from '~/composables/useMermaidDiagram'
 
 // Props
@@ -65,11 +65,11 @@ const props = defineProps<{
   diagramSource: string
 }>()
 
-// Generate unique element ID for this instance
-const elementId = computed(() => `mermaid-diagram-${Math.random().toString(36).substring(2, 9)}`)
+// Diagram element ref for Intersection Observer
+const diagramElement: Ref<HTMLElement | undefined> = ref(undefined)
 
-// Composables
-const { renderDiagram, isLoading, error } = useMermaidDiagram()
+// Composables - use observeAndRender for lazy loading
+const { observeAndRender, isLoading, error } = useMermaidDiagram()
 
 // Detect diagram type
 const diagramType = computed(() => {
@@ -94,17 +94,15 @@ const diagramType = computed(() => {
   return typeLabels[type] || 'Блок-схема'
 })
 
-// Render diagram on mount
-onMounted(async () => {
-  if (props.diagramSource) {
-    await renderDiagram(props.diagramSource, elementId.value)
-  }
-})
+// Lazy render diagram when element enters viewport via Intersection Observer
+if (props.diagramSource) {
+  observeAndRender(props.diagramSource, diagramElement)
+}
 
 // Re-render when diagram source changes
-watch(() => props.diagramSource, async (newSource) => {
+watch(() => props.diagramSource, (newSource) => {
   if (newSource) {
-    await renderDiagram(newSource, elementId.value)
+    observeAndRender(newSource, diagramElement)
   }
 })
 </script>

@@ -37,7 +37,13 @@ import { useRouter } from 'vue-router';
 
 import type { PromptPreview, Category } from '~/types/article';
 
+// Nuxt composables (auto-imported in Nuxt 3, but needed for TypeScript)
+declare function navigateTo(path: string): Promise<void>
+
 const props = defineProps<{ prompt: PromptPreview }>();
+const emit = defineEmits<{
+  try: [prompt: PromptPreview]
+}>();
 const router = useRouter();
 
 const categoryName = computed(() => {

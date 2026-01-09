@@ -1,13 +1,14 @@
 // composables/useMermaidDiagram.ts
 /**
  * Mermaid diagram composable for rendering Mermaid diagrams
- * Handles lazy loading of Mermaid.js and diagram rendering
+ * Handles lazy loading of Mermaid.js and diagram rendering with intersection observer
  */
 
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, type Ref } from 'vue'
 
 export interface UseMermaidDiagramReturn {
   renderDiagram: (source: string, elementId: string) => Promise<void>
+  observeAndRender: (source: string, elementRef: Ref<HTMLElement | undefined>) => void
   isLoaded: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<string | null>
@@ -19,6 +20,7 @@ export function useMermaidDiagram(): UseMermaidDiagramReturn {
   const error = ref<string | null>(null)
 
   let mermaidInstance: any = null
+  let observer: IntersectionObserver | null = null
 
   /**
    * Load Mermaid.js dynamically
@@ -32,14 +34,14 @@ export function useMermaidDiagram(): UseMermaidDiagramReturn {
     error.value = null
 
     try {
-      // Dynamic import of Mermaid
+      // Dynamic import of Mermaid (lazy loaded)
       const mermaidModule = await import('mermaid')
       mermaidInstance = mermaidModule.default
 
       // Initialize Mermaid with configuration
       mermaidInstance.initialize({
         startOnLoad: false,
-        theme: 'dark',
+        theme: 'neutral', // Better for performance
         securityLevel: 'loose',
         fontFamily: 'ui-sans-serif, system-ui, sans-serif',
         fontSize: 14,
@@ -124,8 +126,54 @@ export function useMermaidDiagram(): UseMermaidDiagramReturn {
     }
   }
 
+  /**
+   * Observe element and load/render Mermaid when it enters viewport
+   * This prevents loading Mermaid until the diagram is actually visible
+   */
+  const observeAndRender = (
+    source: string,
+    elementRef: Ref<HTMLElement | undefined>
+  ) => {
+    onMounted(() => {
+      if (!elementRef.value) return
+
+      // Create Intersection Observer
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !isLoaded.value) {
+              // Element is visible, load and render Mermaid
+              const elementId = elementRef.value?.id || `mermaid-${Date.now()}`
+              if (elementRef.value) {
+                elementRef.value.id = elementId
+                renderDiagram(source, elementId)
+              }
+              // Disconnect after loading (only load once)
+              observer?.disconnect()
+            }
+          })
+        },
+        {
+          // Start loading 200px before element is visible for smoother UX
+          rootMargin: '200px',
+          threshold: 0.01
+        }
+      )
+
+      // Start observing the element
+      observer.observe(elementRef.value)
+    })
+  }
+
   // Cleanup on unmount
   onUnmounted(() => {
+    // Disconnect observer
+    if (observer) {
+      observer.disconnect()
+      observer = null
+    }
+
+    // Clear Mermaid instance
     if (mermaidInstance) {
       mermaidInstance = null
       isLoaded.value = false
@@ -134,6 +182,7 @@ export function useMermaidDiagram(): UseMermaidDiagramReturn {
 
   return {
     renderDiagram,
+    observeAndRender,
     isLoaded,
     isLoading,
     error

@@ -1,0 +1,86 @@
+/* Critical CSS - Above the Fold Styles */
+/* These styles are needed immediately for First Contentful Paint */
+
+/* App shell - Vuetify base */
+.v-application {
+  font-family: inherit;
+}
+
+/* Header/Navigation - Vuetify app bar */
+.v-app-bar {
+  background-color: #000;
+}
+
+.v-toolbar {
+  background-color: #000;
+}
+
+/* Main container */
+.v-container {
+  max-width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Hero section */
+.hero-section {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Typography basics */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6 {
+  font-weight: 600;
+}
+
+/* Loading states - Critical for perceived performance */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Progress indicator */
+.v-progress-linear {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+/* Basic spacing */
+.pa-2 { padding: 8px; }
+.pa-4 { padding: 16px; }
+.ma-2 { margin: 8px; }
+.ma-4 { margin: 16px; }
+
+/* Flex utilities for layout */
+.d-flex { display: flex; }
+.flex-column { flex-direction: column; }
+.align-center { align-items: center; }
+.justify-center { justify-content: center; }
+
+/* Text utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+/* Basic button styles */
+.v-btn {
+  text-transform: none;
+  letter-spacing: normal;
+}

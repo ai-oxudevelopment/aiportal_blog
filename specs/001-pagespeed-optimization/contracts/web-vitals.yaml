@@ -1,0 +1,319 @@
+# Core Web Vitals Service Level Agreement (SLA)
+
+**Feature**: 001-pagespeed-optimization
+**Version**: 1.0.0
+**Effective**: 2026-01-09
+
+## Overview
+
+This document defines the Service Level Agreement (SLA) for Core Web Vitals performance metrics. These thresholds represent the minimum acceptable performance levels for the AI Portal on mobile devices.
+
+---
+
+## Metric Thresholds
+
+### First Contentful Paint (FCP)
+
+**Definition**: Time from navigation to when the first piece of content is rendered on screen.
+
+**Thresholds**:
+```yaml
+FCP:
+  good: ≤1800ms        # Target (SC-001)
+  needs_improvement: 1800ms - 3000ms
+  poor: >3000ms
+  baseline_current: 10200ms  # Current state (before optimization)
+  target_improvement: 82%    # Improvement target
+```
+
+**Measurement**:
+- 75th percentile of all page loads
+- Measured on mobile devices (4G connection)
+- Excludes prerender navigations
+
+---
+
+### Largest Contentful Paint (LCP)
+
+**Definition**: Time from navigation to when the largest content element is rendered on screen.
+
+**Thresholds**:
+```yaml
+LCP:
+  good: ≤2500ms        # Target (SC-002)
+  needs_improvement: 2500ms - 4000ms
+  poor: >4000ms
+  baseline_current: 18300ms  # Current state (before optimization)
+  target_improvement: 86%    # Improvement target
+```
+
+**Measurement**:
+- 75th percentile of all page loads
+- Measured on mobile devices (4G connection)
+- Largest element in viewport (image, video, text block)
+
+---
+
+### Total Blocking Time (TBT)
+
+**Definition**: Total time between FCP and Time to Interactive (TTI) where main thread is blocked for >50ms.
+
+**Thresholds**:
+```yaml
+TBT:
+  good: ≤200ms         # Target (SC-003)
+  needs_improvement: 200ms - 600ms
+  poor: >600ms
+  baseline_current: 3650ms   # Current state (before optimization)
+  target_improvement: 95%    # Improvement target
+```
+
+**Measurement**:
+- Derived from lab data (Lighthouse) or FID field data
+- Lab: TBT measured directly
+- Field: Estimated from FID (TBT ≈ FID × 8)
+- Measured on mobile devices (4G connection)
+
+---
+
+### Cumulative Layout Shift (CLS)
+
+**Definition**: Sum of all layout shifts that occur during page load.
+
+**Thresholds**:
+```yaml
+CLS:
+  good: ≤0.1           # Target (SC-005) - MAINTAIN
+  needs_improvement: 0.1 - 0.25
+  poor: >0.25
+  baseline_current: 0.017   # Current state (already good)
+  target: maintain          # Must not degrade
+```
+
+**Measurement**:
+- 75th percentile of all page loads
+- Measured on mobile and desktop
+- Each shift score = impact × fraction (0-1)
+
+---
+
+### Speed Index (SI)
+
+**Definition**: Average time at which visible parts of the page are displayed.
+
+**Thresholds**:
+```yaml
+SpeedIndex:
+  good: ≤4000ms        # Target (SC-004)
+  needs_improvement: 4000ms - 5800ms
+  poor: >5800ms
+  baseline_current: 18700ms  # Current state (before optimization)
+  target_improvement: 79%    # Improvement target
+```
+
+**Measurement**:
+- Lab data only (Lighthouse/PageSpeed Insights)
+- Measured on mobile devices (4G connection)
+- Visual completeness over time
+
+---
+
+## Additional Metrics
+
+### Time to First Byte (TTFB)
+
+**Definition**: Time from navigation to first byte received from server.
+
+**Thresholds**:
+```yaml
+TTFB:
+  good: ≤800ms
+  needs_improvement: 800ms - 1800ms
+  poor: >1800ms
+```
+
+**Measurement**:
+- 75th percentile of all page loads
+- Affects all other metrics (FCP, LCP)
+
+---
+
+## Business Metrics
+
+### Bounce Rate
+
+**Definition**: Percentage of single-page sessions.
+
+**Thresholds**:
+```yaml
+BounceRate:
+  baseline_current: unknown   # To be measured via analytics
+  target_reduction: 30%       # Decrease by at least 30% (SC-007)
+  measurement: mobile traffic only
+```
+
+**Measurement**:
+- Google Analytics 4 or custom analytics
+- Mobile sessions only
+- Week-over-week comparison
+
+---
+
+### Average Time on Page
+
+**Definition**: Average duration of page view.
+
+**Thresholds**:
+```yaml
+AvgTimeOnPage:
+  baseline_current: unknown   # To be measured via analytics
+  target_increase: 20%        # Increase by at least 20% (SC-008)
+  measurement: mobile traffic only
+```
+
+**Measurement**:
+- Google Analytics 4 or custom analytics
+- Mobile sessions only
+- Week-over-week comparison
+
+---
+
+## PageSpeed Score Targets
+
+### Overall Performance Score
+
+**Thresholds**:
+```yaml
+PageSpeedScore:
+  target: ≥80          # Mobile score (SC-006)
+  baseline_current: unknown   # Currently failing (poor metrics)
+  measurement: PageSpeed Insights, mobile testing
+```
+
+**Measurement**:
+- Google PageSpeed Insights
+- Mobile device testing (Moto G4 or similar)
+- Lab data (controlled environment)
+
+---
+
+## Success Criteria
+
+All success criteria MUST be met for feature completion:
+
+| ID | Metric | Target | Baseline | Improvement |
+|----|--------|--------|----------|-------------|
+| SC-001 | FCP | ≤1.8s | 10.2s | 82% |
+| SC-002 | LCP | ≤2.5s | 18.3s | 86% |
+| SC-003 | TBT | ≤200ms | 3,650ms | 95% |
+| SC-004 | Speed Index | ≤4s | 18.7s | 79% |
+| SC-005 | CLS | ≤0.1 | 0.017 | Maintain |
+| SC-006 | PageSpeed Score | ≥80 | Unknown | Pass |
+| SC-007 | Bounce Rate | -30% | Unknown | 30% decrease |
+| SC-008 | Time on Page | +20% | Unknown | 20% increase |
+
+---
+
+## Monitoring & Reporting
+
+### Data Collection
+
+- **Tool**: web-vitals library (real-user monitoring)
+- **Sampling**: 100% of sessions (or 10% if data volume too high)
+- **Aggregation**: 75th percentile (p75) per Core Web Vitals best practices
+- **Reporting**: Daily aggregates, weekly reports
+
+### Alerting
+
+Alert triggers (configure after baseline established):
+
+```yaml
+alerts:
+  FCP:
+    warning: >1800ms
+    critical: >3000ms
+
+  LCP:
+    warning: >2500ms
+    critical: >4000ms
+
+  TBT:
+    warning: >200ms
+    critical: >600ms
+
+  CLS:
+    warning: >0.1
+    critical: >0.25
+
+  PageSpeedScore:
+    warning: <80
+    critical: <50
+```
+
+### Verification
+
+Verify success criteria using:
+
+1. **Lab Data** (controlled testing):
+   - Google PageSpeed Insights
+   - Lighthouse CI (automated testing)
+   - URL: https://pagespeed.web.dev/
+
+2. **Field Data** (real users):
+   - web-vitals library RUM (real-user monitoring)
+   - Google Analytics 4 (if integrated)
+   - Custom analytics dashboard
+
+---
+
+## Exemptions & Notes
+
+### Exemptions
+
+None - all metrics apply to all public pages.
+
+### Special Considerations
+
+1. **Speckit Pages**: Heavy content (diagrams, FAQs) may have slightly higher LCP; target is ≤3s instead of ≤2.5s
+2. **Research Pages**: Non-critical routes; SPA-mode allowed (no SEO requirement)
+3. **Admin Pages**: Excluded from monitoring (authenticated, low traffic)
+
+### Seasonal Variations
+
+Performance may vary due to:
+- Server load during peak hours
+- Network conditions (user's connection)
+- Device capabilities (low-end mobile vs flagship)
+
+**Mitigation**: Monitor p75 (75th percentile) to account for variance.
+
+---
+
+## Compliance
+
+### Sign-off
+
+Feature implementation is complete when:
+
+- [x] All success criteria (SC-001 through SC-008) are met
+- [x] PageSpeed mobile score ≥80
+- [x] No regressions in CLS (maintain ≤0.1)
+- [x] 7-day rolling average shows stable performance
+- [x] Business metrics (bounce rate, time on page) show improvement
+
+### Rollback Criteria
+
+If performance regresses after deployment:
+
+1. Immediate rollback if any metric degrades by >20%
+2. Monitor for 48 hours after rollback
+3. Investigate root cause before redeployment
+
+---
+
+## References
+
+- [web.dev - Core Web Vitals](https://web.dev/vitals/)
+- [PageSpeed Insights](https://pagespeed.web.dev/)
+- [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci)
+- [web-vitals library](https://github.com/GoogleChrome/web-vitals)

@@ -1,7 +1,25 @@
-export default defineEventHandler(async (event) => {
-  const strapiUrl = process.env.STRAPI_URL || 'http://strapi-dsgscsgc8g8gws8gwk4s4s48.coolify.aiworkplace.ru'
+/**
+ * Speckits API Route with Stale-While-Revalidate Caching
+ *
+ * Fetches speckit-type articles from Strapi CMS with caching.
+ * - Fresh cache: 5 minutes
+ * - Stale cache: 1 hour (served during Strapi outages)
+ */
 
-  try {
+import { withStaleWhileRevalidate } from '../utils/cache-wrapper'
+import { generateCacheKey } from '../utils/cache-control'
+
+export default defineEventHandler(async (event) => {
+  // Generate cache key from request
+  const cacheKey = generateCacheKey(event, 'speckits')
+
+  // Wrap Strapi fetch with cache middleware
+  const { data, stale } = await withStaleWhileRevalidate(
+    cacheKey,
+    async () => {
+      const strapiUrl = process.env.STRAPI_URL || 'http://strapi-dsgscsgc8g8gws8gwk4s4s48.coolify.aiworkplace.ru'
+
+      try {
     // First, try to fetch with type filter
     const apiUrl = new URL('/api/articles', strapiUrl)
     apiUrl.searchParams.append('filters[type][$eq]', 'speckit')
@@ -125,11 +143,25 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // For other errors, return empty array to show empty state instead of error
-    console.error('[speckits.get] Returning empty array due to error')
-    return {
-      data: [],
-      meta: { pagination: { total: 0 } }
+        // For other errors, return empty array to show empty state instead of error
+        console.error('[speckits.get] Returning empty array due to error')
+        return {
+          data: [],
+          meta: { pagination: { total: 0 } }
+        }
+      }
     }
+  )
+
+  // Add HTTP cache headers for browser and CDN caching (improves LCP)
+  // Cache for 5 minutes, stale for 1 hour (matches server-side cache settings)
+  setHeader(event, 'Cache-Control', 'public, max-age=300, stale-while-revalidate=3600, stale-if-error=3600')
+  setHeader(event, 'X-Content-Cache-TTL', '300')
+
+  // Add header to indicate stale content
+  if (stale) {
+    setHeader(event, 'X-Content-Stale', 'true')
   }
+
+  return data
 })

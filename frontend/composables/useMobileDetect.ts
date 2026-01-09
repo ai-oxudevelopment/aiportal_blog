@@ -5,6 +5,7 @@
  * Provides mobile-specific viewport and device information
  */
 
+import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
 
 export const useMobileDetect = () => {

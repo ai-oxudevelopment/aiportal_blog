@@ -4,6 +4,8 @@
  * Tracks online/offline status using navigator.onLine and network events
  */
 
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+
 export const useOfflineStatus = () => {
   const isOnline = ref(true)
   const wasOffline = ref(false)

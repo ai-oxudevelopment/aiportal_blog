@@ -1,0 +1,170 @@
+# Performance Service Level Objectives (SLO)
+# Feature: 001-ssr-performance-optimization
+
+service: "AI Portal Frontend"
+version: "1.0.0"
+feature: "SSR Performance Optimization"
+date: "2025-01-09"
+
+# Performance targets based on success criteria in spec.md
+slos:
+  # Core Web Vitals - Mobile 4G
+  - name: "Largest Contentful Paint (LCP) - Mobile 4G"
+    target: "< 1.5 seconds"
+    measurement: "PageSpeed Insights Mobile"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-001: Mobile users on 4G experience initial page load in under 1.5 seconds (TTI)"
+
+  - name: "First Contentful Paint (FCP) - Mobile 4G"
+    target: "< 1.5 seconds"
+    measurement: "PageSpeed Insights Mobile"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-010: First Contentful Paint occurs within 1.5 seconds on mobile 4G"
+
+  - name: "Cumulative Layout Shift (CLS)"
+    target: "< 0.1"
+    measurement: "PageSpeed Insights Mobile"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-009: CLS score remains below 0.1 (minimal visual jank)"
+
+  # Navigation Performance
+  - name: "Page Navigation Time"
+    target: "< 500 milliseconds"
+    measurement: "Chrome DevTools Performance Tab (Transition Time)"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-003: Page navigation for returning users completes in under 500ms"
+
+  # Network Performance
+  - name: "Time to Interactive - Mobile 4G"
+    target: "< 1.5 seconds"
+    measurement: "PageSpeed Insights Mobile"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-001: Mobile users on 4G networks experience initial page load in under 1.5s"
+
+  - name: "Time to Interactive - Mobile 3G"
+    target: "< 3 seconds"
+    measurement: "PageSpeed Insights Mobile"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-002: Mobile users on 3G networks experience initial page load in under 3s"
+
+  # Content Quality
+  - name: "Largest Contentful Paint Content"
+    target: "95% of initial HTML contains visible content"
+    measurement: "PageSpeed Insights Mobile - LCP Content"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-004: 95% of initial page HTML contains visible content (not blank screens)"
+
+  # Performance Score Improvement
+  - name: "PageSpeed Insights Performance Score Improvement"
+    target: "+20 points minimum"
+    measurement: "PageSpeed Insights Mobile (Performance Score)"
+    status: "delta"
+    baseline: "TBD"
+    rationale: "SC-008: Performance scores improve by at least 20 points compared to current implementation"
+
+  # Infrastructure Performance
+  - name: "Docker Image Build Time"
+    target: "< 10 minutes"
+    measurement: "Docker build command timing"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-005: Docker image build completes successfully in under 10 minutes"
+
+  - name: "Container Startup Time"
+    target: "< 10 seconds"
+    measurement: "Container launch to first successful response"
+    status: "target"
+    baseline: "TBD"
+    rationale: "SC-006: Container startup time is under 10 seconds"
+
+# Measurement methodology
+measurement:
+  tool: "PageSpeed Insights (Mobile)"
+  baseline_required: true
+  baseline_pages:
+    - "/"
+    - "/speckits"
+    - "/speckits/001-ssr-performance-optimization"
+    - "/research"
+
+  # Test conditions
+  conditions:
+    network: "4G Mobile (Fast 4G throttling in Lighthouse)"
+    device: "Mobile Emulation (Motorola Moto G4 or similar)"
+    location: "North America (default PageSpeed Insights location)"
+    cache: "Cleared (cold cache)"
+
+  # Reporting format
+  reporting:
+    metrics:
+      - "Performance Score (0-100)"
+      - "First Contentful Paint (ms)"
+      - "Largest Contentful Paint (ms)"
+      - "Total Blocking Time (ms)"
+      - "Cumulative Layout Shift (0-1)"
+      - "Time to Interactive (ms)"
+      - "Speed Index (ms)"
+
+    core_web_vitals:
+      - "LCP (Largest Contentful Paint)"
+      - "FID (First Input Delay) - N/A for SSR"
+      - "CLS (Cumulative Layout Shift)"
+
+# Error budgets
+error_budgets:
+  - name: "Performance Score Regression"
+    budget: "0 regressions allowed"
+    measurement: "Performance score must not decrease after optimization"
+
+  - name: "Cache Failure Rate"
+    budget: "< 5% of requests"
+    measurement: "Percentage of cache misses resulting in errors"
+
+  - name: "Stale Content Rate"
+    budget: "< 20% of requests during normal operation"
+    measurement: "Percentage of requests served with stale content indicator"
+
+# Validation criteria
+validation:
+  pre_optimization:
+    - task: "Measure baseline performance on all test pages"
+    - tool: "PageSpeed Insights Mobile"
+    - output: "specs/001-ssr-performance-optimization/baseline/pre-optimization.json"
+
+  post_optimization:
+    - task: "Re-measure performance on same test pages"
+    - tool: "PageSpeed Insights Mobile"
+    - output: "specs/001-ssr-performance-optimization/baseline/post-optimization.json"
+
+  comparison:
+    - task: "Validate 20+ point improvement in Performance score"
+    - criteria: "post_optimization.score >= pre_optimization.score + 20"
+
+    - task: "Validate all SLO targets met"
+    - criteria: "All post_optimization metrics meet SLO targets"
+
+# Monitoring (post-implementation)
+monitoring:
+  tool: "PageSpeed Insights API (for automated checks)"
+  frequency: "Weekly"
+  alerting:
+    - "Performance score drops by 10+ points"
+    - "LCP exceeds 2.5s threshold"
+    - "CLS exceeds 0.25 threshold"
+    - "Docker build time exceeds 12 minutes"
+    - "Container startup time exceeds 15 seconds"
+
+# Notes
+notes:
+  - "Baseline measurement must be completed before implementing SSR changes"
+  - "All measurements use PageSpeed Insights Mobile (not Desktop)"
+  - "Core Web Vitals (LCP, CLS) are Google's official ranking factors"
+  - "FID (First Input Delay) not applicable for SSR - replaced by TTI metrics"
+  - "2G network support has no specific time target (functional but slow per FR-016)"

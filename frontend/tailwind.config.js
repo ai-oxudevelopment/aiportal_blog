@@ -1,11 +1,25 @@
  /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
+    "./app.vue",  // Nuxt 3 app component
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
     "./pages/**/*.vue",
     "./plugins/**/*.{js,ts}",
     "./nuxt.config.{js,ts}",
+  ],
+  safelist: [
+    // Preserve iridescent theme classes (used dynamically)
+    'gradient-chaos',
+    'gradient-pulse',
+    'iridescent-glow',
+    'bg-iridescent',
+    'bg-iridescent-hover',
+    'bg-iridescent-secondary',
+    'bg-iridescent-tertiary',
+    'shadow-iridescent',
+    'shadow-iridescent-lg',
+    'shadow-iridescent-xl',
   ],
   theme: {
     screens: {

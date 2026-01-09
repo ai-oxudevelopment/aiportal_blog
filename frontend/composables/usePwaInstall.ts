@@ -4,8 +4,10 @@
  * Handles PWA installation prompts for Android (native) and iOS (custom instructions)
  */
 
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+
 export const usePwaInstall = () => {
-  const deferredPrompt = ref(null)
+  const deferredPrompt = ref<any>(null)
   const showInstallPrompt = ref(false)
   const isIOS = ref(false)
 
@@ -32,7 +34,7 @@ export const usePwaInstall = () => {
   }
 
   // Handle beforeinstallprompt event (Android/Chrome)
-  const handleBeforeInstallPrompt = (e) => {
+  const handleBeforeInstallPrompt = (e: Event) => {
     e.preventDefault()
     deferredPrompt.value = e
 

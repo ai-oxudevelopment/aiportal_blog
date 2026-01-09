@@ -3,6 +3,7 @@
  * Clipboard composable for copying text to clipboard
  * Uses modern Clipboard API with execCommand fallback
  */
+import { ref, type Ref } from 'vue'
 
 export interface UseClipboardReturn {
   copy: (text: string) => Promise<boolean>;

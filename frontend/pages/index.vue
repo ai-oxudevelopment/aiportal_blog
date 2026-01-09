@@ -14,7 +14,7 @@
 
       <!-- Main Layout -->
       <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-        <!-- Categories Sidebar (Desktop) -->
+        <!-- Categories Sidebar (Desktop) - Lazy loaded -->
         <aside class="w-full md:w-64 flex-shrink-0 hidden lg:block">
           <CategoriesFilter
             :categories="categories"
@@ -25,7 +25,7 @@
 
         <!-- Main Content -->
         <main class="flex-1 w-full">
-          <!-- Search Bar -->
+          <!-- Search Bar - Lazy loaded -->
           <div class="mb-6 xs:mb-8">
             <PromptSearch
               v-model="searchQuery"
@@ -33,7 +33,7 @@
             />
           </div>
 
-          <!-- Mobile Categories (Horizontal Scroll) -->
+          <!-- Mobile Categories (Horizontal Scroll) - Lazy loaded -->
           <div class="lg:hidden mb-4 xs:mb-6">
             <MobileCategoriesFilter
               :categories="categories"
@@ -42,7 +42,7 @@
             />
           </div>
 
-          <!-- Prompt Cards Grid -->
+          <!-- Prompt Cards Grid - Lazy loaded -->
           <PromptGrid
             :prompts="filteredPrompts"
             :loading="loading"
@@ -54,23 +54,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useFetchArticles } from '~/composables/useFetchArticles'
+import { ref, computed } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import type { PromptPreview, Category } from '~/types/article'
 
-// Components
-import CategoriesFilter from '~/components/prompt/CategoriesFilter.vue'
-import MobileCategoriesFilter from '~/components/prompt/MobileCategoriesFilter.vue'
-import PromptSearch from '~/components/prompt/PromptSearch.vue'
-import PromptGrid from '~/components/prompt/PromptGrid.vue'
+// Lazy load heavy components to reduce Total Blocking Time
+const CategoriesFilter = defineAsyncComponent(() =>
+  import('~/components/prompt/CategoriesFilter.vue')
+)
+const MobileCategoriesFilter = defineAsyncComponent(() =>
+  import('~/components/prompt/MobileCategoriesFilter.vue')
+)
+const PromptSearch = defineAsyncComponent(() =>
+  import('~/components/prompt/PromptSearch.vue')
+)
+const PromptGrid = defineAsyncComponent(() =>
+  import('~/components/prompt/PromptGrid.vue')
+)
+
+// Nuxt composables (auto-imported in Nuxt 3, but needed for TypeScript)
+declare function useAsyncData(key: string, fn: () => Promise<any>): any
 
 // State
 const searchQuery = ref('')
 const selectedCategories = ref<number[]>([])
-const categories = ref<Category[]>([])
-
-// Data fetching
-const { articles: prompts, loading, error, fetchArticles } = useFetchArticles()
 
 // Fallback data when API fails
 const fallbackPrompts: PromptPreview[] = [
@@ -108,9 +115,43 @@ const fallbackCategories: Category[] = [
   { id: 5, name: "SEO" }
 ]
 
+// Data fetching with SSR support
+const { data: prompts, pending: loading, error, refresh } = await useAsyncData(
+  'articles-home',
+  async () => {
+    const response = await $fetch('/api/articles') as any
+    return response.data || []
+  }
+)
+
+// Computed: Extract categories reactively (works on both server AND client for SSR)
+const categories = computed(() => {
+  // If API call succeeded and we have data, extract categories from prompts
+  if (prompts.value && prompts.value.length > 0) {
+    const uniqueCategories = new Map<number, Category>()
+    prompts.value.forEach((prompt: any) => {
+      prompt.categories?.forEach((cat: Category) => {
+        uniqueCategories.set(cat.id, cat)
+      })
+    })
+    return Array.from(uniqueCategories.values())
+  }
+  // Use fallback categories when API fails or returns no data
+  return fallbackCategories
+})
+
+// Computed: Get actual prompts to use (either from API or fallback)
+const actualPrompts = computed(() => {
+  if (prompts.value && prompts.value.length > 0) {
+    return prompts.value as PromptPreview[]
+  }
+  // Use fallback data when API fails or returns no data
+  return fallbackPrompts
+})
+
 // Computed
 const filteredPrompts = computed(() => {
-  let filtered = prompts.value as PromptPreview[]
+  let filtered = actualPrompts.value
 
   // Filter by categories - if nothing selected, show all
   if (selectedCategories.value.length > 0) {
@@ -136,33 +177,4 @@ const filteredPrompts = computed(() => {
 const updateSelectedCategories = (newCategories: number[]) => {
   selectedCategories.value = newCategories
 }
-
-// Lifecycle
-onMounted(async () => {
-  try {
-    await fetchArticles()
-    
-    // If API call succeeded and we have data
-    if (prompts.value && prompts.value.length > 0) {
-      // Extract unique categories from prompts
-      const uniqueCategories = new Map()
-      prompts.value.forEach((prompt: any) => {
-        prompt.categories?.forEach((cat: Category) => {
-          uniqueCategories.set(cat.id, cat)
-        })
-      })
-      categories.value = Array.from(uniqueCategories.values())
-    } else {
-      // Use fallback data when API fails or returns no data
-      console.warn('API returned no data, using fallback prompts')
-      prompts.value = fallbackPrompts as any
-      categories.value = fallbackCategories
-    }
-  } catch (err) {
-    console.error('Failed to fetch articles, using fallback data:', err)
-    // Use fallback data when API fails
-    prompts.value = fallbackPrompts as any
-    categories.value = fallbackCategories
-  }
-})
 </script>

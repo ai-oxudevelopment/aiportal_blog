@@ -35,10 +35,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import type { PromptPreview, Category } from '~/types/article'
+import type { PromptPreview, SpeckitPreview, Category } from '~/types/article'
 
 const props = defineProps<{
-  prompt: PromptPreview
+  prompt: PromptPreview | SpeckitPreview
 }>()
 
 const router = useRouter()

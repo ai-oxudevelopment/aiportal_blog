@@ -156,21 +156,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import { useFetchOneSpeckit } from '~/composables/useFetchOneSpeckit'
 import { useFileDownload } from '~/composables/useFileDownload'
 import SpeckitHelpModal from '~/components/speckit/SpeckitHelpModal.vue'
 import SpeckitCopyCommand from '~/components/speckit/SpeckitCopyCommand.vue'
-import SpeckitDiagramView from '~/components/speckit/SpeckitDiagramView.vue'
-import SpeckitFaqSection from '~/components/speckit/SpeckitFaqSection.vue'
 import type { SpeckitUsageInstructions } from '~/types/article'
+
+// Lazy load below-the-fold components to improve LCP
+const SpeckitDiagramView = defineAsyncComponent(() =>
+  import('~/components/speckit/SpeckitDiagramView.vue')
+)
+const SpeckitFaqSection = defineAsyncComponent(() =>
+  import('~/components/speckit/SpeckitFaqSection.vue')
+)
+
+// Nuxt composables (auto-imported in Nuxt 3, but needed for TypeScript)
+declare function useAsyncData(key: string, fn: () => Promise<any>): any
+declare function createError(options: { statusCode: number; statusMessage: string; fatal?: boolean }): never
 
 const route = useRoute()
 const speckitSlug = computed(() => route.params.speckitSlug as string)
 
-// Fetch speckit data
-const { speckit, loading, error } = useFetchOneSpeckit(speckitSlug.value)
+// Fetch speckit data with SSR-compatible useAsyncData (replaces useFetchOneSpeckit composable)
+const { data: speckit, pending: loading, error } = await useAsyncData(
+  `speckit-${speckitSlug.value}`,
+  async () => {
+    const response = await $fetch(`/api/speckits/${speckitSlug.value}`) as any
+    return response.data
+  }
+)
+
+// Handle 404 error
+if (!speckit.value && !loading.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Speckit not found',
+    fatal: true
+  })
+}
 
 // Composables
 const { downloadFileFromUrl } = useFileDownload()

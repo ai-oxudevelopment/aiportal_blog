@@ -2,8 +2,8 @@
   <div>
     <!-- Loading State -->
     <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div 
-        v-for="i in 6" 
+      <div
+        v-for="i in 6"
         :key="i"
         class="bg-gray-900/50 border border-gray-800 rounded-lg p-6 animate-pulse"
       >
@@ -23,7 +23,7 @@
       <p class="text-gray-400">Try adjusting your search or filter criteria.</p>
     </div>
 
-    <!-- Prompt Cards -->
+    <!-- Prompt Cards - Lazy loaded for better TBT -->
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <EnhancedPromptCard
         v-for="prompt in prompts"
@@ -35,11 +35,16 @@
 </template>
 
 <script setup lang="ts">
-import type { PromptPreview } from '~/types/article'
-import EnhancedPromptCard from './EnhancedPromptCard.vue'
+import type { PromptPreview, SpeckitPreview } from '~/types/article'
+import { defineAsyncComponent } from 'vue'
+
+// Lazy load EnhancedPromptCard to reduce Total Blocking Time
+const EnhancedPromptCard = defineAsyncComponent(() =>
+  import('./EnhancedPromptCard.vue')
+)
 
 defineProps<{
-  prompts: PromptPreview[]
+  prompts: (PromptPreview | SpeckitPreview)[]
   loading: boolean
 }>()
 </script>
