@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-speckit-category-filter`
 **Created**: 2026-01-10
-**Status**: Draft
+**Status**: Completed ✅
 **Input**: User description: "на странице не выводится фильтр по категориям. Когда я открываю  https://portal.aiworkplace.ru/speckits, должен отображаться список доступных категорий и функционал для фильтрации статей по категориям"
 
 ## Clarifications
