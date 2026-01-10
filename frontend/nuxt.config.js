@@ -6,7 +6,6 @@ export default defineNuxtConfig({
     // Pre-render public pages (no dynamic data)
     '/': { prerender: true },
     '/speckits': { prerender: true },
-    '/about': { prerender: true },
 
     // SPA mode for non-critical routes (future enhancement)
     // '/research/**': { ssr: false },
