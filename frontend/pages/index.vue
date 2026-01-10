@@ -58,7 +58,7 @@ import { ref, computed } from 'vue'
 import { defineAsyncComponent } from 'vue'
 import type { PromptPreview, Category } from '~/types/article'
 
-// Lazy load heavy components to reduce Total Blocking Time
+// Lazy load non-critical components (filters, search) for better TBT
 const CategoriesFilter = defineAsyncComponent(() =>
   import('~/components/prompt/CategoriesFilter.vue')
 )
@@ -68,9 +68,9 @@ const MobileCategoriesFilter = defineAsyncComponent(() =>
 const PromptSearch = defineAsyncComponent(() =>
   import('~/components/prompt/PromptSearch.vue')
 )
-const PromptGrid = defineAsyncComponent(() =>
-  import('~/components/prompt/PromptGrid.vue')
-)
+
+// CRITICAL: Import PromptGrid synchronously for immediate interactivity
+import PromptGrid from '~/components/prompt/PromptGrid.vue'
 
 // Nuxt composables (auto-imported in Nuxt 3, but needed for TypeScript)
 declare function useAsyncData(key: string, fn: () => Promise<any>): any

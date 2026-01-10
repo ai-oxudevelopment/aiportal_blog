@@ -36,12 +36,9 @@
 
 <script setup lang="ts">
 import type { PromptPreview, SpeckitPreview } from '~/types/article'
-import { defineAsyncComponent } from 'vue'
 
-// Lazy load EnhancedPromptCard to reduce Total Blocking Time
-const EnhancedPromptCard = defineAsyncComponent(() =>
-  import('./EnhancedPromptCard.vue')
-)
+// CRITICAL: Import EnhancedPromptCard synchronously for immediate interactivity
+import EnhancedPromptCard from './EnhancedPromptCard.vue'
 
 defineProps<{
   prompts: (PromptPreview | SpeckitPreview)[]
