@@ -5723,6 +5723,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"baseline-browser-mapping@npm:^2.9.14":
+  version: 2.9.14
+  resolution: "baseline-browser-mapping@npm:2.9.14"
+  bin:
+    baseline-browser-mapping: dist/cli.js
+  checksum: 10c0/c9bf03c65e9a6690e4abbe60c269ad14ce5578cac09fed51ff1ed6e899e049afb094c2b173365cb2397d48012a83747500db6e79dca2761faf548aee10574d3d
+  languageName: node
+  linkType: hard
+
 "binary-extensions@npm:^2.0.0":
   version: 2.3.0
   resolution: "binary-extensions@npm:2.3.0"
@@ -14124,6 +14133,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.51.0"
     "@vite-pwa/nuxt": "npm:^1.1.0"
     "@vue/eslint-config-standard": "npm:^8.0.1"
+    baseline-browser-mapping: "npm:^2.9.14"
     caniuse-lite: "npm:^1.0.30001741"
     eslint: "npm:^8.33.0"
     eslint-config-prettier: "npm:^8.6.0"
