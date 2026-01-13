@@ -42,10 +42,10 @@
             />
           </div>
 
-          <!-- Prompt Cards Grid - Lazy loaded -->
+          <!-- Prompt Cards Grid -->
           <PromptGrid
             :prompts="filteredPrompts"
-            :loading="loading"
+            :loading="false"
           />
         </main>
       </div>

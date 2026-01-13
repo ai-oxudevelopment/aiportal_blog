@@ -132,8 +132,47 @@ export default defineNuxtConfig({
     build: {
       commonjsOptions: {
         transformMixedEsModules: true
+      },
+      // Enable CSS code splitting
+      cssCodeSplit: true,
+      // Optimize chunk size warnings
+      chunkSizeWarningLimit: 1000,
+      // Rollup options for bundle optimization
+      rollupOptions: {
+        output: {
+          // Manual chunk splitting for better caching
+          manualChunks(id) {
+            // Vendor chunks
+            if (id.includes('node_modules')) {
+              // Vuetify separate chunk
+              if (id.includes('vuetify')) {
+                return 'vuetify'
+              }
+              // Mermaid separate chunk (lazy-loaded)
+              if (id.includes('mermaid')) {
+                return 'mermaid'
+              }
+              // Vue core libraries
+              if (id.includes('vue') || id.includes('@vueuse/core') || id.includes('pinia')) {
+                return 'vue-vendor'
+              }
+            }
+          }
+        }
       }
-    }
+    },
+    // Bundle analyzer plugin - generates stats.html after build
+    plugins: [
+      // Note: visualizer plugin configuration moved here from vite.config.js
+      // To enable bundle analysis, uncomment the following lines:
+      // import { visualizer } from 'rollup-plugin-visualizer'
+      // visualizer({
+      //   open: false,
+      //   filename: './.output/dist/stats.html',
+      //   gzipSize: true,
+      //   brotliSize: true
+      // })
+    ]
   },
   imports: {
     dirs: ["stores", "composables"],
@@ -197,6 +236,7 @@ export default defineNuxtConfig({
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
       cleanupOutdatedCaches: true, // Remove old caches to free up space
+      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4MB - allow larger JS bundles
       runtimeCaching: [
         {
           // Local API proxy - StaleWhileRevalidate for fast loads + fresh data

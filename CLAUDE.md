@@ -39,9 +39,9 @@ tests/
 : Follow standard conventions
 
 ## Recent Changes
+- 001-fix-card-clicks: Added JavaScript ES2022 + TypeScript 5.9.2 (Nuxt 3.2.0, Vue 3.4.21) + Nuxt 3.2.0, Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia, @nuxtjs/mdc
 - 002-fix-docker-build: Added JavaScript ES2022 + TypeScript 5.9.2 (Nuxt 3.2.0, Vue 3.4.21) + Nuxt 3.2.0, Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia
 - 001-speckit-category-filter: Added TypeScript 5.9.2, JavaScript ES2022 + Nuxt 3.2.0 (Vue 3.4.21), Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia
-- 001-pagespeed-optimization: Added JavaScript ES2022 + TypeScript 5.9.2 (Nuxt 3.2.0, Vue 3.4.21) + Nuxt 3.2.0, Vuetify 3, Tailwind CSS, @nuxtjs/strapi 2.1.1, Pinia, @nuxtjs/mdc, Mermaid 11.0.0
 
 
 <!-- MANUAL ADDITIONS START -->
