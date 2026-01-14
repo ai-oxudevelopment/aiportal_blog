@@ -9,19 +9,66 @@
 </template>
 
 <script setup>
-// SSR hydration setup
-// Nuxt 3 automatically handles SSR hydration
+// Performance measurement and SSR hydration tracking
+// Nuxt 3 SSR mode - hydration delay investigation
 // <NuxtLayout /> renders the default layout (layouts/default.vue)
 // <NuxtPage /> renders the current page from pages/ directory
 
-// Defer non-critical CSS for better First Contentful Paint
+// Performance metrics tracking - SSR mode
 onMounted(() => {
-  // Load animations after 2 seconds to improve initial page load
+  // Performance markers for Time to Interactive (TTI) measurement
+  performance.mark('app-mounted')
+
+  const navStart = performance.getEntriesByType('navigation')[0]
+  const tti = performance.now() - navStart.startTime
+
+  // Calculate hydration duration (time from FCP to TTI)
+  const fcp = navStart?.loadEventEnd || 0
+  const hydrationDuration = tti - fcp
+
+  console.log('='.repeat(50))
+  console.log('📊 SSR PERFORMANCE METRICS')
+  console.log('='.repeat(50))
+  console.log('Mode: SSR (Server-side rendering with hydration)')
+  console.log('Time to Interactive:', tti.toFixed(0), 'ms')
+  console.log('First Contentful Paint:', fcp.toFixed(0), 'ms')
+  console.log('Hydration Duration:', hydrationDuration.toFixed(0), 'ms')
+  console.log('DOM Content Loaded:', navStart?.domContentLoadedEventEnd?.toFixed(0) || 'N/A', 'ms')
+  console.log('='.repeat(50))
+
+  // Success criteria check
+  if (tti < 2000) {
+    console.log('✅ TTI within target (< 2000ms)')
+  } else {
+    console.warn('⚠️ TTI exceeds target:', tti.toFixed(0), 'ms')
+    console.warn('⚠️ Investigating hydration delay cause...')
+  }
+
+  // Hydration check
+  if (hydrationDuration < 1000) {
+    console.log('✅ Hydration completed quickly (< 1000ms)')
+    console.log('✅ Click handlers should work immediately')
+  } else if (hydrationDuration < 3000) {
+    console.warn('⚠️ Hydration taking 1-3 seconds - acceptable but monitor')
+  } else {
+    console.error('❌ Hydration delay excessive (> 3000ms) - needs optimization')
+  }
+  console.log('='.repeat(50))
+
+  // SSR-specific check
+  if (import.meta.env.SSR) {
+    console.log('✅ SSR Mode: HTML rendered on server')
+  } else {
+    console.log('✅ Client Side: JavaScript hydrated')
+  }
+  console.log('='.repeat(50))
+
+  // Defer non-critical CSS for better First Contentful Paint
   setTimeout(() => {
     import('~/assets/css/animations.css').then(() => {
-      console.log('Non-critical CSS loaded')
+      console.log('✅ Non-critical CSS loaded')
     }).catch(() => {
-      console.warn('Failed to load non-critical CSS')
+      console.warn('⚠️ Failed to load non-critical CSS')
     })
   }, 2000)
 })

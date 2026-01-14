@@ -1,9 +1,9 @@
 <template>
-  <v-app theme="dark">
+  <div class="v-app">
     <Header @toggleMenu="toggleMenu" />
     <Sidebar :isMenuOpen="isMenuOpen" />
     <slot />
-  </v-app>
+  </div>
 </template>
 
 <script setup>
