@@ -50,10 +50,29 @@ const categoryName = computed(() => {
 })
 
 const goToPrompt = async () => {
+  const clickStart = performance.now()
+
+  console.log('🖱️ Card Clicked:', props.prompt.title)
+
   if (props.prompt.slug) {
-    // Navigate to the correct route based on type
-    const route = props.prompt.type === 'speckit' ? '/speckits' : '/prompts'
-    await router.push(`${route}/${encodeURIComponent(props.prompt.slug)}`)
+    try {
+      // Navigate to the correct route based on type
+      const route = props.prompt.type === 'speckit' ? '/speckits' : '/prompts'
+      await router.push(`${route}/${encodeURIComponent(props.prompt.slug)}`)
+
+      const clickEnd = performance.now()
+      const navTime = clickEnd - clickStart
+
+      console.log('✅ Navigation Started:', navTime.toFixed(0), 'ms')
+
+      if (navTime > 500) {
+        console.warn('⚠️ Navigation start exceeds 500ms')
+      }
+    } catch (error) {
+      console.error('❌ Navigation Failed:', error)
+    }
+  } else {
+    console.error('❌ Invalid slug - navigation blocked')
   }
 }
 

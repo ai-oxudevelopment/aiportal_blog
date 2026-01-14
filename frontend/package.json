@@ -37,9 +37,7 @@
     "github-markdown-css": "^5.8.1",
     "jszip": "^3.10.1",
     "lucide-vue-next": "^0.544.0",
-    "mermaid": "^11.0.0",
     "nuxt-markdown-render": "^2.1.0",
-    "nuxt-socket-io": "^3.0.10",
     "pinia": "^2.0.30",
     "radix-vue": "^1.9.17",
     "sass": "^1.58.0",
@@ -47,7 +45,6 @@
     "typescript": "^5.9.2",
     "vite": "^7.1.5",
     "vue": "3",
-    "vuetify": "^3.1.4",
     "web-vitals": "^5.1.0"
   }
 }

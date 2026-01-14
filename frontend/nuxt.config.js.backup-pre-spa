@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  ssr: true, // SSR mode - MUST remain enabled for SEO and fast First Contentful Paint (user requirement)
+  ssr: true, // Keep SSR for SEO
 
   // Hybrid rendering: pre-render static pages, SPA for others
   routeRules: {
@@ -8,6 +8,8 @@ export default defineNuxtConfig({
     '/speckits': { prerender: true },
 
     // SPA mode for non-critical routes (future enhancement)
+    // '/research/**': { ssr: false },
+    // '/admin/**': { ssr: false }
   },
 
   app: {
@@ -62,6 +64,14 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false,
   },
+  io: {
+    sockets: [
+      {
+        name: "main",
+        url: process.env.STRAPI_URL,
+      },
+    ],
+  },
   strapi: {
     url: process.env.STRAPI_URL,
     prefix: "/api",
@@ -100,11 +110,18 @@ export default defineNuxtConfig({
     "~/assets/css/perplexity-theme.css",
     "~/assets/css/formkit-theme.css",
     "~/assets/css/mobile-responsive.css",
+    "vuetify/lib/styles/main.sass",
 
     // Non-critical CSS - defer for better FCP (loads after 2s)
     { src: "~/assets/css/animations.css", media: "print", onload: "this.media='all'" },
     "~/assets/css/iridescent-accents.css",
+
+    // Fonts
+    "@mdi/font/css/materialdesignicons.min.css",
   ],
+  build: {
+    transpile: ["vuetify"],
+  },
   vite: {
     define: {
       "process.env.DEBUG": false,
@@ -127,6 +144,14 @@ export default defineNuxtConfig({
           manualChunks(id) {
             // Vendor chunks
             if (id.includes('node_modules')) {
+              // Vuetify separate chunk
+              if (id.includes('vuetify')) {
+                return 'vuetify'
+              }
+              // Mermaid separate chunk (lazy-loaded)
+              if (id.includes('mermaid')) {
+                return 'mermaid'
+              }
               // Vue core libraries
               if (id.includes('vue') || id.includes('@vueuse/core') || id.includes('pinia')) {
                 return 'vue-vendor'

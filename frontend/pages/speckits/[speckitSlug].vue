@@ -56,11 +56,19 @@
             </div>
           </div>
 
-          <!-- Diagram View -->
-          <SpeckitDiagramView
+          <!-- Diagram Source (Plain Text Display) -->
+          <div
             v-if="speckit?.diagram"
-            :diagram-source="speckit.diagram"
-          />
+            class="mt-8 mb-8 bg-gray-900/50 rounded-xl border border-gray-800 overflow-hidden"
+          >
+            <div class="flex items-center gap-2 p-4 bg-gray-800/50 border-b border-gray-700">
+              <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+              </svg>
+              <h3 class="text-lg font-semibold text-gray-200">Процесс (исходный код)</h3>
+            </div>
+            <pre class="p-6 text-sm text-gray-300 overflow-x-auto bg-gray-950/50"><code>{{ speckit.diagram }}</code></pre>
+          </div>
 
           <!-- FAQ Section -->
           <SpeckitFaqSection />
@@ -164,9 +172,6 @@ import SpeckitCopyCommand from '~/components/speckit/SpeckitCopyCommand.vue'
 import type { SpeckitUsageInstructions } from '~/types/article'
 
 // Lazy load below-the-fold components to improve LCP
-const SpeckitDiagramView = defineAsyncComponent(() =>
-  import('~/components/speckit/SpeckitDiagramView.vue')
-)
 const SpeckitFaqSection = defineAsyncComponent(() =>
   import('~/components/speckit/SpeckitFaqSection.vue')
 )
