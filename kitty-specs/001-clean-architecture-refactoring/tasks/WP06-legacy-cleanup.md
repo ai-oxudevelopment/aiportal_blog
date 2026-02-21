@@ -1,3 +1,6 @@
+---
+lane: "for_review"
+---
 # WP06: Legacy Code Cleanup
 
 **Work Package ID**: WP06
@@ -258,3 +261,7 @@ spec-kitty implement WP06 --base WP05
 Основание на WP05 (последний контентный модуль).
 
 **⚠️ WARNING**: Перед запуском убедитесь что все предыдущие WPs завершены и протестированы!
+
+## Activity Log
+
+- 2026-02-21T11:39:12Z – unknown – lane=for_review – Moved to for_review
