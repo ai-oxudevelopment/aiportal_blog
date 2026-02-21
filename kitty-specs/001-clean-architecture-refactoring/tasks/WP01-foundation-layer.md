@@ -1,3 +1,6 @@
+---
+lane: "doing"
+---
 # WP01: Foundation Layer Setup
 
 **Work Package ID**: WP01
@@ -516,3 +519,7 @@ spec-kitty implement WP01
 ```
 
 Эта команда создаст worktree для этого WP и настроит окружение для разработки.
+
+## Activity Log
+
+- 2026-02-21T11:23:10Z – unknown – lane=doing – Moved to doing
