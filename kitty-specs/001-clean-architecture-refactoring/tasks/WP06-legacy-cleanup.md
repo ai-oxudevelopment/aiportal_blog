@@ -1,0 +1,260 @@
+# WP06: Legacy Code Cleanup
+
+**Work Package ID**: WP06
+**Title**: Legacy Code Cleanup
+**Lane**: planned
+**Dependencies**: ["WP02", "WP03", "WP04", "WP05"]
+**Subtasks**: ["T028", "T029", "T030", "T031"]
+
+**History**:
+- 2025-02-21: Created during task generation
+
+---
+
+## Objective
+
+Удалить весь legacy код после полной миграции всех модулей. Это финальный cleanup, который оставляет только новую архитектуру.
+
+**⚠️ CRITICAL**: Этот WP можно запускать только после завершения WP02-WP05 и комплексного тестирования.
+
+**Success Criteria**:
+- Legacy composables удалены
+- Legacy server routes удалены
+- Все импорты обновлены на новые пути
+- Нет дублирующего кода
+- Все тесты проходят
+
+---
+
+## Context
+
+**Legacy Code to Remove**:
+- `frontend/composables/useFetchArticles.ts`
+- `frontend/composables/useFetchOneArticle.ts`
+- `frontend/composables/useStrapiHelpers.ts`
+- `frontend/server/api/articles.get.ts`
+- `frontend/server/api/speckits.get.ts`
+- `frontend/server/api/speckits/[slug].get.ts`
+- `frontend/server/api/speckits/[slug]/diagram.get.ts`
+- `frontend/server/api/research/*` (если не используется)
+- `frontend/types/article.ts` (заменён на Domain entities)
+
+**Note**: Старые компоненты могут остаться если они работают, но они должны использовать новые composables.
+
+---
+
+## Subtasks
+
+### T028: Удалить legacy composables
+
+**Purpose**: Удалить старые composables которые заменены на новую архитектуру.
+
+**Steps**:
+
+1. Удалить следующие файлы:
+   ```bash
+   rm frontend/composables/useFetchArticles.ts
+   rm frontend/composables/useFetchOneArticle.ts
+   rm frontend/composables/useStrapiHelpers.ts
+   rm frontend/composables/useFileDownload.ts  # если есть
+   rm frontend/composables/useClipboard.ts  # если не используется
+   ```
+
+2. Убедиться что нигде не осталось импортов:
+   ```bash
+   grep -r "useFetchArticles" frontend/ --exclude-dir=node_modules --exclude-dir=.nuxt
+   grep -r "useFetchOneArticle" frontend/ --exclude-dir=node_modules --exclude-dir=.nuxt
+   grep -r "useStrapiHelpers" frontend/ --exclude-dir=node_modules --exclude-dir=.nuxt
+   ```
+
+**Validation**:
+- [ ] Все legacy composables удалены
+- [ ] Никаких импортов от старых composables
+- [ ] Все компоненты используют новые `src/presentation/composables`
+
+**Files**:
+- Удаление нескольких файлов
+
+---
+
+### T029: Удалить legacy server routes
+
+**Purpose**: Удалить старые server routes, логика которых перешла в use cases.
+
+**Steps**:
+
+1. Удалить следующие файлы:
+   ```bash
+   rm -rf frontend/server/api/articles.get.ts
+   rm -rf frontend/server/api/speckits.get.ts
+   rm -rf frontend/server/api/speckits/[slug].get.ts
+   rm -rf frontend/server/api/speckits/[slug]/diagram.get.ts
+   rm -rf frontend/server/api/research/*
+   ```
+
+2. Проверить что server/api больше не нужен:
+   ```bash
+   ls -la frontend/server/api/
+   # Если пусто, можно удалить директорию
+   ```
+
+**Validation**:
+- [ ] Все legacy server routes удалены
+- [ ] Новые use cases не зависят от server routes
+
+**Files**:
+- Удаление нескольких файлов
+
+---
+
+### T030: Обновить все импорты в компонентах
+
+**Purpose**: Обновить импорты от старых путей к новым.
+
+**Steps**:
+
+1. Найти все импорты от старых путей:
+   ```bash
+   grep -r "from '@/composables/" frontend/components frontend/pages
+   grep -r "from '@/types/" frontend/components frontend/pages
+   ```
+
+2. Заменить импорты:
+   - `@/composables/...` → `@/presentation/composables/...`
+   - `@/types/article` → `@/domain/entities`
+
+3. Обновить `tsconfig.json` если есть path aliases:
+   ```json
+   {
+     "paths": {
+       "@/*": ["./src/*", "./*"],
+       "@domain/*": ["./src/domain/*"],
+       "@application/*": ["./src/application/*"],
+       "@infrastructure/*": ["./src/infrastructure/*"],
+       "@presentation/*": ["./src/presentation/*"]
+     }
+   }
+   ```
+
+**Validation**:
+- [ ] Все импорты используют новые пути
+- [ ] TypeScript не выдаёт ошибок
+- [ ] Ничего не импортируется из удалённых файлов
+
+**Files**:
+- Обновление множества файлов
+
+---
+
+### T031: Финальная валидация и cleanup
+
+**Purpose**: Комплексная проверка что ничего не сломалось.
+
+**Steps**:
+
+1. Запустить все тесты:
+   ```bash
+   yarn test
+   ```
+
+2. Запустить type check:
+   ```bash
+   yarn build  # или npx tsc --noEmit
+   ```
+
+3. Запустить dev server и проверить:
+   ```bash
+   yarn dev
+   ```
+   - Проверить `/speckits` страницу
+   - Проверить `/prompts` страницу
+   - Проверить `/blogs` страницу
+   - Проверить `/research` страницу
+   - Проверить фильтрацию категорий
+
+4. E2E тестирование:
+   - Пройти все основные user flows
+   - Убедиться что фильтрация работает
+   - Убедиться что детальные страницы открываются
+   - Убедиться что file download работает
+
+5. Удалить временные файлы:
+   ```bash
+   # Удалить старые типы если они не используются
+   rm frontend/types/article.ts  # если всё мигрировано
+   ```
+
+6. Коммит изменений:
+   ```bash
+   git add .
+   git commit -m "feat: complete migration to clean architecture
+
+   - Removed legacy composables
+   - Removed legacy server routes
+   - Updated all imports to new architecture
+   - All modules migrated: Research, Speckits, Prompts, Blogs
+   "
+   ```
+
+**Validation**:
+- [ ] Все тесты проходят
+- [ ] TypeScript без ошибок
+- [ ] Dev server запускается
+- [ ] Все страницы работают
+- [ ] Фильтрация работает
+- [ ] Zero regression
+
+**Files**:
+- Коммит изменений
+
+---
+
+## Definition of Done
+
+- [ ] Все legacy composables удалены
+- [ ] Все legacy server routes удалены
+- [ ] Все импорты обновлены
+- [ ] Никакого дублирующего кода
+- [ ] Все тесты проходят
+- [ ] E2E тестирование успешно
+- [ ] Changes committed
+
+---
+
+## Risks & Mitigations
+
+| Risk | Mitigation |
+|------|------------|
+| Удаление нужного кода | Комплексное тестирование ПЕРЕД удалением |
+| Скрытые зависимости от legacy кода | Грепать все импорты, проверять каждый |
+| Something breaks in production | E2E тестирование, feature branches |
+
+---
+
+## Reviewer Guidance
+
+**What to verify**:
+1. Никаких legacy файлов не осталось
+2. Все импорты обновлены
+3. Всё работает после миграции
+
+**Red flags**:
+- ❌ Остались импорты от удалённых файлов
+- ❌ Something broken
+
+**Green flags**:
+- ✅ Чистая архитектура
+- ✅ Zero дублирования
+- ✅ Всё работает
+
+---
+
+## Implementation Command
+
+```bash
+spec-kitty implement WP06 --base WP05
+```
+
+Основание на WP05 (последний контентный модуль).
+
+**⚠️ WARNING**: Перед запуском убедитесь что все предыдущие WPs завершены и протестированы!
