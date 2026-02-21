@@ -2,12 +2,13 @@
 
 **Work Package ID**: WP04
 **Title**: Prompts Module Migration
-**Lane**: planned
+**Lane**: for_review
 **Dependencies**: ["WP01", "WP03"]
 **Subtasks**: ["T019", "T020", "T021", "T022"]
 
 **History**:
 - 2025-02-21: Created during task generation
+- 2025-02-21: Implementation complete, moved to for_review
 
 ---
 
@@ -335,12 +336,12 @@
 
 ## Definition of Done
 
-- [ ] GetPromptList, GetPromptDetail use cases созданы
-- [ ] usePromptList, usePromptDetail composables созданы
-- [ ] Prompt components/pages мигрированы
-- [ ] Zero code duplication с Speckits (переиспользовать репозиторий)
-- [ ] Все тесты проходят
-- [ ] Zero regression
+- [x] GetPromptList, GetPromptDetail use cases созданы
+- [x] usePromptList, usePromptDetail composables созданы
+- [x] Prompt components/pages мигрированы
+- [x] Zero code duplication с Speckits (переиспользовать репозиторий)
+- [x] Все тесты проходят
+- [x] Zero regression
 
 ---
 

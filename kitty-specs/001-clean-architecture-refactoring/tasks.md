@@ -159,18 +159,18 @@
 **Estimated Size**: ~320 lines (4 subtasks)
 
 **Success Criteria**:
-- [ ] Prompts use cases созданы
-- [ ] Prompts переиспользуют StrapiArticlesRepository
-- [ ] Prompt composables созданы
-- [ ] Prompt pages/components мигрированы
-- [ ] Zero code duplication между Prompts и Speckits
-- [ ] Миграция заняла меньше времени чем Speckits
+- [x] Prompts use cases созданы
+- [x] Prompts переиспользуют StrapiArticlesRepository
+- [x] Prompt composables созданы
+- [x] Prompt pages/components мигрированы
+- [x] Zero code duplication между Prompts и Speckits
+- [x] Миграция заняла меньше времени чем Speckits
 
 **Included Subtasks**:
-- [ ] T019: Создать GetPromptList use case (переиспользовать паттерн)
-- [ ] T020: Создать GetPromptDetail use case
-- [ ] T021: Создать Prompt composables
-- [ ] T022: Рефакторинг Prompt компонентов и страниц
+- [x] T019: Создать GetPromptList use case (переиспользовать паттерн)
+- [x] T020: Создать GetPromptDetail use case
+- [x] T021: Создать Prompt composables
+- [x] T022: Рефакторинг Prompt компонентов и страниц
 
 **Implementation Sketch**:
 1. Создать use cases в `application/use-cases/prompts/` (переиспользовать структуру из Speckits)
