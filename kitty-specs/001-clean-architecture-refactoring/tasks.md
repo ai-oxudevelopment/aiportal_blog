@@ -35,12 +35,12 @@
 - [ ] Базовые интерфейсные тесты проходят
 
 **Included Subtasks**:
-- [ ] T001: Создать структуру директорий `frontend/src/`
-- [ ] T002: Определить Domain Entities (Article, Category, ResearchSession)
-- [ ] T003: Определить Repository Interfaces (IArticlesRepository, etc.)
-- [ ] T004: Создать ICacheProvider интерфейс
-- [ ] T005: Настроить Nuxt imports для новой структуры
-- [ ] T006: Создать базовые unit тесты для interfaces
+- [x] T001: Создать структуру директорий `frontend/src/`
+- [x] T002: Определить Domain Entities (Article, Category, ResearchSession)
+- [x] T003: Определить Repository Interfaces (IArticlesRepository, etc.)
+- [x] T004: Создать ICacheProvider интерфейс
+- [x] T005: Настроить Nuxt imports для новой структуры
+- [x] T006: Создать базовые unit тесты для interfaces
 
 **Implementation Sketch**:
 1. Создать `frontend/src/domain/entities/` с Article.ts, Category.ts, ResearchSession.ts
