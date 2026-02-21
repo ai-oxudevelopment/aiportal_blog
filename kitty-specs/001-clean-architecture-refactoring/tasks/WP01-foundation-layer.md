@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: "for_review"
 dependencies: []
 base_branch: main
 base_commit: e2f981ed4afa6f2028f90ce348b83ea3f212996c
@@ -530,3 +530,4 @@ spec-kitty implement WP01
 
 - 2026-02-21T11:23:10Z – unknown – lane=doing – Moved to doing
 - 2026-02-21T11:23:31Z – claude – shell_pid=81618 – lane=doing – Assigned agent via workflow command
+- 2026-02-21T11:28:22Z – claude – shell_pid=81618 – lane=for_review – Ready for review: All files committed, foundational structure complete.
