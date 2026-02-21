@@ -2,12 +2,13 @@
 
 **Work Package ID**: WP05
 **Title**: Blogs & Categories Migration
-**Lane**: planned
+**Lane**: for_review
 **Dependencies**: ["WP01", "WP03", "WP04"]
 **Subtasks**: ["T023", "T024", "T025", "T026", "T027"]
 
 **History**:
 - 2025-02-21: Created during task generation
+- 2025-02-21: Implemented - all tasks complete, moved to for_review
 
 ---
 
@@ -134,9 +135,9 @@
    ```
 
 **Validation**:
-- [ ] Реализует `ICategoriesRepository` полностью
-- [ ] Кеширование работает
-- [ ] Фильтрация по type работает
+- [x] Реализует `ICategoriesRepository` полностью
+- [x] Кеширование работает
+- [x] Фильтрация по type работает
 
 **Files**:
 - `frontend/src/infrastructure/repositories/StrapiCategoriesRepository.ts` (~90 lines)
@@ -171,8 +172,8 @@
    ```
 
 **Validation**:
-- [ ] Use case простой и прямолинейный
-- [ ] Поддерживает фильтрацию по type
+- [x] Use case простой и прямолинейный
+- [x] Поддерживает фильтрацию по type
 
 **Files**:
 - `frontend/src/application/use-cases/categories/GetCategories.ts` (~20 lines)
@@ -270,8 +271,8 @@
    ```
 
 **Validation**:
-- [ ] Blogs use cases аналогичны Prompt use cases
-- [ ] Type='blog' установлен корректно
+- [x] Blogs use cases аналогичны Prompt use cases
+- [x] Type='blog' установлен корректно
 
 **Files**:
 - `frontend/src/application/use-cases/blogs/GetBlogList.ts` (~35 lines)
@@ -377,8 +378,8 @@
    ```
 
 **Validation**:
-- [ ] Composables аналогичны Prompt composables
-- [ ] Categories integration работает
+- [x] Composables аналогичны Prompt composables
+- [x] Categories integration работает
 
 **Files**:
 - `frontend/src/presentation/composables/useBlogList.ts` (~50 lines)
@@ -419,9 +420,9 @@
    - Проверить что фильтрация работает после миграции
 
 **Validation**:
-- [ ] Blogs страницы используют новые composables
-- [ ] Фильтрация по категории работает для всех типов контента
-- [ ] Categories кешируются корректно
+- [x] Blogs страницы используют новые composables
+- [x] Фильтрация по категории работает для всех типов контента
+- [x] Categories кешируются корректно
 
 **Files**:
 - `pages/blogs.vue` (рефакторинг)
@@ -431,14 +432,14 @@
 
 ## Definition of Done
 
-- [ ] StrapiCategoriesRepository реализован
-- [ ] GetCategories use case создан
-- [ ] Blogs use cases созданы
-- [ ] Blog composables созданы
-- [ ] Blogs pages мигрированы
-- [ ] Фильтрация работает для всех типов контента
-- [ ] Categories кешируются
-- [ ] Все тесты проходят
+- [x] StrapiCategoriesRepository реализован
+- [x] GetCategories use case создан
+- [x] Blogs use cases созданы
+- [x] Blog composables созданы
+- [x] Blogs pages мигрированы
+- [x] Фильтрация работает для всех типов контента
+- [x] Categories кешируются
+- [ ] Все тесты проходят (pending test setup)
 
 ---
 
