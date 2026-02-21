@@ -1,5 +1,11 @@
 ---
-lane: "doing"
+lane: doing
+dependencies: []
+base_branch: main
+base_commit: f49a08438b93f5dab2c13b676a559023a682faf5
+created_at: '2026-02-21T11:28:32.143592+00:00'
+agent: "claude"
+shell_pid: "82221"
 ---
 # WP02: Research Module Migration
 
@@ -638,3 +644,4 @@ spec-kitty implement WP02 --base WP01
 ## Activity Log
 
 - 2026-02-21T11:28:27Z – unknown – lane=doing – Moved to doing
+- 2026-02-21T11:28:32Z – claude – shell_pid=82221 – lane=doing – Assigned agent via workflow command
