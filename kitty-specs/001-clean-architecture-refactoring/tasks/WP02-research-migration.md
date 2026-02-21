@@ -1,3 +1,6 @@
+---
+lane: "doing"
+---
 # WP02: Research Module Migration
 
 **Work Package ID**: WP02
@@ -631,3 +634,7 @@ spec-kitty implement WP02 --base WP01
 ```
 
 Эта команда создаст worktree с основанием на WP01 (Foundation Layer).
+
+## Activity Log
+
+- 2026-02-21T11:28:27Z – unknown – lane=doing – Moved to doing
