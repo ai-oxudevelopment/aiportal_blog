@@ -30,9 +30,9 @@
 **Success Criteria**:
 - [ ] `frontend/src/domain/` создан с базовыми сущностями
 - [ ] `frontend/src/infrastructure/` создан с cache и API клиентом
-- [ ] TypeScript компилируется без ошибок
-- [ ] Nuxt auto-imports настроены для новых путей
-- [ ] Базовые интерфейсные тесты проходят
+- [x] TypeScript компилируется без ошибок
+- [x] Nuxt auto-imports настроены для новых путей
+- [x] Базовые интерфейсные тесты проходят
 
 **Included Subtasks**:
 - [x] T001: Создать структуру директорий `frontend/src/`
