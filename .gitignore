@@ -33,6 +33,7 @@ venv/
 .taskmaster/tasks/
 # tasks.json
 tasks/
+!kitty-specs/*/tasks/
 
 # Security scanning
 results.sarif
