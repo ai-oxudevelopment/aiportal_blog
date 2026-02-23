@@ -240,7 +240,7 @@
 **Estimated Size**: ~280 lines (4 subtasks)
 
 **Success Criteria**:
-- [ ] Legacy composables удалены (useFetchArticles, etc.)
+- [x] Legacy composables удалены (useFetchArticles, etc.)
 - [ ] Legacy server routes удалены
 - [ ] Все импорты обновлены на новые пути
 - [ ] Нет дублирующего кода
