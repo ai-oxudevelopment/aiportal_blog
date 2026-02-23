@@ -1,3 +1,8 @@
+---
+lane: "doing"
+agent: "claude"
+shell_pid: "1237"
+---
 # WP03: Speckits Module Migration
 
 **Work Package ID**: WP03
@@ -911,3 +916,7 @@ spec-kitty implement WP03 --base WP01
 ```
 
 Основание на WP01, но WP02 patterns тоже полезны.
+
+## Activity Log
+
+- 2026-02-23T20:24:37Z – claude – shell_pid=1237 – lane=doing – Started implementation via workflow command
