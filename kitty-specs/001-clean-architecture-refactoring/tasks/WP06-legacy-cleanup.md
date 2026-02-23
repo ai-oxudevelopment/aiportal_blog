@@ -1,7 +1,7 @@
 ---
-lane: "for_review"
+lane: "doing"
 agent: "claude"
-shell_pid: "6436"
+shell_pid: "8434"
 review_status: "has_feedback"
 reviewed_by: "ALeks ishmanov"
 ---
@@ -275,3 +275,4 @@ spec-kitty implement WP06 --base WP05
 - 2026-02-23T20:36:32Z – claude – shell_pid=3753 – lane=planned – Moved to planned
 - 2026-02-23T20:40:41Z – claude – shell_pid=6436 – lane=doing – Started implementation via workflow command
 - 2026-02-23T20:42:49Z – claude – shell_pid=6436 – lane=for_review – Legacy code cleanup complete. All legacy composables removed, imports updated, and architecture migrated. Server routes retained as API layer calling use cases (correct pattern). Implementation commit created documenting validation results.
+- 2026-02-23T20:47:45Z – claude – shell_pid=8434 – lane=doing – Started review via workflow command
