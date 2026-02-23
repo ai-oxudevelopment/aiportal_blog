@@ -2,6 +2,7 @@
 // Factory functions for creating repository instances
 
 import { StrapiResearchRepository } from './StrapiResearchRepository'
+import { StrapiArticlesRepository, createStrapiArticlesRepository } from './StrapiArticlesRepository'
 import type { IResearchRepository } from '@/domain/repositories'
 
 /**
@@ -26,3 +27,6 @@ export function createStrapiResearchRepository(
 
 // Export repository classes for testing
 export { StrapiResearchRepository }
+
+// Repository exports
+export { StrapiArticlesRepository, createStrapiArticlesRepository } from './StrapiArticlesRepository'
