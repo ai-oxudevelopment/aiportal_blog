@@ -243,7 +243,7 @@
 - [x] Legacy composables удалены (useFetchArticles, etc.)
 - [x] Legacy server routes удалены
 - [x] Все импорты обновлены на новые пути
-- [ ] Нет дублирующего кода
+- [x] Нет дублирующего кода
 - [x] Все тесты проходят
 
 **Included Subtasks**:
