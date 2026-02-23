@@ -1,5 +1,5 @@
 ---
-lane: "doing"
+lane: "for_review"
 agent: "claude"
 shell_pid: "1237"
 ---
@@ -921,3 +921,4 @@ spec-kitty implement WP03 --base WP01
 ## Activity Log
 
 - 2026-02-23T20:24:37Z – claude – shell_pid=1237 – lane=doing – Started implementation via workflow command
+- 2026-02-23T20:31:10Z – claude – shell_pid=1237 – lane=for_review – Ready for review: Speckits module migration complete with caching, StrapiClient, and use cases
