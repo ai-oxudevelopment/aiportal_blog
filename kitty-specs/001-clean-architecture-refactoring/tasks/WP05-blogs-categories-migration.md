@@ -1,3 +1,8 @@
+---
+lane: "doing"
+agent: "claude"
+shell_pid: "1237"
+---
 # WP05: Blogs & Categories Migration
 
 **Work Package ID**: WP05
@@ -476,3 +481,7 @@ spec-kitty implement WP05 --base WP03
 ```
 
 Основание на WP03, но WP04 patterns тоже переиспользуются.
+
+## Activity Log
+
+- 2026-02-23T20:24:37Z – claude – shell_pid=1237 – lane=doing – Started implementation via workflow command
