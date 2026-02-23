@@ -202,7 +202,7 @@
 - [x] Blogs use cases созданы
 - [x] CategoriesRepository реализован для всех модулей
 - [x] Categories кешируются корректно
-- [ ] Фильтрация работает для всех типов контента
+- [x] Фильтрация работает для всех типов контента
 - [ ] Blogs pages/components мигрированы
 
 **Included Subtasks**:
