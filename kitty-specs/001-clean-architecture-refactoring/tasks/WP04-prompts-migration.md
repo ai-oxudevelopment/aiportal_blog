@@ -1,3 +1,8 @@
+---
+lane: "doing"
+agent: "claude"
+shell_pid: "3692"
+---
 # WP04: Prompts Module Migration
 
 **Work Package ID**: WP04
@@ -378,3 +383,7 @@ spec-kitty implement WP04 --base WP03
 ```
 
 Основание на WP03 (Speckits) для переиспользования паттернов.
+
+## Activity Log
+
+- 2026-02-23T20:34:13Z – claude – shell_pid=3692 – lane=doing – Started review via workflow command
