@@ -199,7 +199,7 @@
 **Estimated Size**: ~380 lines (5 subtasks)
 
 **Success Criteria**:
-- [ ] Blogs use cases созданы
+- [x] Blogs use cases созданы
 - [ ] CategoriesRepository реализован для всех модулей
 - [ ] Categories кешируются корректно
 - [ ] Фильтрация работает для всех типов контента
