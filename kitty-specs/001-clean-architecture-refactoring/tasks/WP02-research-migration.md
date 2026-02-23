@@ -1,5 +1,5 @@
 ---
-lane: doing
+lane: "for_review"
 dependencies: []
 base_branch: main
 base_commit: f49a08438b93f5dab2c13b676a559023a682faf5
@@ -645,3 +645,4 @@ spec-kitty implement WP02 --base WP01
 
 - 2026-02-21T11:28:27Z – unknown – lane=doing – Moved to doing
 - 2026-02-21T11:28:32Z – claude – shell_pid=82221 – lane=doing – Assigned agent via workflow command
+- 2026-02-23T20:26:13Z – claude – shell_pid=82221 – lane=for_review – Ready for review: Research module migrated to clean architecture with StrapiResearchRepository, CreateResearchSession and SubmitResearchQuery use cases, and useResearchChat composable. All subtasks T007-T011 complete.
