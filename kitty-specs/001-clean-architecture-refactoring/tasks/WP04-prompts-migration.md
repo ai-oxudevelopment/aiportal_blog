@@ -1,7 +1,9 @@
 ---
-lane: "doing"
+lane: "planned"
 agent: "claude"
 shell_pid: "3692"
+review_status: "has_feedback"
+reviewed_by: "ALeks ishmanov"
 ---
 # WP04: Prompts Module Migration
 
@@ -387,3 +389,4 @@ spec-kitty implement WP04 --base WP03
 ## Activity Log
 
 - 2026-02-23T20:34:13Z – claude – shell_pid=3692 – lane=doing – Started review via workflow command
+- 2026-02-23T20:36:16Z – claude – shell_pid=3692 – lane=planned – Moved to planned
