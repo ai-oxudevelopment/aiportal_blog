@@ -28,8 +28,8 @@
 **Estimated Size**: ~480 lines (6 subtasks)
 
 **Success Criteria**:
-- [ ] `frontend/src/domain/` создан с базовыми сущностями
-- [ ] `frontend/src/infrastructure/` создан с cache и API клиентом
+- [x] `frontend/src/domain/` создан с базовыми сущностями
+- [x] `frontend/src/infrastructure/` создан с cache и API клиентом
 - [x] TypeScript компилируется без ошибок
 - [x] Nuxt auto-imports настроены для новых путей
 - [x] Базовые интерфейсные тесты проходят
