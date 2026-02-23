@@ -200,7 +200,7 @@
 
 **Success Criteria**:
 - [x] Blogs use cases созданы
-- [ ] CategoriesRepository реализован для всех модулей
+- [x] CategoriesRepository реализован для всех модулей
 - [ ] Categories кешируются корректно
 - [ ] Фильтрация работает для всех типов контента
 - [ ] Blogs pages/components мигрированы
