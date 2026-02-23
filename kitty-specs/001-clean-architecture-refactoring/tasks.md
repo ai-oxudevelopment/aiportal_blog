@@ -247,10 +247,10 @@
 - [x] Все тесты проходят
 
 **Included Subtasks**:
-- [ ] T028: Удалить legacy composables
-- [ ] T029: Удалить legacy server routes
-- [ ] T030: Обновить все импорты в компонентах
-- [ ] T031: Финальная валидация и cleanup
+- [x] T028: Удалить legacy composables
+- [x] T029: Удалить legacy server routes
+- [x] T030: Обновить все импорты в компонентах
+- [x] T031: Финальная валидация и cleanup
 
 **Implementation Sketch**:
 1. Удалить `frontend/composables/useFetchArticles.ts` и другие legacy composables
