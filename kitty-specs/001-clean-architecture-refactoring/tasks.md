@@ -78,11 +78,11 @@
 - [ ] Zero regression в функциональности Research
 
 **Included Subtasks**:
-- [ ] T007: Создать StrapiResearchRepository (Infrastructure)
-- [ ] T008: Создать CreateResearchSession use case
-- [ ] T009: Создать SubmitResearchQuery use case
-- [ ] T010: Создать useResearchChat composable (Presentation)
-- [ ] T011: Рефакторинг Research страниц/компонентов
+- [x] T007: Создать StrapiResearchRepository (Infrastructure)
+- [x] T008: Создать CreateResearchSession use case
+- [x] T009: Создать SubmitResearchQuery use case
+- [x] T010: Создать useResearchChat composable (Presentation)
+- [x] T011: Рефакторинг Research страниц/компонентов
 
 **Implementation Sketch**:
 1. Реализовать `StrapiResearchRepository` в `infrastructure/repositories/`
