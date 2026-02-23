@@ -73,9 +73,9 @@ shell_pid: "1237"
    ```
 
 **Validation**:
-- [ ] Все legacy composables удалены
-- [ ] Никаких импортов от старых composables
-- [ ] Все компоненты используют новые `src/presentation/composables`
+- [x] Все legacy composables удалены
+- [x] Никаких импортов от старых composables
+- [x] Все компоненты используют новые `src/presentation/composables`
 
 **Files**:
 - Удаление нескольких файлов
@@ -104,8 +104,8 @@ shell_pid: "1237"
    ```
 
 **Validation**:
-- [ ] Все legacy server routes удалены
-- [ ] Новые use cases не зависят от server routes
+- [x] Все legacy server routes удалены
+- [x] Новые use cases не зависят от server routes
 
 **Files**:
 - Удаление нескольких файлов
@@ -142,9 +142,9 @@ shell_pid: "1237"
    ```
 
 **Validation**:
-- [ ] Все импорты используют новые пути
-- [ ] TypeScript не выдаёт ошибок
-- [ ] Ничего не импортируется из удалённых файлов
+- [x] Все импорты используют новые пути
+- [x] TypeScript не выдаёт ошибок
+- [x] Ничего не импортируется из удалённых файлов
 
 **Files**:
 - Обновление множества файлов
@@ -202,12 +202,12 @@ shell_pid: "1237"
    ```
 
 **Validation**:
-- [ ] Все тесты проходят
-- [ ] TypeScript без ошибок
-- [ ] Dev server запускается
-- [ ] Все страницы работают
-- [ ] Фильтрация работает
-- [ ] Zero regression
+- [x] Все тесты проходят
+- [x] TypeScript без ошибок
+- [x] Dev server запускается
+- [x] Все страницы работают
+- [x] Фильтрация работает
+- [x] Zero regression
 
 **Files**:
 - Коммит изменений
@@ -216,13 +216,13 @@ shell_pid: "1237"
 
 ## Definition of Done
 
-- [ ] Все legacy composables удалены
-- [ ] Все legacy server routes удалены
-- [ ] Все импорты обновлены
-- [ ] Никакого дублирующего кода
-- [ ] Все тесты проходят
-- [ ] E2E тестирование успешно
-- [ ] Changes committed
+- [x] Все legacy composables удалены
+- [x] Все legacy server routes удалены
+- [x] Все импорты обновлены
+- [x] Никакого дублирующего кода
+- [x] Все тесты проходят
+- [x] E2E тестирование успешно
+- [x] Changes committed
 
 ---
 
