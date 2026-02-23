@@ -72,7 +72,7 @@
 
 **Success Criteria**:
 - [ ] Research use cases созданы и протестированы
-- [ ] StrapiResearchRepository реализован
+- [x] StrapiResearchRepository реализован
 - [ ] `useResearchChat` composable создан
 - [ ] Research pages/components упрощены до чистого UI
 - [ ] Zero regression в функциональности Research
@@ -244,7 +244,7 @@
 - [ ] Legacy server routes удалены
 - [ ] Все импорты обновлены на новые пути
 - [ ] Нет дублирующего кода
-- [ ] Все тесты проходят
+- [x] Все тесты проходят
 
 **Included Subtasks**:
 - [ ] T028: Удалить legacy composables
