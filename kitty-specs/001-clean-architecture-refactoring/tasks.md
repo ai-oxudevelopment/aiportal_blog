@@ -206,11 +206,11 @@
 - [ ] Blogs pages/components мигрированы
 
 **Included Subtasks**:
-- [ ] T023: Создать StrapiCategoriesRepository
-- [ ] T024: Создать GetCategories use case
-- [ ] T025: Создать Blogs use cases
-- [ ] T026: Создать Blog composables
-- [ ] T027: Рефакторинг Blogs компонентов и фильтрации
+- [x] T023: Создать StrapiCategoriesRepository
+- [x] T024: Создать GetCategories use case
+- [x] T025: Создать Blogs use cases
+- [x] T026: Создать Blog composables
+- [x] T027: Рефакторинг Blogs компонентов и фильтрации
 
 **Implementation Sketch**:
 1. Создать `StrapiCategoriesRepository` с кешированием
