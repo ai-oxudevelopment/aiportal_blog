@@ -1,11 +1,11 @@
 ---
-lane: "for_review"
+lane: "doing"
 dependencies: []
 base_branch: main
 base_commit: e2f981ed4afa6f2028f90ce348b83ea3f212996c
 created_at: '2026-02-21T11:23:31.355429+00:00'
 agent: "claude"
-shell_pid: "81618"
+shell_pid: "3576"
 ---
 # WP01: Foundation Layer Setup
 
@@ -531,3 +531,4 @@ spec-kitty implement WP01
 - 2026-02-21T11:23:10Z – unknown – lane=doing – Moved to doing
 - 2026-02-21T11:23:31Z – claude – shell_pid=81618 – lane=doing – Assigned agent via workflow command
 - 2026-02-21T11:28:22Z – claude – shell_pid=81618 – lane=for_review – Ready for review: All files committed, foundational structure complete.
+- 2026-02-23T20:34:05Z – claude – shell_pid=3576 – lane=doing – Started review via workflow command
