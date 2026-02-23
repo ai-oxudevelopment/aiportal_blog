@@ -1,5 +1,5 @@
 ---
-lane: "doing"
+lane: "for_review"
 agent: "claude"
 shell_pid: "1237"
 ---
@@ -485,3 +485,4 @@ spec-kitty implement WP05 --base WP03
 ## Activity Log
 
 - 2026-02-23T20:24:37Z – claude – shell_pid=1237 – lane=doing – Started implementation via workflow command
+- 2026-02-23T20:31:22Z – claude – shell_pid=1237 – lane=for_review – Ready for review: Blogs & Categories migration complete (tests pending setup)
