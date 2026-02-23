@@ -121,13 +121,13 @@
 - [ ] Zero regression в функциональности Speckits
 
 **Included Subtasks**:
-- [ ] T012: Создать InMemoryCacheProvider реализацию
-- [ ] T013: Создать StrapiClient для работы с Strapi API
-- [ ] T014: Создать StrapiArticlesRepository (ArticlesRepository для Speckits)
-- [ ] T015: Создать GetSpeckitList use case
-- [ ] T016: Создать GetSpeckitDetail use case
-- [ ] T017: Создать DownloadSpeckitFile use case
-- [ ] T018: Создать Speckit composables и рефакторинг компонентов
+- [x] T012: Создать InMemoryCacheProvider реализацию
+- [x] T013: Создать StrapiClient для работы с Strapi API
+- [x] T014: Создать StrapiArticlesRepository (ArticlesRepository для Speckits)
+- [x] T015: Создать GetSpeckitList use case
+- [x] T016: Создать GetSpeckitDetail use case
+- [x] T017: Создать DownloadSpeckitFile use case
+- [x] T018: Создать Speckit composables и рефакторинг компонентов
 
 **Implementation Sketch**:
 1. Реализовать `InMemoryCacheProvider` с TTL и stale-while-revalidate
