@@ -74,8 +74,8 @@
 - [ ] Research use cases созданы и протестированы
 - [x] StrapiResearchRepository реализован
 - [ ] `useResearchChat` composable создан
-- [ ] Research pages/components упрощены до чистого UI
-- [ ] Zero regression в функциональности Research
+- [x] Research pages/components упрощены до чистого UI
+- [x] Zero regression в функциональности Research
 
 **Included Subtasks**:
 - [x] T007: Создать StrapiResearchRepository (Infrastructure)
