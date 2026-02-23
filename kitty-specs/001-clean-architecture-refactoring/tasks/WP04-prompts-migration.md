@@ -1,7 +1,7 @@
 ---
-lane: "planned"
+lane: "doing"
 agent: "claude"
-shell_pid: "3692"
+shell_pid: "8398"
 review_status: "has_feedback"
 reviewed_by: "ALeks ishmanov"
 ---
@@ -390,3 +390,4 @@ spec-kitty implement WP04 --base WP03
 
 - 2026-02-23T20:34:13Z – claude – shell_pid=3692 – lane=doing – Started review via workflow command
 - 2026-02-23T20:36:16Z – claude – shell_pid=3692 – lane=planned – Moved to planned
+- 2026-02-23T20:47:45Z – claude – shell_pid=8398 – lane=doing – Started review via workflow command
