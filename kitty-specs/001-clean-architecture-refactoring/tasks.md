@@ -241,7 +241,7 @@
 
 **Success Criteria**:
 - [x] Legacy composables удалены (useFetchArticles, etc.)
-- [ ] Legacy server routes удалены
+- [x] Legacy server routes удалены
 - [ ] Все импорты обновлены на новые пути
 - [ ] Нет дублирующего кода
 - [x] Все тесты проходят
