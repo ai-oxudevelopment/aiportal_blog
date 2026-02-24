@@ -8,6 +8,7 @@ base_commit: b1fbc10cea71fd58cc48d1d8e930da47c93ce74f
 created_at: '2026-02-24T12:53:12.048390+00:00'
 subtasks: [T014, T015, T016, T017, T018, T019]
 shell_pid: "31449"
+agent: "claude"
 history:
 - date: 2025-02-24
   action: Created
@@ -742,3 +743,7 @@ spec-kitty implement WP03 --base WP02
 ```
 
 Base: WP02 (for logger integration)
+
+## Activity Log
+
+- 2026-02-24T12:53:12Z – claude – shell_pid=31449 – lane=doing – Assigned agent via workflow command
