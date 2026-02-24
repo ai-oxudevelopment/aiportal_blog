@@ -166,12 +166,12 @@
 - [ ] TypeScript компилируется
 
 **Included Subtasks**:
-- [ ] T020: Создать API response type definitions
-- [ ] T021: Аудит кода на `any` types
-- [ ] T022: Заменить `any` types (part 1 - API responses)
-- [ ] T023: Заменить `any` types (part 2 - components)
-- [ ] T024: Включить noImplicitAny в tsconfig.json
-- [ ] T025: Исправить type errors от noImplicitAny
+- [x] T020: Создать API response type definitions
+- [x] T021: Аудит кода на `any` types
+- [x] T022: Заменить `any` types (part 1 - API responses)
+- [x] T023: Заменить `any` types (part 2 - components)
+- [x] T024: Включить noImplicitAny в tsconfig.json
+- [x] T025: Исправить type errors от noImplicitAny
 
 **Implementation Sketch**:
 1. Создать `types/api.ts` с StrapiResponse, Article, и т.д.
