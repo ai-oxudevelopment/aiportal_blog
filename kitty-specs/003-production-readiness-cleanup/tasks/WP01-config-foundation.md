@@ -1,13 +1,17 @@
 ---
-work_package_id: "WP01"
-title: "Configuration Foundation"
-subtasks: ["T001", "T002", "T003", "T004", "T005", "T006"]
-lane: "planned"
+work_package_id: WP01
+title: Configuration Foundation
+lane: "doing"
 dependencies: []
+base_branch: main
+base_commit: 8143d9879c4b692b6e9432f4930c9b948444680b
+created_at: '2026-02-24T12:50:54.145730+00:00'
+subtasks: [T001, T002, T003, T004, T005, T006]
+shell_pid: "30919"
 history:
-  - date: 2025-02-24
-    action: "Created"
-    author: "spec-kitty.tasks"
+- date: 2025-02-24
+  action: Created
+  author: spec-kitty.tasks
 ---
 
 # Work Package: Configuration Foundation
