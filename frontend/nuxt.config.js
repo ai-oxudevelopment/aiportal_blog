@@ -21,6 +21,34 @@ export default defineNuxtConfig({
       cacheTtl: parseInt(process.env.CACHE_TTL || '300000'),
       cacheStaleWhileRevalidate: parseInt(process.env.CACHE_STALE_WHILE_REVALIDATE || '3600000'),
       cacheEnabled: process.env.CACHE_ENABLED !== 'false',
+
+      // Logging config
+      logLevel: process.env.LOG_LEVEL || 'info',
+    }
+  },
+
+  // Vue error handler
+  vue: {
+    onError: (err, instance, info) => {
+      // Import logger at runtime to avoid import issues
+      const logger = (globalThis as any).__logger
+      if (logger) {
+        logger.error('Vue error handler caught error', {
+          error: err instanceof Error ? {
+            message: err.message,
+            stack: err.stack,
+            name: err.name,
+          } : err,
+          componentName: instance?.$options?.name || 'Unknown',
+          lifecycleHook: info,
+        })
+      }
+
+      // In development, show full error
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Vue error:', err)
+        console.error('Info:', info)
+      }
     }
   },
 
@@ -42,5 +70,6 @@ export default defineNuxtConfig({
     '@presentation': './src/presentation',
     '~/types': './types',
     '~/config': './config',
+    '~/contracts': './contracts',
   }
 })
