@@ -77,10 +77,10 @@
 - [ ] Server routes используют logger
 
 **Included Subtasks**:
-- [ ] T007: Установить Winston и зависимости
-- [ ] T008: Создать logger infrastructure
-- [ ] T009: Реализовать TraceContext
-- [ ] T010: Создать Nuxt plugin для logger
+- [x] T007: Установить Winston и зависимости
+- [x] T008: Создать logger infrastructure
+- [x] T009: Реализовать TraceContext
+- [x] T010: Создать Nuxt plugin для logger
 - [ ] T011: Заменить console.log на logger.info
 - [ ] T012: Заменить console.error на logger.error
 - [ ] T013: Добавить logging в server API routes
