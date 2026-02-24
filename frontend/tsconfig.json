@@ -1,0 +1,20 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    // Enable type checking options incrementally
+    "noImplicitAny": true,
+    // Additional strict options to be enabled in WP05
+    // "strictNullChecks": true,
+    // "strict": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.vue",
+    "types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".nuxt",
+    "dist"
+  ]
+}
