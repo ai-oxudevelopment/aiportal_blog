@@ -1,13 +1,17 @@
 ---
-work_package_id: "WP02"
-title: "Logging Infrastructure"
-subtasks: ["T007", "T008", "T009", "T010", "T011", "T012", "T013"]
-lane: "planned"
+work_package_id: WP02
+title: Logging Infrastructure
+lane: "doing"
 dependencies: []
+base_branch: main
+base_commit: 01dfa5e8dd9309e37476ed695ac935a7b22fd9e1
+created_at: '2026-02-24T12:52:19.957357+00:00'
+subtasks: [T007, T008, T009, T010, T011, T012, T013]
+shell_pid: "31260"
 history:
-  - date: 2025-02-24
-    action: "Created"
-    author: "spec-kitty.tasks"
+- date: 2025-02-24
+  action: Created
+  author: spec-kitty.tasks
 ---
 
 # Work Package: Logging Infrastructure
