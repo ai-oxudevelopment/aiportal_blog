@@ -124,9 +124,12 @@ export class StrapiClient {
 }
 
 export function createStrapiClient(config?: Partial<StrapiConfig>): StrapiClient {
+  // Use runtime config for default values
+  const runtimeConfig = useRuntimeConfig()
+
   return new StrapiClient({
-    url: process.env.STRAPI_URL || 'http://localhost:1337',
-    apiKey: process.env.STRAPI_API_KEY,
+    url: config?.url || runtimeConfig.public.strapiUrl,
+    apiKey: config?.apiKey || process.env.STRAPI_API_KEY,
     version: 'v5',
     ...config
   })
