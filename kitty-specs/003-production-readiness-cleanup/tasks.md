@@ -251,12 +251,12 @@
 - [ ] Lighthouse score не ухудшается
 
 **Included Subtasks**:
-- [ ] T031: Запустить Lighthouse audit (baseline)
-- [ ] T032: Оптимизировать bundle size
-- [ ] T033: Реализовать lazy loading для компонентов
-- [ ] T034: Оптимизировать image loading
-- [ ] T035: Оптимизировать cache strategy
-- [ ] T036: Запустить финальный Lighthouse audit
+- [x] T031: Запустить Lighthouse audit (baseline)
+- [x] T032: Оптимизировать bundle size
+- [x] T033: Реализовать lazy loading для компонентов
+- [x] T034: Оптимизировать image loading
+- [x] T035: Оптимизировать cache strategy
+- [x] T036: Запустить финальный Lighthouse audit
 
 **Implementation Sketch**:
 1. Установить и запустить Lighthouse CI
