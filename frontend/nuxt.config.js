@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/configuration
 export default defineNuxtConfig({
   runtimeConfig: {
-    // Private config (server-side only)
     apiSecret: process.env.API_SECRET || '',
 
     // Public config (exposed to client)
@@ -25,6 +24,14 @@ export default defineNuxtConfig({
       // Logging config
       logLevel: process.env.LOG_LEVEL || 'info',
     }
+  },
+
+  // Route rules for caching and pre-rendering
+  routeRules: {
+    '/': { prerender: true },
+    '/speckits': { isr: 300 }, // Incremental Static Regeneration: 5 minutes
+    '/prompts': { isr: 300 },
+    '/api/**': { cache: { maxAge: 60 * 60 } }, // Cache API for 1 hour
   },
 
   // Vue error handler
@@ -60,6 +67,27 @@ export default defineNuxtConfig({
       'src/infrastructure/logging',  // NEW: Logging composables
       'src/infrastructure/errors',  // NEW: Error handling composables
     ]
+  },
+
+  // Vite optimizations for bundle size
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split vendor chunks for better caching
+            'vue-vendor': ['vue', 'vue-router', '@vue/runtime-core'],
+            'strapi': ['@nuxtjs/strapi'],
+          }
+        }
+      }
+    }
+  },
+
+  // Build optimizations
+  build: {
+    // Enable bundle analysis when ANALYZE=true
+    analyze: process.env.ANALYZE === 'true',
   },
 
   // Path aliases for clean imports
