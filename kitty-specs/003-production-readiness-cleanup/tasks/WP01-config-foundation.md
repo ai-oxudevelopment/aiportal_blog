@@ -1,13 +1,13 @@
 ---
 work_package_id: WP01
 title: Configuration Foundation
-lane: "for_review"
+lane: "doing"
 dependencies: []
 base_branch: main
 base_commit: 8143d9879c4b692b6e9432f4930c9b948444680b
 created_at: '2026-02-24T12:50:54.145730+00:00'
 subtasks: [T001, T002, T003, T004, T005, T006]
-shell_pid: "30919"
+shell_pid: "33241"
 agent: "claude"
 history:
 - date: 2025-02-24
@@ -484,3 +484,4 @@ No base WP required (foundation work).
 
 - 2026-02-24T12:50:54Z – claude – shell_pid=30919 – lane=doing – Assigned agent via workflow command
 - 2026-02-24T12:52:12Z – claude – shell_pid=30919 – lane=for_review – Ready for review: Configuration foundation implemented
+- 2026-02-24T13:20:54Z – claude – shell_pid=33241 – lane=doing – Started review via workflow command
