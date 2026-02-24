@@ -1,9 +1,13 @@
 ---
 work_package_id: WP03
 title: Error Handling System
-lane: planned
+lane: "doing"
 dependencies: []
+base_branch: 003-production-readiness-cleanup-WP02
+base_commit: b1fbc10cea71fd58cc48d1d8e930da47c93ce74f
+created_at: '2026-02-24T12:53:12.048390+00:00'
 subtasks: [T014, T015, T016, T017, T018, T019]
+shell_pid: "31449"
 history:
 - date: 2025-02-24
   action: Created
