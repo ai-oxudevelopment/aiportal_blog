@@ -1,7 +1,7 @@
 ---
 work_package_id: WP02
 title: Logging Infrastructure
-lane: "doing"
+lane: "for_review"
 dependencies: []
 base_branch: main
 base_commit: 01dfa5e8dd9309e37476ed695ac935a7b22fd9e1
@@ -582,3 +582,4 @@ No base WP required (independent work).
 ## Activity Log
 
 - 2026-02-24T12:52:20Z – claude – shell_pid=31260 – lane=doing – Assigned agent via workflow command
+- 2026-02-24T12:53:05Z – claude – shell_pid=31260 – lane=for_review – Ready for review: Logging infrastructure with Winston, TraceContext, and Nuxt plugin
