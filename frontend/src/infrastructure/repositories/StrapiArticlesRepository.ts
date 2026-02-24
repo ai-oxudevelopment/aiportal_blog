@@ -7,6 +7,7 @@ import type {
 } from '@/domain/repositories'
 import type { Article, ArticleId, ArticleType } from '@/domain/entities'
 import type { ICacheProvider } from '@/domain/cache'
+import type { StrapiQueryParams } from '~/types/api'
 import { StrapiClient, createStrapiClient } from '../api/StrapiClient'
 
 interface StrapiCategory {
@@ -119,7 +120,7 @@ export class StrapiArticlesRepository implements IArticlesRepository {
     if (cached) return cached
 
     // Build Strapi query params
-    const params: Record<string, any> = {
+    const params: StrapiQueryParams = {
       populate: ['category', 'file', 'diagram', 'faq']
     }
 

@@ -1,27 +1,41 @@
-// Runtime config interface for Nuxt
-interface RuntimeConfig {
-  // Private config (server-side only)
-  apiSecret: string
-}
-
-interface PublicRuntimeConfig {
-  // App config
-  appName: string
-  appVersion: string
+// Configuration Type Definitions
+export interface AppConfig {
+  name: string
+  version: string
   environment: 'development' | 'staging' | 'production'
   debug: boolean
+}
 
-  // API config
+export interface ApiConfig {
   strapiUrl: string
   strapiTimeout: number
   strapiRetryAttempts: number
-
-  // Cache config
-  cacheTtl: number
-  cacheStaleWhileRevalidate: number
-  cacheEnabled: boolean
 }
 
-// Extend Nuxt's runtime config interface
-interface NuxtRuntimeConfig extends RuntimeConfig {}
-interface NuxtPublicRuntimeConfig extends PublicRuntimeConfig {}
+export interface LoggingConfig {
+  level: 'error' | 'warn' | 'info' | 'http' | 'debug'
+  format: 'json' | 'text'
+}
+
+export interface CacheConfig {
+  ttl: number
+  staleWhileRevalidate: number
+  enabled: boolean
+}
+
+export interface RuntimeConfig {
+  apiSecret: string
+  public: {
+    appName: string
+    appVersion: string
+    environment: 'development' | 'staging' | 'production'
+    debug: boolean
+    strapiUrl: string
+    strapiTimeout: number
+    strapiRetryAttempts: number
+    cacheTtl: number
+    cacheStaleWhileRevalidate: number
+    cacheEnabled: boolean
+    logLevel: string
+  }
+}
