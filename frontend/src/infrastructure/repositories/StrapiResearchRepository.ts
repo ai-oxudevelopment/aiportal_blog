@@ -19,6 +19,16 @@ interface StrapiMessage {
   timestamp?: string | number
 }
 
+/**
+ * Strapi message format (partial data from API)
+ */
+interface StrapiMessage {
+  id?: string
+  role: 'user' | 'assistant'
+  content: string
+  timestamp?: string | number
+}
+
 interface StrapiResearchResponse {
   data: {
     id: string
