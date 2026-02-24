@@ -63,10 +63,15 @@ const startQuickResearch = (): void => {
           v-for="platform in platforms"
           :key="platform.id"
           class="platform-card"
+          role="button"
+          tabindex="0"
           @click="startResearch(platform.id)"
+          @keydown.enter="startResearch(platform.id)"
+          @keydown.space.prevent="startResearch(platform.id)"
           :style="{ '--platform-color': platform.color }"
+          :aria-label="`Select ${platform.name}: ${platform.description}`"
         >
-          <div class="platform-icon">{{ platform.icon }}</div>
+          <div class="platform-icon" aria-hidden="true">{{ platform.icon }}</div>
           <h3>{{ platform.name }}</h3>
           <p>{{ platform.description }}</p>
           <button class="select-btn">
@@ -81,22 +86,22 @@ const startQuickResearch = (): void => {
       <h2>Features</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">💬</div>
+          <div class="feature-icon" aria-hidden="true">💬</div>
           <h3>Natural Conversations</h3>
           <p>Chat naturally with AI assistants that understand context and nuance.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📊</div>
+          <div class="feature-icon" aria-hidden="true">📊</div>
           <h3>Session History</h3>
           <p>Your conversations are saved, so you can reference them anytime.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🔄</div>
+          <div class="feature-icon" aria-hidden="true">🔄</div>
           <h3>Multi-Platform</h3>
           <p>Switch between different AI platforms to get diverse perspectives.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">⚡</div>
+          <div class="feature-icon" aria-hidden="true">⚡</div>
           <h3>Fast & Responsive</h3>
           <p>Optimized for speed with instant responses and smooth interactions.</p>
         </div>
@@ -146,9 +151,15 @@ const startQuickResearch = (): void => {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
-.quick-start-btn:hover {
+.quick-start-btn:hover,
+.quick-start-btn:focus {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.quick-start-btn:focus {
+  outline: 3px solid white;
+  outline-offset: 2px;
 }
 
 .platforms-section {
@@ -180,9 +191,20 @@ const startQuickResearch = (): void => {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
 
-.platform-card:hover {
+.platform-card:hover,
+.platform-card:focus {
   transform: translateY(-8px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.platform-card:focus {
+  outline: 3px solid white;
+  outline-offset: 2px;
+}
+
+.platform-card:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 2px;
 }
 
 .platform-icon {

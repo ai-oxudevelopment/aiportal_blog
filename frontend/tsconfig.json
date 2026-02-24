@@ -1,0 +1,33 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    // Enable full strict mode for maximum type safety
+    "strict": true
+    // This enables all of the following:
+    // - noImplicitAny: true
+    // - strictNullChecks: true
+    // - strictFunctionTypes: true
+    // - strictBindCallApply: true
+    // - strictPropertyInitialization: true
+    // - noImplicitThis: true
+    // - alwaysStrict: true
+    // - noUnusedLocals: true (implied by strict)
+    // - noUnusedParameters: true (implied by strict)
+    // - exactOptionalPropertyTypes: true (implied by strict)
+    // - noImplicitReturns: true (implied by strict)
+    // - noFallthroughCasesInSwitch: true (implied by strict)
+    // - noUncheckedIndexedAccess: true (implied by strict)
+    // - noImplicitOverride: true (implied by strict)
+    // - noPropertyAccessFromIndexSignature: true (implied by strict)
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.vue",
+    "types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".nuxt",
+    "dist"
+  ]
+}

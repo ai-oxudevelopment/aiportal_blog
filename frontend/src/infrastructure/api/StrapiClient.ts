@@ -1,6 +1,8 @@
 // StrapiClient for working with Strapi API
 // Universal client with response normalization
 
+import type { StrapiQueryParams } from '~/types/api'
+
 interface StrapiConfig {
   url: string
   apiKey?: string
@@ -27,10 +29,18 @@ interface StrapiError {
   }
 }
 
+/**
+ * Generic Strapi data item (v4 format with attributes)
+ */
+interface StrapiItem<T> {
+  id: string | number
+  attributes?: T
+}
+
 export class StrapiClient {
   constructor(private config: StrapiConfig) {}
 
-  async get<T>(endpoint: string, params?: Record<string, any>): Promise<T[]> {
+  async get<T>(endpoint: string, params?: StrapiQueryParams): Promise<T[]> {
     const url = new URL(endpoint, this.config.url)
 
     // Add query params
@@ -112,21 +122,26 @@ export class StrapiClient {
     return this.normalizeItem(data) as T
   }
 
-  private normalizeItem(item: any): any {
-    if (item.attributes) {
+  private normalizeItem<T>(item: StrapiItem<T> | T): T {
+    // Check if this is a v4 format item with attributes
+    if (typeof item === 'object' && item !== null && 'attributes' in item) {
+      const strapiItem = item as StrapiItem<T>
       return {
-        id: item.id,
-        ...item.attributes
+        id: strapiItem.id,
+        ...(strapiItem.attributes as T)
       }
     }
-    return item
+    return item as T
   }
 }
 
 export function createStrapiClient(config?: Partial<StrapiConfig>): StrapiClient {
+  // Use runtime config for default values
+  const runtimeConfig = useRuntimeConfig()
+
   return new StrapiClient({
-    url: process.env.STRAPI_URL || 'http://localhost:1337',
-    apiKey: process.env.STRAPI_API_KEY,
+    url: config?.url || runtimeConfig.public.strapiUrl,
+    apiKey: config?.apiKey || process.env.STRAPI_API_KEY,
     version: 'v5',
     ...config
   })

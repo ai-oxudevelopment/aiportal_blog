@@ -7,20 +7,16 @@ import type { IResearchRepository } from '@/domain/repositories'
 
 /**
  * Creates a Strapi-backed Research repository instance
- * @param strapiUrl - The Strapi CMS URL (defaults to env variable or localhost)
+ * @param strapiUrl - The Strapi CMS URL (defaults to runtime config)
  * @param apiKey - The Strapi API key (defaults to env variable or empty string)
  */
 export function createStrapiResearchRepository(
   strapiUrl?: string,
   apiKey?: string
 ): IResearchRepository {
-  const url = strapiUrl ||
-    process.env.STRAPI_URL ||
-    'http://localhost:1337'
-
-  const key = apiKey ||
-    process.env.STRAPI_API_KEY ||
-    ''
+  // Use runtime config if strapiUrl not provided
+  const url = strapiUrl || useRuntimeConfig().public.strapiUrl
+  const key = apiKey || process.env.STRAPI_API_KEY || ''
 
   return new StrapiResearchRepository(url, key)
 }
