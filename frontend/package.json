@@ -1,0 +1,27 @@
+{
+  "name": "aiportal-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt nuxi typecheck",
+    "analyze": "ANALYZE=true nuxt build",
+    "lighthouse": "lhci autorun --collect.url=http://localhost:3000",
+    "lighthouse:ci": "lhci autorun"
+  },
+  "devDependencies": {
+    "@lhci/cli": "^0.12.0",
+    "@nuxtjs/webpack-bundle-analyzer": "^4.7.0",
+    "nuxt": "^3.10.0"
+  },
+  "dependencies": {
+    "@nuxtjs/strapi": "^1.7.0",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  }
+}
