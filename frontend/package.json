@@ -12,12 +12,19 @@
     "typecheck": "nuxt nuxi typecheck",
     "analyze": "ANALYZE=true nuxt build",
     "lighthouse": "lhci autorun --collect.url=http://localhost:3000",
-    "lighthouse:ci": "lhci autorun"
+    "lighthouse:ci": "lhci autorun",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
     "@lhci/cli": "^0.12.0",
     "@nuxtjs/webpack-bundle-analyzer": "^4.7.0",
-    "nuxt": "^3.10.0"
+    "@vitest/ui": "^1.0.0",
+    "nuxt": "^3.10.0",
+    "vitest": "^2.0.0",
+    "vitest-config-vue": "^2.0.0"
   },
   "dependencies": {
     "@nuxtjs/strapi": "^1.7.0",
