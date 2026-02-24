@@ -9,19 +9,6 @@ import type {
 import type { ResearchMessage, SessionStatus } from '@/domain/entities'
 import type { ResearchSessionMessage } from '~/types/api'
 
-/**
- * Strapi message format (partial data from API)
- */
-interface StrapiMessage {
-  id?: string
-  role: 'user' | 'assistant'
-  content: string
-  timestamp?: string | number
-}
-
-/**
- * Strapi message format (partial data from API)
- */
 interface StrapiMessage {
   id?: string
   role: 'user' | 'assistant'
