@@ -34,12 +34,12 @@
 - [ ] TypeScript компилируется без ошибок
 
 **Included Subtasks**:
-- [ ] T001: Аудит кода на hardcoded значения
-- [ ] T002: Создать структуру config директории
-- [ ] T003: Обновить nuxt.config.ts с runtimeConfig
-- [ ] T004: Создать типы для конфигурации
-- [ ] T005: Добавить валидацию конфига на старте
-- [ ] T006: Заменить хардкод на config ссылки
+- [x] T001: Аудит кода на hardcoded значения
+- [x] T002: Создать структуру config директории
+- [x] T003: Обновить nuxt.config.ts с runtimeConfig
+- [x] T004: Создать типы для конфигурации
+- [x] T005: Добавить валидацию конфига на старте
+- [x] T006: Заменить хардкод на config ссылки
 
 **Implementation Sketch**:
 1. Найти все hardcoded URLs, timeouts (grep search)
