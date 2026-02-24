@@ -295,11 +295,11 @@
 - [ ] Documentation обновлена
 
 **Included Subtasks**:
-- [ ] T037: Создать integration tests для config
-- [ ] T038: Создать integration tests для logging
-- [ ] T039: Создать integration tests для error handling
-- [ ] T040: Запустить E2E tests (zero regression)
-- [ ] T041: Обновить documentation
+- [x] T037: Создать integration tests для config
+- [x] T038: Создать integration tests для logging
+- [x] T039: Создать integration tests для error handling
+- [x] T040: Запустить E2E tests (zero regression)
+- [x] T041: Обновить documentation
 
 **Implementation Sketch**:
 1. Создать `tests/integration/config.test.ts`
