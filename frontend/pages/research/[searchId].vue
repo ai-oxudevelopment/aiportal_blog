@@ -95,6 +95,9 @@ const formatTime = (date: Date): string => {
     <div
       ref="messagesContainer"
       class="messages-container"
+      role="log"
+      aria-live="polite"
+      aria-label="Conversation messages"
     >
       <div
         v-for="msg in messages"
@@ -111,7 +114,7 @@ const formatTime = (date: Date): string => {
       </div>
 
       <!-- Loading indicator -->
-      <div v-if="isLoading" class="message message-assistant">
+      <div v-if="isLoading" class="message message-assistant" aria-label="AI is typing" role="status">
         <div class="message-header">
           <span class="message-role">{{ platform }}</span>
         </div>
@@ -131,22 +134,26 @@ const formatTime = (date: Date): string => {
     </div>
 
     <!-- Error Display -->
-    <div v-if="error" class="error-banner">
+    <div v-if="error" class="error-banner" role="alert" aria-live="assertive">
       <span class="error-icon">⚠️</span>
       <span>{{ error }}</span>
-      <button @click="error = null" class="error-dismiss">×</button>
+      <button @click="error = null" class="error-dismiss" type="button" aria-label="Dismiss error">×</button>
     </div>
 
     <!-- Input Form -->
     <form @submit.prevent="handleSubmit" class="input-form">
+      <label for="research-query" class="sr-only">Enter your research question</label>
       <input
+        id="research-query"
         v-model="query"
         type="text"
         class="query-input"
         placeholder="Ask anything..."
         :disabled="isLoading"
         autocomplete="off"
+        aria-describedby="input-hint"
       />
+      <span id="input-hint" class="sr-only">Type your question and press Enter or click Send</span>
       <button
         type="submit"
         class="submit-button"
@@ -162,8 +169,9 @@ const formatTime = (date: Date): string => {
         class="reset-button"
         :disabled="isLoading"
         title="Start new conversation"
+        aria-label="Start new conversation"
       >
-        ↻
+        <span aria-hidden="true">↻</span>
       </button>
     </form>
 
@@ -415,6 +423,28 @@ const formatTime = (date: Date): string => {
 .status-error {
   background: #ffebee;
   color: #c62828;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles for accessibility */
+.query-input:focus,
+.submit-button:focus,
+.reset-button:focus,
+.error-dismiss:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
 }
 
 /* Responsive */

@@ -50,12 +50,12 @@ const userMessage = computed(() => {
 </script>
 
 <template>
-  <div v-if="error" class="error-boundary">
+  <div v-if="error" class="error-boundary" role="alert" aria-live="assertive">
     <div class="error-icon">⚠️</div>
     <h3>{{ userMessage?.title || fallback }}</h3>
     <p>{{ userMessage?.message || error.message }}</p>
     <p v-if="showDetails && error.message">{{ error.message }}</p>
-    <button v-if="userMessage?.canRetry" @click="retry" class="retry-button">
+    <button v-if="userMessage?.canRetry" @click="retry" class="retry-button" type="button">
       Try Again
     </button>
   </div>
@@ -84,5 +84,15 @@ const userMessage = computed(() => {
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
+}
+
+.retry-button:focus {
+  outline: 2px solid #1e40af;
+  outline-offset: 2px;
+}
+
+.retry-button:focus-visible {
+  outline: 2px solid #1e40af;
+  outline-offset: 2px;
 }
 </style>
