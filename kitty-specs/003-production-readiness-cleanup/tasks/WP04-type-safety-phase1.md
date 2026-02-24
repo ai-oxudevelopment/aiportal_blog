@@ -1,13 +1,17 @@
 ---
-work_package_id: "WP04"
-title: "Type Safety Phase 1"
-subtasks: ["T020", "T021", "T022", "T023", "T024", "T025"]
-lane: "planned"
+work_package_id: WP04
+title: Type Safety Phase 1
+lane: "doing"
 dependencies: []
+base_branch: main
+base_commit: b924be1d8f2db2772c2ff9890104383709679c35
+created_at: '2026-02-24T12:54:46.171553+00:00'
+subtasks: [T020, T021, T022, T023, T024, T025]
+shell_pid: "31714"
 history:
-  - date: 2025-02-24
-    action: "Created"
-    author: "spec-kitty.tasks"
+- date: 2025-02-24
+  action: Created
+  author: spec-kitty.tasks
 ---
 
 # Work Package: Type Safety Phase 1
