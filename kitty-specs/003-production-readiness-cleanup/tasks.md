@@ -122,9 +122,9 @@
 - [ ] User-friendly error messages
 
 **Included Subtasks**:
-- [ ] T014: Создать error class hierarchy
-- [ ] T015: Реализовать global error handler
-- [ ] T016: Создать Vue error boundary component
+- [x] T014: Создать error class hierarchy
+- [x] T015: Реализовать global error handler
+- [x] T016: Создать Vue error boundary component
 - [ ] T017: Wrap async operations (server routes)
 - [ ] T018: Wrap async operations (composables)
 - [ ] T019: Добавить user-friendly error messages
