@@ -209,11 +209,11 @@
 - [ ] Remaining `any` documented
 
 **Included Subtasks**:
-- [ ] T026: Включить strictNullChecks в tsconfig.json
-- [ ] T027: Исправить null reference errors
-- [ ] T028: Включить full strict mode
-- [ ] T029: Документировать remaining `any` types
-- [ ] T030: Верифицировать TypeScript компиляцию
+- [x] T026: Включить strictNullChecks в tsconfig.json
+- [x] T027: Исправить null reference errors
+- [x] T028: Включить full strict mode
+- [x] T029: Документировать remaining `any` types
+- [x] T030: Верифицировать TypeScript компиляцию
 
 **Implementation Sketch**:
 1. Обновить `tsconfig.json` с `strictNullChecks: true`
