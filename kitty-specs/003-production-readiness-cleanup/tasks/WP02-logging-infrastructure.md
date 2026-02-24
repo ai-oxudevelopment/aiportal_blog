@@ -8,6 +8,7 @@ base_commit: 01dfa5e8dd9309e37476ed695ac935a7b22fd9e1
 created_at: '2026-02-24T12:52:19.957357+00:00'
 subtasks: [T007, T008, T009, T010, T011, T012, T013]
 shell_pid: "31260"
+agent: "claude"
 history:
 - date: 2025-02-24
   action: Created
@@ -577,3 +578,7 @@ spec-kitty implement WP02
 ```
 
 No base WP required (independent work).
+
+## Activity Log
+
+- 2026-02-24T12:52:20Z – claude – shell_pid=31260 – lane=doing – Assigned agent via workflow command
