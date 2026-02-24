@@ -8,20 +8,30 @@ import type {
 } from '@/domain/repositories'
 import type { ResearchMessage, SessionStatus } from '@/domain/entities'
 
+/**
+ * Strapi message format (partial data from API)
+ */
+interface StrapiMessage {
+  id?: string
+  role: 'user' | 'assistant'
+  content: string
+  timestamp?: string | number
+}
+
 interface StrapiResearchResponse {
   data: {
     id: string
     documentId: string
     attributes?: {
       platform: string
-      messages: any[]
+      messages: StrapiMessage[]
       status: string
       createdAt: string
       updatedAt: string
       publishedAt: string
     }
     platform: string
-    messages: any[]
+    messages: StrapiMessage[]
     status: string
     createdAt: string
     updatedAt: string
@@ -159,7 +169,7 @@ export class StrapiResearchRepository implements IResearchRepository {
     }
   }
 
-  private extractMessages(json: StrapiResearchResponse): any[] {
+  private extractMessages(json: StrapiResearchResponse): StrapiMessage[] {
     // Handle both Strapi v4 and v5 response formats
     if (json.data.attributes) {
       return json.data.attributes.messages || []
@@ -173,7 +183,7 @@ export class StrapiResearchRepository implements IResearchRepository {
 
     return {
       id: json.data.id,
-      messages: (attrs.messages || []).map((m: any) => ({
+      messages: (attrs.messages || []).map((m: StrapiMessage): ResearchMessage => ({
         id: m.id || crypto.randomUUID(),
         role: m.role,
         content: m.content,
