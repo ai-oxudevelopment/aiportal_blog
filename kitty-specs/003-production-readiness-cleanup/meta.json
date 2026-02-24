@@ -1,0 +1,10 @@
+{
+  "feature_number": "003",
+  "slug": "production-readiness-cleanup",
+  "friendly_name": "Production Readiness Cleanup",
+  "mission": "software-dev",
+  "source_description": "проанализируй код, хочу убрать хардкод и провести рефакторинг. Почистить качество и убрать техдолг",
+  "created_at": "2025-02-24T00:44:00Z",
+  "target_branch": "main",
+  "vcs": "git"
+}

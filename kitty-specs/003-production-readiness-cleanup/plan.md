@@ -1,108 +1,179 @@
-# Implementation Plan: [FEATURE]
-*Path: [templates/plan-template.md](templates/plan-template.md)*
+# Implementation Plan: Production Readiness Cleanup
 
+**Branch**: `003-production-readiness-cleanup` | **Date**: 2025-02-24 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/kitty-specs/003-production-readiness-cleanup/spec.md`
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/kitty-specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/spec-kitty.plan` command. See `src/specify_cli/missions/software-dev/command-templates/plan.md` for the execution workflow.
-
-The planner will not begin until all planning questions have been answered—capture those answers in this document before progressing to later phases.
+---
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Комплексный рефакторинг кодовой базы AI Portal Blog для устранения технического долга от ранней разработки с AI-инструментами. Пять направлений cleanup: Configuration Management, Structured Logging (Winston), Error Handling Strategy, Type Safety Improvement, Performance Optimizations. Небreaking changes с zero regression требованием.
+
+**Технический подход**: Постепенная замена legacy кода на production-ready решения. Каждая область cleanup автономна и может быть реализована независимо.
+
+---
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+**Language/Version**: TypeScript 5.9+, JavaScript ES2022
+**Primary Dependencies**: Nuxt 3.2.0, Vue 3.4.21, Strapi CMS, Winston (logging)
+**Storage**: Strapi v5 CMS (remote backend), In-memory cache
+**Testing**: Vitest (TODO: добавить), Playwright (E2E)
+**Target Platform**: Node.js 22 (server), Browser (client)
+**Project Type**: Web application (SSR + SPA hybrid)
+**Performance Goals**: Lighthouse score не ухудшается, <100ms p95 для API запросов
+**Constraints**: Zero regression, backward compatibility, no UI/UX changes
+**Scale/Scope**: ~50 components, ~10 server routes, 4 content modules (Research, Speckits, Prompts, Blogs)
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+---
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Status**: ✅ PASSED (Initial) → ✅ PASSED (Post-Design)
+
+| Principle | Status | Notes |
+|-----------|--------|-------|
+| Nuxt.js + Strapi + TypeScript stack | ✅ Compatible | Cleanup усиливает существующий stack |
+| Self-merge allowed after CI | ✅ Compatible | E2E tests pass, zero regression |
+| Fast loading / Core Web Vitals | ✅ Compatible | Performance optimization explicitly required |
+| Simple & pragmatic approach | ✅ Compatible | Incremental, non-breaking changes |
+| TypeScript for type safety | ✅ Compatible | Strict mode enhancement |
+| Docker-based deployment | ✅ Compatible | Config management via environment variables |
+
+**Post-Design Re-check**: ✅ All artifacts (contracts, data-model) confirm compatibility.
+
+---
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```
-kitty-specs/[###-feature]/
-├── plan.md              # This file (/spec-kitty.plan command output)
-├── research.md          # Phase 0 output (/spec-kitty.plan command)
-├── data-model.md        # Phase 1 output (/spec-kitty.plan command)
-├── quickstart.md        # Phase 1 output (/spec-kitty.plan command)
-├── contracts/           # Phase 1 output (/spec-kitty.plan command)
-└── tasks.md             # Phase 2 output (/spec-kitty.tasks command - NOT created by /spec-kitty.plan)
+kitty-specs/003-production-readiness-cleanup/
+├── plan.md              # This file
+├── research.md          # ✅ Phase 0 complete
+├── data-model.md        # ✅ Phase 1 complete
+├── quickstart.md        # ✅ Phase 1 complete
+├── contracts/           # ✅ Phase 1 complete
+│   └── config-types.ts  # Configuration and error contracts
+└── tasks.md             # ⏳ Phase 2 - Run /spec-kitty.tasks
 ```
 
-### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
+### Source Code (after cleanup)
+
+**Target structure** - cleanup overlays on existing frontend:
 
 ```
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
 frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+├── config/                  # NEW: Centralized configuration
+│   ├── index.ts            # Config aggregator
+│   ├── app.config.ts       # App-level config
+│   ├── api.config.ts       # API endpoints
+│   └── defaults.ts         # Default values
+│
+├── src/infrastructure/      # EXISTING from 001
+│   ├── logging/            # NEW: Structured logging
+│   │   ├── logger.ts       # Logger interface
+│   │   ├── winston.ts      # Winston implementation
+│   │   └── context.ts      # Trace context (request_id)
+│   │
+│   └── errors/             # NEW: Error handling
+│       ├── AppError.ts     # Base error class
+│       ├── ApiError.ts     # API error types
+│       └── handler.ts      # Global error handler
+│
+├── types/                   # ENHANCED: Type definitions
+│   ├── api.ts              # API response types
+│   ├── errors.ts           # Error types
+│   └── config.ts           # Config types
+│
+├── nuxt.config.ts          # UPDATED: Strict mode, imports
+├── tsconfig.json           # UPDATED: Strict mode enabled
+└── .env                    # EXISTING: Environment variables
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Cleanup extends existing structure without reorganization. New modules (`config/`, `logging/`, `errors/`) added alongside existing code.
+
+---
 
 ## Complexity Tracking
 
-*Fill ONLY if Constitution Check has violations that must be justified*
+*No violations - all changes are within existing architecture*
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+---
+
+## Phase 0: Research ✅ COMPLETE
+
+**Status**: ✅ Complete
+
+### Research Topics Resolved
+
+1. **Logging Framework**: ✅ Winston chosen (better DX, Nuxt integration)
+2. **Config Management**: ✅ Runtime Config pattern (Nuxt native)
+3. **Error Handling**: ✅ Global handler + custom error classes
+4. **Type Safety**: ✅ Strict mode incremental migration
+5. **Performance**: ✅ Lighthouse-guided optimization
+
+**Output**: [research.md](./research.md)
+
+---
+
+## Phase 1: Design ✅ COMPLETE
+
+**Status**: ✅ Complete
+
+### Artifacts Generated
+
+1. **data-model.md** ✅
+   - Config, Logger, TraceContext entities
+   - Error class hierarchy (AppError, ApiError, ValidationError, ConfigError, NetworkError)
+   - State diagrams and relationships
+
+2. **contracts/config-types.ts** ✅
+   - IConfig, AppConfig, ApiConfig interfaces
+   - ILogger, LogMeta, TraceContext interfaces
+   - AppError and subclasses (ApiError, ValidationError, ConfigError, NetworkError)
+   - TypeScript exports for all types
+
+3. **quickstart.md** ✅
+   - Developer guide for config, logging, error handling
+   - Migration checklist
+   - Common patterns and troubleshooting
+
+4. **Agent Context Updated** ✅
+   - Winston logging added to tech stack memory
+   - Ready for task generation
+
+---
+
+## Dependencies on 001-clean-architecture-refactoring
+
+This cleanup can proceed **in parallel** with 001:
+
+| 003 Area | 001 Dependency | Notes |
+|----------|----------------|-------|
+| Config Management | None | ✅ Independent - can start now |
+| Logging | None | ✅ Independent - can start now |
+| Error Handling | Partial | ✅ Can add to existing layers |
+| Type Safety | None | ✅ Independent - can start now |
+| Performance | WP01-WP05 | ⏳ Better after architecture clean |
+
+**Recommended**: Start with Config, Logging, Type Safety (independent areas). Performance optimization after 001 WP03-WP05 complete.
+
+---
+
+## Next Steps
+
+1. ✅ Plan created
+2. ✅ Research Phase 0: Complete
+3. ✅ Design Phase 1: Complete
+4. ⏳ **Task Generation Phase 2**: Run `/spec-kitty.tasks`
+
+---
+
+**Generated**: 2025-02-24
+**Phase 0 Status**: ✅ Complete
+**Phase 1 Status**: ✅ Complete
+**Ready for /spec-kitty.tasks**: ✅ Yes
