@@ -27,6 +27,31 @@ export default defineNuxtConfig({
     }
   },
 
+  // Vue error handler
+  vue: {
+    onError: (err, instance, info) => {
+      // Import logger at runtime to avoid import issues
+      const logger = (globalThis as any).__logger
+      if (logger) {
+        logger.error('Vue error handler caught error', {
+          error: err instanceof Error ? {
+            message: err.message,
+            stack: err.stack,
+            name: err.name,
+          } : err,
+          componentName: instance?.$options?.name || 'Unknown',
+          lifecycleHook: info,
+        })
+      }
+
+      // In development, show full error
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Vue error:', err)
+        console.error('Info:', info)
+      }
+    }
+  },
+
   imports: {
     // Auto-import composables from these directories
     dirs: [
