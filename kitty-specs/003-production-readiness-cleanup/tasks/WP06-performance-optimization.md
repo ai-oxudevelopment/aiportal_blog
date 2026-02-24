@@ -1,9 +1,13 @@
 ---
 work_package_id: WP06
 title: Performance Optimization
-lane: planned
+lane: "doing"
 dependencies: []
+base_branch: main
+base_commit: f893fbf245257a9fc4a768ab7ddb8e82f0f95747
+created_at: '2026-02-24T12:59:38.200768+00:00'
 subtasks: [T031, T032, T033, T034, T035, T036]
+shell_pid: "32286"
 history:
 - date: 2025-02-24
   action: Created
